@@ -26,7 +26,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: "ホーム",
+          title: "日記一覧",
           tabBarIcon: ({ color, size }) => (
             <HomeIcon size={size} color={color} />
           ),
