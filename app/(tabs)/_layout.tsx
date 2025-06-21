@@ -35,7 +35,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="diaryCreation"
         options={{
-          title: "日記",
+          title: "日記作成",
           tabBarIcon: ({ color, size }) => (
             <DiaryCreationIcon size={size} color={color} />
           ),
