@@ -1,10 +1,10 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-export default function index() {
+export default function home() {
   return (
     <View>
-      <Text>IndexHome</Text>
+      <Text>Home</Text>
     </View>
   )
 }
