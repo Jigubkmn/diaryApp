@@ -1,19 +1,23 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
-// import { addLineBreaks } from '../action/addLineBreaks'
+import { addLineBreaks } from '../../../utils/addLineBreaks'
 
-export default function DiaryList() {
+export default function DiaryList({ date }: { date: string }) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../assets/images/user.png');
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const noImage = require('../../../assets/images/no_image.png');
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+  const feelingImage = require('../../../assets/images/excellent_icon.png');
 
+  const diaryText = "今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められたかというと";
+  const formattedText = addLineBreaks(diaryText, 15);
 
   return (
     <View style={styles.diaryList}>
       <View style={styles.diaryDateContainer}>
-        <Text style={styles.diaryDay}>6月18日(水)</Text>
+        <Text style={styles.diaryDay}>{date}</Text>
       </View>
 
 
@@ -23,18 +27,23 @@ export default function DiaryList() {
 
       <View style={styles.diaryContentContainer}>
         {/* 日記作成者のアイコン画像 */}
-        <View style={styles.diaryCreateUserIconContainer}>
+        <View style={styles.diaryUserIconContainer}>
           <Image
             source={userImage}
-            style={styles.diaryCreateUserIcon}
+            style={styles.diaryUserIcon}
           />
         </View>
         {/* 日記内容 */}
         <View style={styles.diaryContent}>
-          <Text>21:22</Text>
-          <Text numberOfLines={3} ellipsizeMode="tail">
-            {/* {formattedText} */}
-            今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められ．．．
+          <View style={styles.diaryTimeContainer}>
+            <Text style={styles.diaryTime}>21:22</Text>
+            <Image
+              source={feelingImage}
+              style={styles.feelingImage}
+            />
+          </View>
+          <Text style={styles.diaryContentText} numberOfLines={2} ellipsizeMode="tail">
+            {formattedText}
           </Text>
         </View>
         {/* 日記投稿画像 */}
@@ -51,7 +60,6 @@ export default function DiaryList() {
 
 const styles = StyleSheet.create({
   diaryList: {
-    flex: 1,
     backgroundColor: '#fff',
   },
   diaryDateContainer: {
@@ -64,23 +72,39 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   diaryContentContainer: {
-    paddingHorizontal: 16,
-    paddingVertical: 16,
+    padding: 16,
     flexDirection: 'row',
-    alignItems: 'center',
     width: '100%',
+    justifyContent: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
-  diaryCreateUserIconContainer: {
+  diaryUserIconContainer: {
     marginRight: 16,
+    justifyContent: 'center',
+  },
+  diaryUserIcon: {
+    width: 50,
+    height: 50,
   },
   diaryContent: {
     //
   },
-  diaryCreateUserIcon: {
-    width: 40,
-    height: 40,
+  diaryTimeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  diaryTime: {
+    fontSize: 12,
+    lineHeight: 20,
+  },
+  feelingImage: {
+    width: 30,
+    height: 30,
+  },
+  diaryContentText: {
+    fontSize: 14,
+    lineHeight: 24,
   },
   diaryImageContainer: {
     marginLeft: 'auto',

@@ -11,7 +11,8 @@ export default function home() {
       </View>
       {/* 日記一覧 */}
       <View style={styles.diaryListContainer}>
-        <DiaryList />
+        <DiaryList date="6月18日(水)" />
+        <DiaryList date="6月19日(木)" />
       </View>
     </View>
   )
