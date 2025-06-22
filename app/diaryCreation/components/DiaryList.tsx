@@ -1,7 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { Image } from 'expo-image'
-import { addLineBreaks } from '../../../utils/addLineBreaks'
 
 export default function DiaryList({ date }: { date: string }) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -12,7 +11,6 @@ export default function DiaryList({ date }: { date: string }) {
   const feelingImage = require('../../../assets/images/excellent_icon.png');
 
   const diaryText = "今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められたかというと";
-  const formattedText = addLineBreaks(diaryText, 15);
 
   return (
     <View style={styles.diaryList}>
@@ -43,7 +41,7 @@ export default function DiaryList({ date }: { date: string }) {
             />
           </View>
           <Text style={styles.diaryContentText} numberOfLines={2} ellipsizeMode="tail">
-            {formattedText}
+            {diaryText}
           </Text>
         </View>
         {/* 日記投稿画像 */}
@@ -88,7 +86,8 @@ const styles = StyleSheet.create({
     height: 50,
   },
   diaryContent: {
-    //
+    flex: 1,
+    marginRight: 16,
   },
   diaryTimeContainer: {
     flexDirection: 'row',
@@ -105,6 +104,9 @@ const styles = StyleSheet.create({
   diaryContentText: {
     fontSize: 14,
     lineHeight: 24,
+    // テキストが折り返されるようにする
+    flexWrap: 'wrap',
+    flexShrink: 1,
   },
   diaryImageContainer: {
     marginLeft: 'auto',
