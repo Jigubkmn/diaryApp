@@ -1,8 +1,8 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
-import UserIcon from '../../components/UserIcon'
-import HomeIcon from '../../components/HomeIcon'
-import DiaryCreationIcon from '../../components/DiaryCreationIcon'
+import UserIcon from '../../components/Icon/UserIcon'
+import HomeIcon from '../../components/Icon/HomeIcon'
+import DiaryCreationIcon from '../../components/Icon/DiaryCreationIcon'
 
 export default function TabLayout() {
   return (
@@ -36,6 +36,7 @@ export default function TabLayout() {
         name="diaryCreation"
         options={{
           title: "日記作成",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <DiaryCreationIcon size={size} color={color} />
           ),

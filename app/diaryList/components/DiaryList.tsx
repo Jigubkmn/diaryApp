@@ -17,12 +17,6 @@ export default function DiaryList({ date }: { date: string }) {
       <View style={styles.diaryDateContainer}>
         <Text style={styles.diaryDay}>{date}</Text>
       </View>
-
-
-
-
-
-
       <View style={styles.diaryContentContainer}>
         {/* 日記作成者のアイコン画像 */}
         <View style={styles.diaryUserIconContainer}>

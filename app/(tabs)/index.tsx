@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import DiaryList from '../diaryCreation/components/DiaryList'
+import DiaryList from '../diaryList/components/DiaryList'
 
 export default function home() {
   return (
