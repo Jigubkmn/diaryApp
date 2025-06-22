@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   diaryTime: {
     fontSize: 12,
     lineHeight: 20,
+    marginRight: 8
   },
   feelingImage: {
     width: 30,
