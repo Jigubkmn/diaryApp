@@ -69,14 +69,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 32,
-    paddingVertical: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
   },
   headerButton: {
     padding: 8,
   },
   headerButtonText: {
     fontSize: 16,
-    fontWeight: 'bold',
+    lineHeight: 30,
+    color: '#FFA500',
   },
   dateContainer: {
     flex: 1,
