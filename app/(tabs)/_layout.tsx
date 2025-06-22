@@ -36,6 +36,7 @@ export default function TabLayout() {
         name="diaryCreation"
         options={{
           title: "日記作成",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <DiaryCreationIcon size={size} color={color} />
           ),

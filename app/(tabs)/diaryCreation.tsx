@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import Feeling from '../diaryCreation/components/Feeling';
-
-
+import Header from '../diaryCreation/components/Header';
 
 export default function DiaryCreation() {
   const [diaryText, setDiaryText] = useState('');
 
   return (
     <SafeAreaView style={styles.container}>
+      <Header diaryText={diaryText} />
       <Feeling />
       <TextInput
         style={styles.textInput}
