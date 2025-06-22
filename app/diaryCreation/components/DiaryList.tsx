@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   diaryDay: {
-    fontSize: 16,
-    lineHeight: 30,
+    fontSize: 14,
+    lineHeight: 24,
     fontWeight: 'bold',
   },
   diaryContentContainer: {
