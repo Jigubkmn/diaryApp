@@ -24,9 +24,9 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
-          title: "ホーム",
+          title: "日記一覧",
           tabBarIcon: ({ color, size }) => (
             <HomeIcon size={size} color={color} />
           ),
@@ -42,7 +42,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="user"
         options={{
           title: "ユーザー",
           tabBarIcon: ({ color, size }) => (
