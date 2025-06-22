@@ -2,6 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import getTodayDate from '../../../actions/getTodayDate';
+import LeftArrowIcon from '../../../components/Icon/LeftArrowIcon';
+import RightArrowIcon from '../../../components/Icon/RightArrowIcon';
 
 type Props = {
   diaryText: string;
@@ -27,7 +29,9 @@ export default function Header({ diaryText }: Props) {
       <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
         <Text style={styles.headerButtonText}>戻る</Text>
       </TouchableOpacity>
+      <LeftArrowIcon size={24} color="black" />
       <Text style={styles.headerTitle}>{todayDate}</Text>
+      <RightArrowIcon size={24} color="black" />
       <TouchableOpacity onPress={handleSave} style={styles.headerButton}>
         <Text style={styles.headerButtonText}>保存</Text>
       </TouchableOpacity>
