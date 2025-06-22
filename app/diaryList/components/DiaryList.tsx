@@ -1,8 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Image } from 'expo-image'
+import { useRouter } from 'expo-router'
 
 export default function DiaryList({ date }: { date: string }) {
+  const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../assets/images/user.png');
   // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -12,8 +14,13 @@ export default function DiaryList({ date }: { date: string }) {
 
   const diaryText = "今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められたかというと";
 
+  const handleDiaryPress = () => {
+    // 日記編集画面に遷移（仮のID: 1を使用）
+    router.push('/diaryEdit/diaryEdit?id=1');
+  };
+
   return (
-    <View style={styles.diaryList}>
+    <TouchableOpacity style={styles.diaryList} onPress={handleDiaryPress} activeOpacity={0.7}>
       <View style={styles.diaryDateContainer}>
         <Text style={styles.diaryDay}>{date}</Text>
       </View>
@@ -46,7 +53,7 @@ export default function DiaryList({ date }: { date: string }) {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 
