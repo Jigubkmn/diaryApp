@@ -64,12 +64,14 @@ export default function Header({ diaryText }: Props) {
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleEdit} style={styles.headerRightIcon}>
-        <EditIcon size={24} color="#FFA500" />
-      </TouchableOpacity>
-      <TouchableOpacity onPress={handleDelete} style={styles.headerRightIcon}>
-        <DeleteIcon size={24} color="#FFA500" />
-      </TouchableOpacity>
+      <View style={styles.headerRightIcon}>
+        <TouchableOpacity onPress={handleEdit} style={styles.editIcon}>
+          <EditIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleDelete}>
+          <DeleteIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -110,6 +112,10 @@ const styles = StyleSheet.create({
   headerRightIcon: {
     marginLeft: 'auto',
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editIcon: {
+    marginRight: 8,
   },
 });
