@@ -46,6 +46,7 @@ export default function TabLayout() {
         name="user"
         options={{
           title: "ユーザー",
+          headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <UserIcon size={size} color={color} />
           ),

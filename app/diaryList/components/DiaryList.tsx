@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
 
@@ -20,40 +20,42 @@ export default function DiaryList({ date }: { date: string }) {
   };
 
   return (
-    <TouchableOpacity style={styles.diaryList} onPress={handleDiaryPress} activeOpacity={0.7}>
-      <View style={styles.diaryDateContainer}>
-        <Text style={styles.diaryDay}>{date}</Text>
-      </View>
-      <View style={styles.diaryContentContainer}>
-        {/* 日記作成者のアイコン画像 */}
-        <View style={styles.diaryUserIconContainer}>
-          <Image
-            source={userImage}
-            style={styles.diaryUserIcon}
-          />
+    <SafeAreaView>
+      <TouchableOpacity style={styles.diaryList} onPress={handleDiaryPress} activeOpacity={0.7}>
+        <View style={styles.diaryDateContainer}>
+          <Text style={styles.diaryDay}>{date}</Text>
         </View>
-        {/* 日記内容 */}
-        <View style={styles.diaryContent}>
-          <View style={styles.diaryTimeContainer}>
-            <Text style={styles.diaryTime}>21:22</Text>
+        <View style={styles.diaryContentContainer}>
+          {/* 日記作成者のアイコン画像 */}
+          <View style={styles.diaryUserIconContainer}>
             <Image
-              source={feelingImage}
-              style={styles.feelingImage}
+              source={userImage}
+              style={styles.diaryUserIcon}
             />
           </View>
-          <Text style={styles.diaryContentText} numberOfLines={2} ellipsizeMode="tail">
-            {diaryText}
-          </Text>
+          {/* 日記内容 */}
+          <View style={styles.diaryContent}>
+            <View style={styles.diaryTimeContainer}>
+              <Text style={styles.diaryTime}>21:22</Text>
+              <Image
+                source={feelingImage}
+                style={styles.feelingImage}
+              />
+            </View>
+            <Text style={styles.diaryContentText} numberOfLines={2} ellipsizeMode="tail">
+              {diaryText}
+            </Text>
+          </View>
+          {/* 日記投稿画像 */}
+          <View style={styles.diaryImageContainer}>
+            <Image
+              source={noImage}
+              style={styles.diaryImage}
+            />
+          </View>
         </View>
-        {/* 日記投稿画像 */}
-        <View style={styles.diaryImageContainer}>
-          <Image
-            source={noImage}
-            style={styles.diaryImage}
-          />
-        </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </SafeAreaView>
   )
 }
 
