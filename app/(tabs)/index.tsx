@@ -21,10 +21,10 @@ export default function home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   yearMonthContainer: {
     // View用のスタイル（必要に応じて）
+    backgroundColor: '#ffffff',
   },
   yearMonthText: {
     fontSize: 20,
@@ -34,6 +34,6 @@ const styles = StyleSheet.create({
   },
   diaryListContainer: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F0F0F0',
   },
 })

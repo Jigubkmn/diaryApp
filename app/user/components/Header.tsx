@@ -12,7 +12,7 @@ export default function Header() {
         {/* 左側のスペーサー - 右側のアイコンと同じ幅を確保 */}
       </View>
       <View style={styles.headerCenter}>
-        <Text style={styles.headerTitle}>ユーザー情報</Text>
+        <Text style={styles.headerTitle}>マイページ</Text>
       </View>
       <View style={styles.headerRight}>
         <TouchableOpacity onPress={() => {}} style={styles.userAddIcon}>

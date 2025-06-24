@@ -45,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="user"
         options={{
-          title: "ユーザー",
+          title: "マイページ",
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
             <UserIcon size={size} color={color} />
