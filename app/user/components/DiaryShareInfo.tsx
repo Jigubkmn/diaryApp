@@ -44,8 +44,6 @@ export default function DiaryShareInfo() {
 const styles = StyleSheet.create({
   diaryShareInfo: {
     padding: 16,
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
   },
   diaryShareMainInfo: {
     flexDirection: 'row',

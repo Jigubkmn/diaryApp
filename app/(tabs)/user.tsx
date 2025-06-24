@@ -9,7 +9,10 @@ export default function user() {
       <Header />
       <View style={styles.diaryShareContainer}>
         <Text style={styles.diaryShareTitle}>日記共通相手</Text>
-        <DiaryShareInfo />
+        <View style={styles.diaryShareInfoContainer}>
+          <DiaryShareInfo />
+          <DiaryShareInfo />
+        </View>
       </View>
     </SafeAreaView>
   )
@@ -30,6 +33,10 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     fontWeight: 'bold',
     marginLeft: 8
+  },
+  diaryShareInfoContainer: {
+    borderRadius: 10,
+    backgroundColor: '#ffffff',
   },
   // userInfo: {
   //   marginBottom: 16,
