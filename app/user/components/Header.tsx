@@ -34,6 +34,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
+    height: 60,
+    backgroundColor: '#ffffff',
   },
   headerLeft: {
     width: 80, // 右側のアイコン2つ分の幅（24px + 24px + 8px margin + 余裕）
