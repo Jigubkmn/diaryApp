@@ -7,11 +7,14 @@ export default function user() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <View style={styles.diaryShareContainer}>
-        <Text style={styles.diaryShareTitle}>日記共通相手</Text>
-        <View style={styles.diaryShareInfoContainer}>
-          <DiaryShareInfo />
-          <DiaryShareInfo />
+      <View style={styles.bodyContainer}>
+        <View style={styles.diaryShareContainer}>
+          <Text style={styles.diaryShareTitle}>日記共通相手</Text>
+          <View style={styles.diaryShareInfoContainer}>
+            <DiaryShareInfo />
+            <DiaryShareInfo />
+            <DiaryShareInfo />
+          </View>
         </View>
       </View>
     </SafeAreaView>
@@ -21,8 +24,12 @@ export default function user() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF',
+  },
+  bodyContainer: {
+    flex: 1,
     backgroundColor: '#F0F0F0',
-    marginHorizontal: 48,
+    paddingHorizontal: 48,
   },
   diaryShareContainer: {
     flex: 1,
@@ -62,4 +69,8 @@ const styles = StyleSheet.create({
   //   justifyContent: 'flex-end',
   //   marginRight: 16,
   // },
+  divider: {
+    height: 1,
+    backgroundColor: '#E0E0E0',
+  },
 })
