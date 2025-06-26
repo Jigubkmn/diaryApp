@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
 import Header from '../user/components/Header'
 import DiaryShareInfo from '../user/components/DiaryShareInfo'
 import { Image } from 'expo-image'
@@ -13,7 +13,7 @@ export default function user() {
   return (
     <SafeAreaView style={styles.container}>
       <Header />
-      <View style={styles.bodyContainer}>
+      <ScrollView style={styles.bodyContainer}>
         <View style={styles.userInfoContainer}>
           {/* ユーザー画像 */}
           <View style={styles.userImageContainer}>
@@ -46,7 +46,7 @@ export default function user() {
             <DiaryShareInfo />
           </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   )
 }
