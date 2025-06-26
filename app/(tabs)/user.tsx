@@ -15,17 +15,28 @@ export default function user() {
       <Header />
       <View style={styles.bodyContainer}>
         <View style={styles.userInfoContainer}>
+          {/* ユーザー画像 */}
           <View style={styles.userImageContainer}>
-            {/* ユーザー画像 */}
             <Image source={userImage} style={styles.userImage} />
             <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
               <EditIcon size={24} color="#FFA500" />
             </TouchableOpacity>
           </View>
-          {/* <View style={styles.userIDContainer}>
-            <Text style={styles.userIDTitle}>ユーザーID</Text>
-            <Text style={styles.userIDText}>AAAABBBBCCCCDDDD</Text>
-          </View> */}
+          {/* ユーザーID */}
+          <View style={styles.userTextContainer}>
+            <Text style={styles.userTitle}>ユーザーID</Text>
+            <Text style={styles.userText}>AAAABBBBCCCCDDDD</Text>
+          </View>
+          {/* ニックネーム */}
+          <View style={styles.userTextContainer}>
+            <View style={styles.userTextWrapper}>
+              <Text style={styles.userTitle}>ニックネーム</Text>
+              <TouchableOpacity onPress={() => {}}>
+                <EditIcon size={24} color="#FFA500" />
+              </TouchableOpacity>
+            </View>
+            <Text style={styles.userText}>塩見太郎</Text>
+          </View>
         </View>
         <View style={styles.diaryShareContainer}>
           <Text style={styles.diaryShareTitle}>日記共通相手</Text>
@@ -51,9 +62,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
   },
   userInfoContainer: {
-    flex: 1,
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
     marginTop: 16,
+    marginHorizontal: 24,
     backgroundColor: '#ffffff',
     borderRadius: 10,
     alignItems: 'center',
@@ -77,6 +89,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 3,
   },
+  userTextContainer: {
+    marginTop: 16,
+    marginRight: 'auto',
+  },
+  userTextWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userTitle: {
+    fontSize: 14,
+    lineHeight: 24,
+    fontWeight: 'bold',
+    marginRight: 8,
+  },
+  userText: {
+    fontSize: 14,
+    lineHeight: 24,
+  },
   diaryShareContainer: {
     flex: 1,
     marginTop: 16,
@@ -90,33 +120,5 @@ const styles = StyleSheet.create({
   diaryShareInfoContainer: {
     borderRadius: 10,
     backgroundColor: '#ffffff',
-  },
-  // userInfo: {
-  //   marginBottom: 16,
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   backgroundColor: '#ffffff',
-  //   borderRadius: 10,
-  // },
-  // userImage: {
-  //   width: 40,
-  //   height: 40,
-  //   margin: 16,
-  // },
-  // userInfoText: {
-  //   marginBottom: 16,
-  // },
-  // userName: {
-  //   fontSize: 14,
-  //   lineHeight: 24
-  // },
-  // userInfoIcon: {
-  //   marginLeft: 'auto',
-  //   justifyContent: 'flex-end',
-  //   marginRight: 16,
-  // },
-  divider: {
-    height: 1,
-    backgroundColor: '#E0E0E0',
   },
 })
