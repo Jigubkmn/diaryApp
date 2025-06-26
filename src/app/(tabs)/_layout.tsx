@@ -1,8 +1,8 @@
 import React from 'react'
 import { Tabs } from 'expo-router'
-import UserIcon from '../../components/Icon/UserIcon'
-import HomeIcon from '../../components/Icon/HomeIcon'
-import DiaryCreationIcon from '../../components/Icon/DiaryCreationIcon'
+import UserIcon from '../components/Icon/UserIcon'
+import HomeIcon from '../components/Icon/HomeIcon'
+import DiaryCreationIcon from '../components/Icon/DiaryCreationIcon'
 
 export default function TabLayout() {
   return (

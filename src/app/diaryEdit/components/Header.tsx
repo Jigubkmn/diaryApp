@@ -1,9 +1,11 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
-import LeftArrowIcon from '../../../components/Icon/LeftArrowIcon';
-import RightArrowIcon from '../../../components/Icon/RightArrowIcon';
+import LeftArrowIcon from '../../components/Icon/LeftArrowIcon';
+import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
+import EditIcon from '../../components/Icon/EditIcon';
+import DeleteIcon from '../../components/Icon/DeleteIcon';
 
 type Props = {
   diaryText: string;
@@ -34,13 +36,18 @@ export default function Header({ diaryText }: Props) {
     setSelectedDate(newDate);
   };
 
-  const handleSave = () => {
+  const handleBack = () => {
+    router.back();
+  };
+
+  const handleEdit = () => {
     // 保存処理をここに実装
     console.log('保存:', diaryText);
   };
 
-  const handleBack = () => {
-    router.back();
+  const handleDelete = () => {
+    // 保存処理をここに実装
+    console.log('保存:', diaryText);
   };
 
   return (
@@ -57,9 +64,14 @@ export default function Header({ diaryText }: Props) {
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleSave} style={styles.headerSaveButton}>
-        <Text style={styles.headerButtonText}>保存</Text>
-      </TouchableOpacity>
+      <View style={styles.headerRightIcon}>
+        <TouchableOpacity onPress={handleEdit} style={styles.editIcon}>
+          <EditIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleDelete}>
+          <DeleteIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -99,9 +111,13 @@ const styles = StyleSheet.create({
   iconButton: {
     padding: 0,
   },
-  headerSaveButton: {
+  headerRightIcon: {
     marginLeft: 'auto',
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  editIcon: {
+    marginRight: 8,
   },
 });

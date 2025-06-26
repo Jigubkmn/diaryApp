@@ -6,11 +6,11 @@ import { useRouter } from 'expo-router'
 export default function DiaryList({ date }: { date: string }) {
   const router = useRouter();
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const userImage = require('../../../assets/images/user.png');
+  const userImage = require('../../../../assets/images/user.png');
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const noImage = require('../../../assets/images/no_image.png');
+  const noImage = require('../../../../assets/images/no_image.png');
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const feelingImage = require('../../../assets/images/excellent_icon.png');
+  const feelingImage = require('../../../../assets/images/excellent_icon.png');
 
   const diaryText = "今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められたかというと";
 
