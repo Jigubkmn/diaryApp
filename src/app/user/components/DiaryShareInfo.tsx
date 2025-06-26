@@ -5,7 +5,7 @@ import { Image } from 'expo-image'
 
 export default function DiaryShareInfo() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const userImage = require('../../../assets/images/user.png');
+  const userImage = require('../../../../assets/images/user.png');
   const [isNotificationEnabled, setIsNotificationEnabled] = useState(false);
 
 

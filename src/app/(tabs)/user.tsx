@@ -3,13 +3,13 @@ import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } fr
 import Header from '../user/components/Header'
 import DiaryShareInfo from '../user/components/DiaryShareInfo'
 import { Image } from 'expo-image'
-import EditIcon from '../../components/Icon/EditIcon';
+import EditIcon from '../components/Icon/EditIcon';
 
 
 export default function user() {
 
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const userImage = require('../../assets/images/user.png')
+  const userImage = require('../../../assets/images/user.png')
   return (
     <SafeAreaView style={styles.container}>
       <Header />

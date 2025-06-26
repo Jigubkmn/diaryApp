@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import UserAddIcon from '../../../components/Icon/UserAddIcon';
-import SettingIcon from '../../../components/Icon/SettingIcon';
+import UserAddIcon from '../../components/Icon/UserAddIcon';
+import SettingIcon from '../../components/Icon/SettingIcon';
 
 
 export default function Header() {
