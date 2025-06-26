@@ -84,6 +84,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
+    height: 60,
+    backgroundColor: '#ffffff',
   },
   headerButton: {
     padding: 8,
