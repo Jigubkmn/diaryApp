@@ -33,7 +33,11 @@ export default function Login() {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
-        <Link href="/auth/signUp" style={styles.loginLinkText}>ユーザー新規登録はこちら</Link>
+        <Link href="/auth/signUp" style={styles.loginLinkText} asChild>
+          <TouchableOpacity>
+            <Text  style={styles.loginLinkText}>ユーザー新規登録はこちら</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </SafeAreaView>
 

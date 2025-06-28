@@ -1,8 +1,14 @@
 import React from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
+import { router } from 'expo-router'
 
 export default function SignUp() {
+
+  const handleSignUp = () => {
+    console.log('signUp')
+    router.push('/(tabs)')
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.bodyContainer}>
@@ -51,10 +57,14 @@ export default function SignUp() {
           />
         </View>
         {/* 登録ボタン */}
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
-        <Link href="/auth/login" style={styles.loginLinkText}>ログインはこちら</Link>
+        <Link href="/auth/login" style={styles.loginLinkText} asChild>
+          <TouchableOpacity>
+            <Text  style={styles.loginLinkText}>ログインはこちら</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </SafeAreaView>
 
