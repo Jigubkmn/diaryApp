@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import Header from '../user/components/Header'
-import DiaryShareInfo from '../user/components/DiaryShareInfo'
+import Header from '../myPage/components/Header'
+import DiaryShareInfo from '../myPage/components/DiaryShareInfo'
 import { Image } from 'expo-image'
 import EditIcon from '../components/Icon/EditIcon';
 
