@@ -1,5 +1,6 @@
 import React from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { Link } from 'expo-router'
 
 export default function SignUp() {
   return (
@@ -53,7 +54,7 @@ export default function SignUp() {
         <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
-        <Text style={styles.loginLinkText}>ログインはこちら</Text>
+        <Link href="/auth/login" style={styles.loginLinkText}>ログインはこちら</Link>
       </View>
     </SafeAreaView>
 
