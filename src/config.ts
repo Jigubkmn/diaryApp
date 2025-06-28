@@ -11,13 +11,12 @@ const firebaseConfig = {
   // storageBucket: process.env.EXPO_PUBLIC_FB_STORAGE_BUCKET,
   // messagingSenderId: process.env.EXPO_PUBLIC_FB_MESSAGING_SENDER_ID,
   // appId: process.env.EXPO_PUBLIC_FB_APP_ID,
-  apiKey: "AIzaSyA29Cc4jDz-lrUFwuGjt8riB5ZfZcxwIk0",
-  authDomain: "diaryapp-7435e.firebaseapp.com",
-  projectId: "diaryapp-7435e",
-  storageBucket: "diaryapp-7435e.firebasestorage.app",
-  messagingSenderId: "898256447374",
-  appId: "1:898256447374:web:be01ebb2fa9d1206e5a6df",
-  measurementId: "G-9F85G993LH"
+  apiKey: process.env.EXPO_PUBLIC_FB_API_KEY,
+  authDomain: process.env.EXPO_PUBLIC_FB_AUTH_DOMAIN,
+  projectId: process.env.EXPO_PUBLIC_FB_PROJECT_ID,
+  storageBucket: process.env.EXPO_PUBLIC_FB_STORAGE_BUCKET,
+  messagingSenderId: process.env.EXPO_PUBLIC_FB_MESSAGING_SENDER_ID,
+  appId: process.env.EXPO_PUBLIC_FB_APP_ID,
 };
 
 // Firebaseの初期化
