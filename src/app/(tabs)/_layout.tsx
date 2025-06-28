@@ -43,7 +43,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="user"
+        name="myPage"
         options={{
           title: "マイページ",
           headerShown: false,
