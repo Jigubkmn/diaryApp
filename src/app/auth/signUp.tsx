@@ -1,7 +1,7 @@
 import React from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 
-export default function Auth() {
+export default function SignUp() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.bodyContainer}>
