@@ -1,12 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
 import { router } from 'expo-router'
 
+
 export default function SignUp() {
 
+  const [username, setUsername] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+
+
   const handleSignUp = () => {
-    console.log('signUp')
+    console.log('signUp', { username, userEmail, password, confirmPassword })
     router.push('/(tabs)')
   }
   return (
@@ -22,6 +29,9 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="ユーザー名を入力してください"
+            value={username}
+            onChangeText={setUsername}
+            autoCapitalize="none"
           />
         </View>
         {/* メールアドレス */}
@@ -33,6 +43,10 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="メールアドレスを入力してください"
+            value={userEmail}
+            onChangeText={setUserEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
         </View>
         {/* パスワード */}
@@ -44,6 +58,10 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="半角英数字4文字以上で入力してください"
+            value={password}
+            onChangeText={setPassword}
+            autoCapitalize="none" // 大文字小文字を区別しない
+            secureTextEntry={true}
           />
         </View>
         {/* パスワード確認 */}
@@ -54,6 +72,10 @@ export default function SignUp() {
           </Text>
           <TextInput
             style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            autoCapitalize="none"
+            secureTextEntry={true}
           />
         </View>
         {/* 登録ボタン */}
