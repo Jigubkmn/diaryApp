@@ -1,12 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import Header from '../myPage/components/Header'
 import DiaryShareInfo from '../myPage/components/DiaryShareInfo'
 import { Image } from 'expo-image'
 import EditIcon from '../components/Icon/EditIcon';
-import { auth } from '../../config';
+import { auth, db } from '../../config';
 import { signOut } from 'firebase/auth';
 import { router } from 'expo-router';
+import { collection, onSnapshot, query } from 'firebase/firestore'
+
 
 
 export default function myPage() {
@@ -14,6 +16,21 @@ export default function myPage() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../assets/images/user.png')
 
+  useEffect(() => {
+    // ユーザー情報取得
+    const userId = auth.currentUser?.uid
+    if (userId) {
+      const ref = collection(db, `users/${userId}/userInfo`)
+      const q = query(ref) // ユーザー情報の参照を取得。
+      onSnapshot(q, (snapshot) => { // snapshot：userInfoのデータを取得。
+        // データ1つずつの処理
+        snapshot.docs.forEach((doc) => {
+          console.log("ユーザー情報", doc.data())
+        })
+      })
+    }
+  }, [])
+  // ログアウト
   const handleLogout = () => {
     signOut(auth)
     .then(() => {
