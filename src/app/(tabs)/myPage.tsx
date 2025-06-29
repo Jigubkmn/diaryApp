@@ -45,7 +45,7 @@ export default function myPage() {
           {/* ニックネーム */}
           <View style={styles.userTextContainer}>
             <View style={styles.userTextWrapper}>
-              <Text style={styles.userTitle}>ニックネーム</Text>
+              <Text style={styles.userTitle}>ユーザー名</Text>
               <TouchableOpacity onPress={() => {}}>
                 <EditIcon size={24} color="#FFA500" />
               </TouchableOpacity>
