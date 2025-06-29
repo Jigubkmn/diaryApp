@@ -1,29 +1,52 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
 import { Link } from 'expo-router'
 import { router } from 'expo-router'
-import { auth } from '../../config'
+import { auth, db } from '../../config'
+// doc：ドキュメント参照を作成する関数
+// setDoc：ドキュメントを作成する関数
+import { collection, addDoc } from 'firebase/firestore'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 
+// ランダムなアカウントIDを生成する関数
+const generateAccountId = (): string => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 8; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+};
 
 export default function SignUp() {
-  const [username, setUsername] = useState('')
+  const [userName, setUserName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  // const [confirmPassword, setConfirmPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
 
-  // ユーザー新規登録
-  const handleSignUp = (email: string, password: string) => {
-    console.log(email, password)
+  // ユーザー新規登録、ユーザー情報登録
+  const handleSignUp = (email: string, password: string, userName: string, confirmPassword: string) => {
+    if (password !== confirmPassword) {
+      Alert.alert("パスワードが一致しません");
+      return;
+    }
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      console.log("userCredential", userCredential.user.uid);
-      // backボタンを表示させないため
+      const userId = userCredential.user.uid
+      console.log("userCredential", userId);
+      const ref = collection(db, `users/${userId}/userInfo`)
+      const accountId = generateAccountId()
+      addDoc(ref, {
+        userName: userName,
+        accountId: accountId,
+        createdAt: new Date(),
+      })
+      Alert.alert("会員登録に成功しました");
       router.push("/(tabs)")
     })
     .catch((error) => {
       console.log("error", error)
-      Alert.alert("会員登録処理を失敗しました");
+      Alert.alert("会員登録に失敗しました");
     })
   }
   return (
@@ -39,8 +62,8 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="ユーザー名を入力してください"
-            value={username}
-            onChangeText={(text) => setUsername(text)}
+            value={userName}
+            onChangeText={(text) => setUserName(text)}
             autoCapitalize="none"
           />
         </View>
@@ -75,7 +98,7 @@ export default function SignUp() {
           />
         </View>
         {/* パスワード確認 */}
-        {/* <View style={styles.inputContainer}>
+        <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>
             <Text>パスワード確認</Text>
             <Text style={styles.required}> ＊</Text>
@@ -87,10 +110,9 @@ export default function SignUp() {
             autoCapitalize="none"
             secureTextEntry={true} // パスワードを非表示にする。
           />
-        </View> */}
+        </View>
         {/* 登録ボタン */}
-        {/* <Button label='Submit' onPress={() => {handleSignUp(email, password)}} /> */}
-        <TouchableOpacity onPress={() => {handleSignUp(email, password)}} style={styles.button}>
+        <TouchableOpacity onPress={() => {handleSignUp(email, password, userName, confirmPassword)}} style={styles.button}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
 
