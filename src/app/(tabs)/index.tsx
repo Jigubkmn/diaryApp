@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import DiaryList from '../diaryList/components/DiaryList'
+import { auth, db } from '../../config';
+import { collection, onSnapshot, query } from 'firebase/firestore';
+import { DiaryType } from '../../../type/diary';
 
 export default function home() {
+  const [diaryLists, setDiaryLists] = useState<DiaryType[]>([]);
+
+  useEffect(() => {
+    const userId = auth.currentUser?.uid;
+    if (userId === null) return;
+    const ref = collection(db, `users/${userId}/diary`)
+    const q = query(ref)
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const remoteDiaryList: DiaryType[] = []
+      snapshot.docs.forEach((doc) => {
+        const { diaryText, date, feeling, updatedAt } = doc.data();
+        remoteDiaryList.push({ diaryText, date, feeling, updatedAt })
+      })
+      setDiaryLists(remoteDiaryList)
+    })
+    return unsubscribe;
+  }, [])
+
   return (
     <View style={styles.container}>
       {/* 年月 */}
@@ -11,8 +32,11 @@ export default function home() {
       </View>
       {/* 日記一覧 */}
       <View style={styles.diaryListContainer}>
-        <DiaryList date="6月18日(水)" />
-        <DiaryList date="6月19日(木)" />
+        {diaryLists.map((diaryList) => {
+          return (
+            <DiaryList key={diaryList.date} diaryList={diaryList} />
+          )
+        })}
       </View>
     </View>
   )
