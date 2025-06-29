@@ -1,8 +1,34 @@
-import React from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { Link } from 'expo-router'
+// import { router } from 'expo-router'
+import { auth } from '../../config'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+
 
 export default function SignUp() {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  // const [confirmPassword, setConfirmPassword] = useState('')
+
+
+  // ユーザー新規登録
+  const handleSignUp = (email: string, password: string) => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("userCredential", userCredential.user.uid);
+      // backボタンを表示させないため
+      // router.push("/(tabs)")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+    const errorMessage = error.message;
+    console.log("errorCode", errorCode);
+    console.log("errorMessage", errorMessage);
+      Alert.alert("会員登録処理を失敗しました");
+    })
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.bodyContainer}>
@@ -16,6 +42,9 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="ユーザー名を入力してください"
+            value={username}
+            onChangeText={(text) => setUsername(text)}
+            autoCapitalize="none"
           />
         </View>
         {/* メールアドレス */}
@@ -27,6 +56,10 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="メールアドレスを入力してください"
+            value={email}
+            onChangeText={(text) => setEmail(text)}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
         </View>
         {/* パスワード */}
@@ -38,23 +71,37 @@ export default function SignUp() {
           <TextInput
             style={styles.input}
             placeholder="半角英数字4文字以上で入力してください"
+            value={password}
+            onChangeText={(text) => setPassword(text)}
+            autoCapitalize="none" // 先頭を大文字にしない。
+            secureTextEntry={true}
           />
         </View>
         {/* パスワード確認 */}
-        <View style={styles.inputContainer}>
+        {/* <View style={styles.inputContainer}>
           <Text style={styles.inputLabel}>
             <Text>パスワード確認</Text>
             <Text style={styles.required}> ＊</Text>
           </Text>
           <TextInput
             style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            autoCapitalize="none"
+            secureTextEntry={true} // パスワードを非表示にする。
           />
-        </View>
+        </View> */}
         {/* 登録ボタン */}
-        <TouchableOpacity style={styles.button}>
+        {/* <Button label='Submit' onPress={() => {handleSignUp(email, password)}} /> */}
+        <TouchableOpacity onPress={() => {handleSignUp(email, password)}} style={styles.button}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
-        <Link href="/auth/login" style={styles.loginLinkText}>ログインはこちら</Link>
+
+        <Link href="/auth/login" style={styles.loginLinkText} asChild>
+          <TouchableOpacity>
+            <Text style={styles.loginLinkText}>ログインはこちら</Text>
+          </TouchableOpacity>
+        </Link>
       </View>
     </SafeAreaView>
 
