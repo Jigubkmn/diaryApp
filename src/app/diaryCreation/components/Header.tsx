@@ -10,9 +10,10 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore'
 
 type Props = {
   diaryText: string;
+  selectedFeeling: string | null;
 }
 
-export default function Header({ diaryText }: Props) {
+export default function Header({ diaryText, selectedFeeling }: Props) {
   const today = dayjs();
   const router = useRouter();
   const [date, setDate] = useState(today);
@@ -51,6 +52,7 @@ export default function Header({ diaryText }: Props) {
     addDoc(ref, {
       diaryText: diaryText,
       date: selectedDate,
+      feeling: selectedFeeling,
       updatedAt: Timestamp.fromDate(new Date())
     })
       .then(() => {
