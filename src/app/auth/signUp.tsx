@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { Link } from 'expo-router'
-// import { router } from 'expo-router'
+import { router } from 'expo-router'
+import { auth } from '../../config'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 
 
 export default function SignUp() {
@@ -13,6 +15,16 @@ export default function SignUp() {
   // ユーザー新規登録
   const handleSignUp = (email: string, password: string) => {
     console.log(email, password)
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("userCredential", userCredential.user.uid);
+      // backボタンを表示させないため
+      router.push("/(tabs)")
+    })
+    .catch((error) => {
+      console.log("error", error)
+      Alert.alert("会員登録処理を失敗しました");
+    })
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -78,7 +90,7 @@ export default function SignUp() {
         </View> */}
         {/* 登録ボタン */}
         {/* <Button label='Submit' onPress={() => {handleSignUp(email, password)}} /> */}
-        <TouchableOpacity onPress={() => {handleSignUp("test@test.com", "222222")}} style={styles.button}>
+        <TouchableOpacity onPress={() => {handleSignUp(email, password)}} style={styles.button}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
 
