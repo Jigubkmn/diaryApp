@@ -19,16 +19,17 @@ export default function myPage() {
   useEffect(() => {
     // ユーザー情報取得
     const userId = auth.currentUser?.uid
-    if (userId) {
+    if (userId === null) return;
       const ref = collection(db, `users/${userId}/userInfo`)
       const q = query(ref) // ユーザー情報の参照を取得。
-      onSnapshot(q, (snapshot) => { // snapshot：userInfoのデータを取得。
+      // snapshot：userInfoのデータを取得。
+      const unsubscribe = onSnapshot(q, (snapshot) => {
         // データ1つずつの処理
         snapshot.docs.forEach((doc) => {
           console.log("ユーザー情報", doc.data())
         })
       })
-    }
+    return unsubscribe;
   }, [])
   // ログアウト
   const handleLogout = () => {
