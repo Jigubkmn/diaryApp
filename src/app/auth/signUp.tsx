@@ -1,9 +1,7 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import { Link } from 'expo-router'
-import { router } from 'expo-router'
-import { auth } from '../../config'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+// import { router } from 'expo-router'
 
 
 export default function SignUp() {
@@ -14,19 +12,7 @@ export default function SignUp() {
 
   // ユーザー新規登録
   const handleSignUp = (email: string, password: string) => {
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      console.log("userCredential", userCredential.user.uid);
-      // backボタンを表示させないため
-      router.push("/(tabs)")
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log("errorCode", errorCode);
-    console.log("errorMessage", errorMessage);
-      Alert.alert("会員登録処理を失敗しました");
-    })
+    console.log(email, password)
   }
   return (
     <SafeAreaView style={styles.container}>
