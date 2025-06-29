@@ -11,7 +11,7 @@ const firebaseConfig = {
   storageBucket: process.env.EXPO_PUBLIC_FB_STORAGE_BUCKET,
   messagingSenderId: process.env.EXPO_PUBLIC_FB_MESSAGING_SENDER_ID,
   appId: process.env.EXPO_PUBLIC_FB_APP_ID,
-  measurementId: "G-9F85G993LH"
+  measurementId: process.env.EXPO_PUBLIC_FB_MEASUREMENT_ID
 };
 
 // Firebaseの初期化
