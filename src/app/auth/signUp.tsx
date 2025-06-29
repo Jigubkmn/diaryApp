@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert, ScrollView } from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { Link } from 'expo-router'
 import { router } from 'expo-router'
 import { auth, db } from '../../config'
