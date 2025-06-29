@@ -1,18 +1,23 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import LeftArrowIcon from '../../components/Icon/LeftArrowIcon';
 import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
+import { auth, db } from '../../../config';
+import { collection, addDoc, Timestamp } from 'firebase/firestore'
+
 
 type Props = {
   diaryText: string;
+  selectedFeeling: string | null;
 }
 
-export default function Header({ diaryText }: Props) {
+export default function Header({ diaryText, selectedFeeling }: Props) {
   const today = dayjs();
   const router = useRouter();
-  const [selectedDate, setSelectedDate] = useState(today);
+  const [date, setDate] = useState(today);
+  const [selectedDate, setSelectedDate] = useState("");
 
   // 日付を文字列に変換する関数
   const formatDate = (date: dayjs.Dayjs) => {
@@ -22,21 +27,42 @@ export default function Header({ diaryText }: Props) {
     return `${month}月${day}日(${dayOfWeek})`;
   };
 
+  useEffect(() => {
+    const formattedDate = formatDate(date);
+    setSelectedDate(formattedDate);
+  }, [date])
+
   // 1日前に移動
   const handlePreviousDay = () => {
-    const newDate = selectedDate.subtract(1, 'day');
-    setSelectedDate(newDate);
+    const newDate = date.subtract(1, 'day');
+    setDate(newDate);
   };
 
   // 1日後に移動
   const handleNextDay = () => {
-    const newDate = selectedDate.add(1, 'day');
-    setSelectedDate(newDate);
+    const newDate = date.add(1, 'day');
+    setDate(newDate);
   };
 
-  const handleSave = () => {
-    // 保存処理をここに実装
-    console.log('保存:', diaryText);
+  // 日記を保存
+  const handleSave = (diaryText: string, selectedDate: string) => {
+    const userId = auth.currentUser?.uid;
+    if (userId === null) return;
+    const ref = collection(db, `users/${userId}/diary`)
+    addDoc(ref, {
+      diaryText: diaryText,
+      date: selectedDate,
+      feeling: selectedFeeling,
+      updatedAt: Timestamp.fromDate(new Date())
+    })
+      .then(() => {
+        Alert.alert("日記を保存しました");
+        router.push("/(tabs)")
+      })
+      .catch((error) => {
+        console.log("error", error);
+        Alert.alert("日記の保存に失敗しました");
+      })
   };
 
   const handleBack = () => {
@@ -49,15 +75,16 @@ export default function Header({ diaryText }: Props) {
         <Text style={styles.headerButtonText}>戻る</Text>
       </TouchableOpacity>
       <View style={styles.dateContainer}>
-        <TouchableOpacity onPress={handlePreviousDay} style={styles.iconButton}>
+        <TouchableOpacity onPress={() => {handlePreviousDay()}} style={styles.iconButton}>
           <LeftArrowIcon size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>{formatDate(selectedDate)}</Text>
-        <TouchableOpacity onPress={handleNextDay} style={styles.iconButton}>
+        {/* 日付表示 */}
+        <Text style={styles.headerTitle}>{selectedDate}</Text>
+        <TouchableOpacity onPress={() => {handleNextDay()}} style={styles.iconButton}>
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={handleSave} style={styles.headerSaveButton}>
+      <TouchableOpacity onPress={() => {handleSave(diaryText, selectedDate)}} style={styles.headerSaveButton}>
         <Text style={styles.headerButtonText}>保存</Text>
       </TouchableOpacity>
     </View>

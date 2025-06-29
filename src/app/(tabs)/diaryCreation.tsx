@@ -5,11 +5,12 @@ import Header from '../diaryCreation/components/Header';
 
 export default function DiaryCreation() {
   const [diaryText, setDiaryText] = useState('');
+  const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header diaryText={diaryText} />
-      <Feeling />
+      <Header diaryText={diaryText} selectedFeeling={selectedFeeling} />
+      <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
       <TextInput
         style={styles.textInput}
         multiline

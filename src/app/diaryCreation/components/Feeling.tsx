@@ -1,7 +1,12 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-export default function Feeling() {
+type Props = {
+  selectedFeeling: string | null;
+  setSelectedFeeling: (feeling: string | null) => void;
+}
+
+export default function Feeling({ selectedFeeling, setSelectedFeeling }: Props) {
 
   const feelings = [
     // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -16,7 +21,10 @@ export default function Feeling() {
     { name: '絶不調', image: require('../../../../assets/images/terrible_icon.png') },
   ];
 
-  const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
+  const handleFeelingSelect = (feelingName: string) => {
+    setSelectedFeeling(feelingName);
+  };
+
   return (
     <View>
       <Text style={styles.question}>どのような1日でしたか？</Text>
@@ -25,7 +33,7 @@ export default function Feeling() {
           <TouchableOpacity
             key={feeling.name}
             style={styles.feelingItem}
-            onPress={() => setSelectedFeeling(feeling.name)}
+            onPress={() => handleFeelingSelect(feeling.name)}
           >
             <Image
               source={feeling.image}
