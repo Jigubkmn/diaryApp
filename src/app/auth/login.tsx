@@ -1,8 +1,26 @@
-import React from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import React, { useState } from 'react'
+import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
 import { Link } from 'expo-router'
+import { auth } from '../../config'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { router } from 'expo-router'
 
 export default function Login() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+
+  const handleLogin = (email: string, password: string) => {
+    signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      console.log("userCredential", userCredential.user.uid);
+      router.push("/(tabs)")
+    })
+    .catch((error) => {
+      console.log("error", error)
+      Alert.alert("ログイン処理を失敗しました");
+    })
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.bodyContainer}>
@@ -16,6 +34,10 @@ export default function Login() {
           <TextInput
             style={styles.input}
             placeholder="メールアドレスを入力してください"
+            onChangeText={(text) => setEmail(text)}
+            value={email}
+            autoCapitalize="none"
+            keyboardType="email-address"
           />
         </View>
         {/* パスワード */}
@@ -26,12 +48,15 @@ export default function Login() {
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="半角英数字4文字以上で入力してください"
+            placeholder="半角英数字6文字以上で入力してください"
+            onChangeText={(text) => setPassword(text)}
+            value={password}
+            secureTextEntry={true}
           />
         </View>
         {/* 登録ボタン */}
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>登録する</Text>
+        <TouchableOpacity style={styles.button} onPress={() => {handleLogin(email, password)}}>
+          <Text style={styles.buttonText}>ログインする</Text>
         </TouchableOpacity>
         <Link href="/auth/signUp" style={styles.loginLinkText} asChild>
           <TouchableOpacity>
