@@ -1,11 +1,20 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import { useFocusEffect } from 'expo-router';
 import Feeling from '../diaryCreation/components/Feeling';
 import Header from '../diaryCreation/components/Header';
 
 export default function DiaryCreation() {
   const [diaryText, setDiaryText] = useState('');
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
+
+  // 画面がフォーカスされた時に状態をリセット
+  useFocusEffect(
+    React.useCallback(() => {
+      setDiaryText('');
+      setSelectedFeeling(null);
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
