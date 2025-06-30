@@ -9,7 +9,7 @@ export default function DiaryCreation() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header diaryText={diaryText} selectedFeeling={selectedFeeling} />
+      <Header diaryText={diaryText} selectedFeeling={selectedFeeling} setDiaryText={setDiaryText} setSelectedFeeling={setSelectedFeeling} />
       <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
       <TextInput
         style={styles.textInput}

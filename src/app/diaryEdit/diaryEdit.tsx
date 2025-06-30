@@ -1,20 +1,18 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { Stack } from 'expo-router';
-//import { useLocalSearchParams } from 'expo-router';
 import Feeling from '../diaryCreation/components/Feeling';
 import Header from './components/Header';
 
 export default function DiaryEdit() {
   const [diaryText, setDiaryText] = useState('');
-  // const params = useLocalSearchParams();
-
+  const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <Header diaryText={diaryText} />
-        <Feeling />
+        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
         <TextInput
           style={styles.textInput}
           multiline

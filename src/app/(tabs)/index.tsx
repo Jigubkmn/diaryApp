@@ -41,7 +41,7 @@ export default function home() {
           )
         })}
       </ScrollView>
-      <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryEdit/diaryEdit')}>
+      <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryCreation')}>
         <PlusIcon width={40} height={40} color="white" />
       </TouchableOpacity>
     </View>
