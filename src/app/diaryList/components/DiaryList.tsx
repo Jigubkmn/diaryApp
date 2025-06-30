@@ -2,17 +2,22 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
+import { DiaryType } from '../../../../type/diary';
+import { userImage, noImage } from '../../constants/userImage';
+import { feelings } from '../../constants/feelings';
+import formatTimestampToTime from '../../actions/formatTimestampToTime';
 
-export default function DiaryList({ date }: { date: string }) {
+type Props = {
+  diaryList: DiaryType
+}
+
+export default function DiaryList({ diaryList } :Props) {
   const router = useRouter();
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const userImage = require('../../../../assets/images/user.png');
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const noImage = require('../../../../assets/images/no_image.png');
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const feelingImage = require('../../../../assets/images/excellent_icon.png');
 
-  const diaryText = "今日は上司の佐藤さんに褒められて嬉しい1日だった。何を褒められたかというと";
+  // 体調の画像を取得
+  const feelingImage = feelings.find((feeling) => feeling.name === diaryList.feeling)?.image;
+  // 日記更新日時を時間と分に変換
+  const formattedTime = formatTimestampToTime({diaryList});
 
   const handleDiaryPress = () => {
     // 日記編集画面に遷移（仮のID: 1を使用）
@@ -23,7 +28,7 @@ export default function DiaryList({ date }: { date: string }) {
     <SafeAreaView>
       <TouchableOpacity style={styles.diaryList} onPress={handleDiaryPress} activeOpacity={0.7}>
         <View style={styles.diaryDateContainer}>
-          <Text style={styles.diaryDay}>{date}</Text>
+          <Text style={styles.diaryDay}>{diaryList.date}</Text>
         </View>
         <View style={styles.diaryContentContainer}>
           {/* 日記作成者のアイコン画像 */}
@@ -33,17 +38,17 @@ export default function DiaryList({ date }: { date: string }) {
               style={styles.diaryUserIcon}
             />
           </View>
-          {/* 日記内容 */}
           <View style={styles.diaryContent}>
             <View style={styles.diaryTimeContainer}>
-              <Text style={styles.diaryTime}>21:22</Text>
+              <Text style={styles.diaryTime}>{formattedTime}</Text>
               <Image
                 source={feelingImage}
                 style={styles.feelingImage}
               />
             </View>
+            {/* 日記内容 */}
             <Text style={styles.diaryContentText} numberOfLines={2} ellipsizeMode="tail">
-              {diaryText}
+              {diaryList.diaryText}
             </Text>
           </View>
           {/* 日記投稿画像 */}
