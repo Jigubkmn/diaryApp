@@ -10,3 +10,4 @@ export const feelings = [
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   { name: '絶不調', image: require('../../../assets/images/terrible_icon.png') },
 ];
+export default feelings;
