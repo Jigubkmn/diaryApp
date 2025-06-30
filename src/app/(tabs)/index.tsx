@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import DiaryList from '../diaryList/components/DiaryList'
 import { auth, db } from '../../config';
 import { collection, onSnapshot, query } from 'firebase/firestore';
 import { DiaryType } from '../../../type/diary';
+import PlusIcon from '../components/Icon/PlusIcon';
+import { useRouter } from 'expo-router';
 
 export default function home() {
   const [diaryLists, setDiaryLists] = useState<DiaryType[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const userId = auth.currentUser?.uid;
@@ -31,13 +34,16 @@ export default function home() {
         <Text style={styles.yearMonthText}>2025年6月 ↓</Text>
       </View>
       {/* 日記一覧 */}
-      <View style={styles.diaryListContainer}>
+      <ScrollView style={styles.diaryListContainer}>
         {diaryLists.map((diaryList) => {
           return (
             <DiaryList key={diaryList.date} diaryList={diaryList} />
           )
         })}
-      </View>
+      </ScrollView>
+      <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryEdit/diaryEdit')}>
+        <PlusIcon width={40} height={40} color="white" />
+      </TouchableOpacity>
     </View>
   )
 }
@@ -59,5 +65,22 @@ const styles = StyleSheet.create({
   diaryListContainer: {
     flex: 1,
     backgroundColor: '#F0F0F0',
+  },
+  plusButton: {
+    position: 'absolute',
+    bottom: 40,
+    right: 40,
+    width: 60,
+    height: 60,
+    backgroundColor: '#FFA500',
+    borderRadius: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // ドロップシャドウ
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.25,
+    shadowRadius: 8,
+    elevation: 5,
   },
 })
