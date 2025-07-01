@@ -41,8 +41,9 @@ export default function home() {
           )
         })}
       </ScrollView>
+      {/* 日記作成ボタン */}
       <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryCreation')}>
-        <PlusIcon width={40} height={40} color="white" />
+        <PlusIcon width={30} height={30} color="white" />
       </TouchableOpacity>
     </View>
   )
@@ -68,10 +69,10 @@ const styles = StyleSheet.create({
   },
   plusButton: {
     position: 'absolute',
-    bottom: 40,
-    right: 40,
-    width: 60,
-    height: 60,
+    bottom: 16,
+    right: 16,
+    width: 50,
+    height: 50,
     backgroundColor: '#FFA500',
     borderRadius: 40,
     alignItems: 'center',
