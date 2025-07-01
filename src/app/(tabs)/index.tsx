@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import DiaryList from '../diaryList/components/DiaryList'
 import { auth, db } from '../../config';
-import { collection, onSnapshot, query } from 'firebase/firestore';
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
 import { DiaryType } from '../../../type/diary';
 import PlusIcon from '../components/Icon/PlusIcon';
 import { useRouter } from 'expo-router';
@@ -15,12 +15,12 @@ export default function home() {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
     const ref = collection(db, `users/${userId}/diary`)
-    const q = query(ref)
+    const q = query(ref, orderBy('diaryDate', 'desc'))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteDiaryList: DiaryType[] = []
       snapshot.docs.forEach((doc) => {
         const { diaryText, diaryDate, feeling, updatedAt } = doc.data();
-        remoteDiaryList.push({ diaryText, diaryDate, feeling, updatedAt })
+        remoteDiaryList.push({ id: doc.id, diaryText, diaryDate, feeling, updatedAt })
       })
       setDiaryLists(remoteDiaryList)
     })
@@ -37,7 +37,7 @@ export default function home() {
       <ScrollView style={styles.diaryListContainer}>
         {diaryLists.length > 0 && diaryLists.map((diaryList) => {
           return (
-            <DiaryList key={diaryList.diaryDate.toString()} diaryList={diaryList} />
+            <DiaryList key={diaryList.id} diaryList={diaryList} />
           )
         })}
       </ScrollView>
