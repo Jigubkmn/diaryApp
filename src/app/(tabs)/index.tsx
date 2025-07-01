@@ -26,7 +26,7 @@ export default function home() {
   // ピッカー用の年月リストを生成する
   const generateYearMonths = () => {
     const list = [];
-    // 現在から10年前から10年後まで生成
+
     const startYear = dayjs().year() - 10;
     const endYear = dayjs().year() + 10;
     for (let year = endYear; year >= startYear; year--) {
@@ -34,7 +34,7 @@ export default function home() {
       for (let month = 12; month >= 1; month--) {
         list.push({
           label: `${year}年${month}月`,
-          value: `${year}-${month}` // 'YYYY-M'形式
+          value: `${year}-${month}`
         });
       }
     }
@@ -47,7 +47,7 @@ export default function home() {
     if (userId === null) return;
     // 選択された月の開始日時と終了日時（翌月の開始日時）を計算
     const startOfMonth = displayDate.startOf('month').toDate();
-    const endOfMonth = displayDate.add(1, 'month').startOf('month').toDate(); // 'day'から'next_month'に変更するとより正確
+    const endOfMonth = displayDate.add(1, 'month').startOf('month').toDate();
 
     const ref = collection(db, `users/${userId}/diary`)
     const q = query(ref, orderBy('diaryDate', 'desc'), where('diaryDate', '>=', startOfMonth), where('diaryDate', '<', endOfMonth))
@@ -170,7 +170,6 @@ const styles = StyleSheet.create({
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    // ドロップシャドウ
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
@@ -196,14 +195,14 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#E0E0E0',
   },
-  modalHeaderButton: { // ★追加: 3つのボタンが均等な幅を持つようにする
+  modalHeaderButton: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },
   modalButtonText: {
     fontSize: 16,
-    color: '#007AFF', // iOSの標準的な青色
+    color: '#007AFF',
     fontWeight: 'bold',
   },
   modalConfirmText: {
