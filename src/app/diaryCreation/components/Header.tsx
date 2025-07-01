@@ -11,9 +11,11 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore'
 type Props = {
   diaryText: string;
   selectedFeeling: string | null;
+  setDiaryText: (text: string) => void;
+  setSelectedFeeling: (feeling: string | null) => void;
 }
 
-export default function Header({ diaryText, selectedFeeling }: Props) {
+export default function Header({ diaryText, selectedFeeling, setDiaryText, setSelectedFeeling }: Props) {
   const today = dayjs();
   const router = useRouter();
   const [date, setDate] = useState(today);
@@ -57,6 +59,8 @@ export default function Header({ diaryText, selectedFeeling }: Props) {
     })
       .then(() => {
         Alert.alert("日記を保存しました");
+        setDiaryText("");
+        setSelectedFeeling(null);
         router.push("/(tabs)")
       })
       .catch((error) => {
@@ -65,15 +69,11 @@ export default function Header({ diaryText, selectedFeeling }: Props) {
       })
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
-        <Text style={styles.headerButtonText}>戻る</Text>
-      </TouchableOpacity>
+      <View style={styles.headerLeft}>
+        {/* 左側のスペーサー - 右側のアイコンと同じ幅を確保 */}
+      </View>
       <View style={styles.dateContainer}>
         <TouchableOpacity onPress={() => {handlePreviousDay()}} style={styles.iconButton}>
           <LeftArrowIcon size={24} color="black" />
@@ -102,6 +102,9 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#ffffff',
   },
+  headerLeft: {
+    width: 80, // 右側のアイコン2つ分の幅（24px + 24px + 8px margin + 余裕）
+  },
   headerButton: {
     padding: 8,
   },
@@ -127,7 +130,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   headerSaveButton: {
-    marginLeft: 'auto',
+    width: 80, // 左側と同じ幅を確保
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
