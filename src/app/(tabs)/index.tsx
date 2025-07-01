@@ -19,8 +19,8 @@ export default function home() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteDiaryList: DiaryType[] = []
       snapshot.docs.forEach((doc) => {
-        const { diaryText, date, feeling, updatedAt } = doc.data();
-        remoteDiaryList.push({ diaryText, date, feeling, updatedAt })
+        const { diaryText, diaryDate, feeling, updatedAt } = doc.data();
+        remoteDiaryList.push({ diaryText, diaryDate, feeling, updatedAt })
       })
       setDiaryLists(remoteDiaryList)
     })
@@ -35,9 +35,9 @@ export default function home() {
       </View>
       {/* 日記一覧 */}
       <ScrollView style={styles.diaryListContainer}>
-        {diaryLists.map((diaryList) => {
+        {diaryLists.length > 0 && diaryLists.map((diaryList) => {
           return (
-            <DiaryList key={diaryList.date} diaryList={diaryList} />
+            <DiaryList key={diaryList.diaryDate.toString()} diaryList={diaryList} />
           )
         })}
       </ScrollView>

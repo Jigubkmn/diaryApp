@@ -1,6 +1,8 @@
+import dayjs from 'dayjs';
+
 export type DiaryType = {
   diaryText: string;
-  date: string;
+  diaryDate: dayjs.Dayjs;
   feeling: string;
   updatedAt: Date;
 }

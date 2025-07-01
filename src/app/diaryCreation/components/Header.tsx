@@ -6,6 +6,7 @@ import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
 import { auth, db } from '../../../config';
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import formatDate from '../../actions/formatData';
 
 
 type Props = {
@@ -21,15 +22,8 @@ export default function Header({ diaryText, selectedFeeling, setDiaryText, setSe
   const [date, setDate] = useState(today);
   const [selectedDate, setSelectedDate] = useState("");
 
-  // 日付を文字列に変換する関数
-  const formatDate = (date: dayjs.Dayjs) => {
-    const month = date.month() + 1; // dayjsは0ベースなので+1
-    const day = date.date();
-    const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][date.day()];
-    return `${month}月${day}日(${dayOfWeek})`;
-  };
-
   useEffect(() => {
+  // 日付を文字列に変換する関数：◯月◯日(◯)
     const formattedDate = formatDate(date);
     setSelectedDate(formattedDate);
   }, [date])
@@ -47,13 +41,13 @@ export default function Header({ diaryText, selectedFeeling, setDiaryText, setSe
   };
 
   // 日記を保存
-  const handleSave = (diaryText: string, selectedDate: string) => {
+  const handleSave = (diaryText: string, date: dayjs.Dayjs) => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
     const ref = collection(db, `users/${userId}/diary`)
     addDoc(ref, {
       diaryText: diaryText,
-      date: selectedDate,
+      diaryDate: Timestamp.fromDate(date.toDate()),
       feeling: selectedFeeling,
       updatedAt: Timestamp.fromDate(new Date())
     })
@@ -84,7 +78,7 @@ export default function Header({ diaryText, selectedFeeling, setDiaryText, setSe
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => {handleSave(diaryText, selectedDate)}} style={styles.headerSaveButton}>
+      <TouchableOpacity onPress={() => {handleSave(diaryText, date)}} style={styles.headerSaveButton}>
         <Text style={styles.headerButtonText}>保存</Text>
       </TouchableOpacity>
     </View>

@@ -17,6 +17,7 @@ export default function Header({ diaryText }: Props) {
   const [selectedDate, setSelectedDate] = useState(today);
 
   // 日付を文字列に変換する関数
+  // TODO 共通関数を使用する
   const formatDate = (date: dayjs.Dayjs) => {
     const month = date.month() + 1; // dayjsは0ベースなので+1
     const day = date.date();
