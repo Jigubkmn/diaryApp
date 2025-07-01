@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import DiaryList from '../diaryList/components/DiaryList'
 import { auth, db } from '../../config';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { collection, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import { DiaryType } from '../../../type/diary';
 import PlusIcon from '../components/Icon/PlusIcon';
 import { useRouter } from 'expo-router';
@@ -45,8 +45,12 @@ export default function home() {
   useEffect(() => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
+    // 選択された月の開始日時と終了日時（翌月の開始日時）を計算
+    const startOfMonth = displayDate.startOf('month').toDate();
+    const endOfMonth = displayDate.add(1, 'month').startOf('month').toDate(); // 'day'から'next_month'に変更するとより正確
+
     const ref = collection(db, `users/${userId}/diary`)
-    const q = query(ref, orderBy('diaryDate', 'desc'))
+    const q = query(ref, orderBy('diaryDate', 'desc'), where('diaryDate', '>=', startOfMonth), where('diaryDate', '<', endOfMonth))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteDiaryList: DiaryType[] = []
       snapshot.docs.forEach((doc) => {
@@ -56,7 +60,7 @@ export default function home() {
       setDiaryLists(remoteDiaryList)
     })
     return unsubscribe;
-  }, [])
+  }, [displayDate])
 
   const handleYearMonthPress = () => {
     // モーダルを開くときに、現在の表示年月をピッカーの初期値に設定する
@@ -93,11 +97,13 @@ export default function home() {
       </View>
       {/* 日記一覧 */}
       <ScrollView style={styles.diaryListContainer}>
-        {diaryLists.length > 0 && diaryLists.map((diaryList) => {
+        {diaryLists.length > 0 ? diaryLists.map((diaryList) => {
           return (
             <DiaryList key={diaryList.id} diaryList={diaryList} />
           )
-        })}
+        }):
+        <Text style={styles.noDiaryText}>日記がありません</Text>
+        }
       </ScrollView>
       {/* 日記作成ボタン */}
       <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryCreation')}>
@@ -202,5 +208,11 @@ const styles = StyleSheet.create({
   },
   modalConfirmText: {
     fontWeight: 'bold',
+  },
+  noDiaryText: {
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 16,
+    color: '#888888',
   },
 })
