@@ -68,7 +68,10 @@ export default function home() {
         }
       </ScrollView>
       {/* 日記作成ボタン */}
-      <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryCreation')}>
+      <TouchableOpacity style={styles.plusButton} onPress={() => router.push({
+          pathname: '/(tabs)/diaryCreation',
+          params: { isShowBackButton: 'true' }
+        })}>
         <PlusIcon width={30} height={30} color="white" />
       </TouchableOpacity>
       {/* 年月選択モーダル */}

@@ -1,10 +1,13 @@
 import React from 'react'
-import { Tabs } from 'expo-router'
+import { Tabs, useRouter } from 'expo-router'
 import UserIcon from '../components/Icon/UserIcon'
 import HomeIcon from '../components/Icon/HomeIcon'
 import DiaryCreationIcon from '../components/Icon/DiaryCreationIcon'
 
 export default function TabLayout() {
+
+  const router = useRouter();
+
   return (
     <Tabs
       screenOptions={{
@@ -40,6 +43,17 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size }) => (
             <DiaryCreationIcon size={size} color={color} />
           ),
+        }}
+        listeners={{
+          tabPress: (e) => {
+            // デフォルトの画面遷移をキャンセル
+            e.preventDefault();
+            // パラメータを付けて自分で画面遷移を命令する
+            router.push({
+              pathname: '/diaryCreation',
+              params: { isShowBackButton: 'false' }
+            });
+          },
         }}
       />
       <Tabs.Screen

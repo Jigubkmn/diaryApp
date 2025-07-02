@@ -14,9 +14,16 @@ type Props = {
   selectedFeeling: string | null;
   setDiaryText: (text: string) => void;
   setSelectedFeeling: (feeling: string | null) => void;
+  isShowBackButton: boolean;
 }
 
-export default function Header({ diaryText, selectedFeeling, setDiaryText, setSelectedFeeling }: Props) {
+export default function Header({
+  diaryText,
+  selectedFeeling,
+  setDiaryText,
+  setSelectedFeeling,
+  isShowBackButton
+}: Props) {
   const today = dayjs();
   const router = useRouter();
   const [date, setDate] = useState(today);
@@ -38,6 +45,11 @@ export default function Header({ diaryText, selectedFeeling, setDiaryText, setSe
   const handleNextDay = () => {
     const newDate = date.add(1, 'day');
     setDate(newDate);
+  };
+
+  // 戻るボタンの処理
+  const handleBack = () => {
+    router.back();
   };
 
   // 日記を保存
@@ -65,9 +77,15 @@ export default function Header({ diaryText, selectedFeeling, setDiaryText, setSe
 
   return (
     <View style={styles.header}>
-      <View style={styles.headerLeft}>
-        {/* 左側のスペーサー - 右側のアイコンと同じ幅を確保 */}
-      </View>
+      {isShowBackButton ? (
+        <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
+          <Text style={styles.headerButtonText}>戻る</Text>
+        </TouchableOpacity>
+      ) : (
+        <View style={styles.headerLeft}>
+          {/* 左側のスペーサー - タブからアクセスした場合は空のスペース */}
+        </View>
+      )}
       <View style={styles.dateContainer}>
         <TouchableOpacity onPress={() => {handlePreviousDay()}} style={styles.iconButton}>
           <LeftArrowIcon size={24} color="black" />
@@ -96,8 +114,13 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#ffffff',
   },
+  headerBackButton: {
+    width: 80,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+  },
   headerLeft: {
-    width: 80, // 右側のアイコン2つ分の幅（24px + 24px + 8px margin + 余裕）
+    width: 80,
   },
   headerButton: {
     padding: 8,
@@ -124,7 +147,7 @@ const styles = StyleSheet.create({
     padding: 0,
   },
   headerSaveButton: {
-    width: 80, // 左側と同じ幅を確保
+    width: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
