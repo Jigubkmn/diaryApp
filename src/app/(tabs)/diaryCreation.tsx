@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import Feeling from '../diaryCreation/components/Feeling';
 import Header from '../diaryCreation/components/Header';
 
 export default function DiaryCreation() {
+  const { isShowBackButton } = useLocalSearchParams<{ isShowBackButton?: string }>();
   const [diaryText, setDiaryText] = useState('');
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
 
@@ -18,7 +19,13 @@ export default function DiaryCreation() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header diaryText={diaryText} selectedFeeling={selectedFeeling} setDiaryText={setDiaryText} setSelectedFeeling={setSelectedFeeling} />
+      <Header
+        diaryText={diaryText}
+        selectedFeeling={selectedFeeling}
+        setDiaryText={setDiaryText}
+        setSelectedFeeling={setSelectedFeeling}
+        isShowBackButton={isShowBackButton === 'true'}
+      />
       <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
       <TextInput
         style={styles.textInput}

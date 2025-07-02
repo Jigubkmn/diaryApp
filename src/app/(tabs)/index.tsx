@@ -2,48 +2,86 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
 import DiaryList from '../diaryList/components/DiaryList'
 import { auth, db } from '../../config';
-import { collection, onSnapshot, query } from 'firebase/firestore';
+import { collection, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import { DiaryType } from '../../../type/diary';
 import PlusIcon from '../components/Icon/PlusIcon';
 import { useRouter } from 'expo-router';
+import dayjs from 'dayjs';
+import YearMonthSelectModal from '../diaryList/components/YearMonthSelectModal';
 
 export default function home() {
   const [diaryLists, setDiaryLists] = useState<DiaryType[]>([]);
   const router = useRouter();
 
+  // モーダルの表示状態を管理するstate
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  // 表示用の年月を管理するstate
+  const [displayDate, setDisplayDate] = useState(dayjs());
+
+  // 選択された年月を'YYYY-M'形式の文字列で保持するstate
+  const [selectedYearMonth, setSelectedYearMonth] = useState(displayDate.format('YYYY-M'));
+
+
   useEffect(() => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
+    // 選択された月の開始日時と終了日時（翌月の開始日時）を計算
+    const startOfMonth = displayDate.startOf('month').toDate();
+    const endOfMonth = displayDate.add(1, 'month').startOf('month').toDate();
+
     const ref = collection(db, `users/${userId}/diary`)
-    const q = query(ref)
+    const q = query(ref, orderBy('diaryDate', 'desc'), where('diaryDate', '>=', startOfMonth), where('diaryDate', '<', endOfMonth))
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteDiaryList: DiaryType[] = []
       snapshot.docs.forEach((doc) => {
-        const { diaryText, date, feeling, updatedAt } = doc.data();
-        remoteDiaryList.push({ diaryText, date, feeling, updatedAt })
+        const { diaryText, diaryDate, feeling, updatedAt } = doc.data();
+        remoteDiaryList.push({ id: doc.id, diaryText, diaryDate, feeling, updatedAt })
       })
       setDiaryLists(remoteDiaryList)
     })
     return unsubscribe;
-  }, [])
+  }, [displayDate])
+
+  const handleYearMonthPress = () => {
+    // モーダルを開くときに、現在の表示年月をピッカーの初期値に設定する
+    setSelectedYearMonth(displayDate.format('YYYY-M'));
+    setModalVisible(true);
+  }
 
   return (
     <View style={styles.container}>
       {/* 年月 */}
       <View style={styles.yearMonthContainer}>
-        <Text style={styles.yearMonthText}>2025年6月 ↓</Text>
+        <TouchableOpacity onPress={handleYearMonthPress}>
+          <Text style={styles.yearMonthText}>{displayDate.format('YYYY年M月')} ↓</Text>
+        </TouchableOpacity>
       </View>
       {/* 日記一覧 */}
       <ScrollView style={styles.diaryListContainer}>
-        {diaryLists.map((diaryList) => {
+        {diaryLists.length > 0 ? diaryLists.map((diaryList) => {
           return (
-            <DiaryList key={diaryList.date} diaryList={diaryList} />
+            <DiaryList key={diaryList.id} diaryList={diaryList} />
           )
-        })}
+        }):
+        <Text style={styles.noDiaryText}>日記がありません</Text>
+        }
       </ScrollView>
-      <TouchableOpacity style={styles.plusButton} onPress={() => router.push('/diaryCreation')}>
-        <PlusIcon width={40} height={40} color="white" />
+      {/* 日記作成ボタン */}
+      <TouchableOpacity style={styles.plusButton} onPress={() => router.push({
+          pathname: '/(tabs)/diaryCreation',
+          params: { isShowBackButton: 'true' }
+        })}>
+        <PlusIcon width={30} height={30} color="white" />
       </TouchableOpacity>
+      {/* 年月選択モーダル */}
+      <YearMonthSelectModal
+        setModalVisible={setModalVisible}
+        setDisplayDate={setDisplayDate}
+        selectedYearMonth={selectedYearMonth}
+        setSelectedYearMonth={setSelectedYearMonth}
+        isModalVisible={isModalVisible}
+      />
     </View>
   )
 }
@@ -53,7 +91,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   yearMonthContainer: {
-    // View用のスタイル（必要に応じて）
     backgroundColor: '#ffffff',
   },
   yearMonthText: {
@@ -68,19 +105,24 @@ const styles = StyleSheet.create({
   },
   plusButton: {
     position: 'absolute',
-    bottom: 40,
-    right: 40,
-    width: 60,
-    height: 60,
+    bottom: 16,
+    right: 16,
+    width: 50,
+    height: 50,
     backgroundColor: '#FFA500',
     borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
-    // ドロップシャドウ
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 8 },
     shadowOpacity: 0.25,
     shadowRadius: 8,
     elevation: 5,
+  },
+  noDiaryText: {
+    textAlign: 'center',
+    marginTop: 40,
+    fontSize: 16,
+    color: '#888888',
   },
 })
