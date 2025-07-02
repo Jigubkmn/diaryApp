@@ -75,9 +75,9 @@ export default function home() {
       <YearMonthSelectModal
         setModalVisible={setModalVisible}
         setDisplayDate={setDisplayDate}
+        selectedYearMonth={selectedYearMonth}
         setSelectedYearMonth={setSelectedYearMonth}
         isModalVisible={isModalVisible}
-        selectedYearMonth={selectedYearMonth}
       />
     </View>
   )
