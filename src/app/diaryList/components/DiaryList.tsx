@@ -67,7 +67,7 @@ export default function DiaryList({ diaryList } :Props) {
           {/* 日記投稿画像 */}
           <View style={styles.diaryImageContainer}>
             <Image
-              source={noImage}
+              source={diaryList.selectedImage ? { uri: diaryList.selectedImage } : noImage}
               style={styles.diaryImage}
             />
           </View>

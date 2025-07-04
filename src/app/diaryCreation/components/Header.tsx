@@ -15,6 +15,7 @@ type Props = {
   setDiaryText: (text: string) => void;
   setSelectedFeeling: (feeling: string | null) => void;
   isShowBackButton: boolean;
+  selectedImage: string | null;
 }
 
 export default function Header({
@@ -22,7 +23,8 @@ export default function Header({
   selectedFeeling,
   setDiaryText,
   setSelectedFeeling,
-  isShowBackButton
+  isShowBackButton,
+  selectedImage
 }: Props) {
   const today = dayjs();
   const router = useRouter();
@@ -52,16 +54,30 @@ export default function Header({
     router.back();
   };
 
+  // 必須項目が全て入力されているかチェック
+  const isFormValid = () => {
+    return diaryText && diaryText.trim() !== '' && date && selectedFeeling;
+  };
+
   // 日記を保存
-  const handleSave = (diaryText: string, date: dayjs.Dayjs) => {
+  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null, selectedImage: string | null) => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
+    if (!selectedFeeling) {
+      Alert.alert("現在の感情を選択してください");
+      return;
+    }
+    if (!diaryText || diaryText.trim() === '') {
+      Alert.alert("日記内容を入力してください");
+      return;
+    }
     const ref = collection(db, `users/${userId}/diary`)
     addDoc(ref, {
       diaryText: diaryText,
       diaryDate: Timestamp.fromDate(date.toDate()),
       feeling: selectedFeeling,
-      updatedAt: Timestamp.fromDate(new Date())
+      updatedAt: Timestamp.fromDate(new Date()),
+      selectedImage: selectedImage
     })
       .then(() => {
         Alert.alert("日記を保存しました");
@@ -96,8 +112,12 @@ export default function Header({
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => {handleSave(diaryText, date)}} style={styles.headerSaveButton}>
-        <Text style={styles.headerButtonText}>保存</Text>
+      <TouchableOpacity
+        onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
+        style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
+        disabled={!isFormValid()}
+      >
+        <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>保存</Text>
       </TouchableOpacity>
     </View>
   )
@@ -115,12 +135,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   headerBackButton: {
-    width: 80,
+    width: 30,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   headerLeft: {
-    width: 80,
+    width: 30,
   },
   headerButton: {
     padding: 8,
@@ -150,5 +170,11 @@ const styles = StyleSheet.create({
     width: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  disabledButtonText: {
+    color: '#999999',
   },
 });
