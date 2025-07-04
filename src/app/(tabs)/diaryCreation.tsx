@@ -81,9 +81,7 @@ export default function DiaryCreation() {
           <View style={styles.imageContainer}>
             <View style={styles.imageTitleContainer}>
               <Text style={styles.textInputTitle}>今日の画像</Text>
-              {/* <AddImageIcon size={48} color="#CCCCCC" /> */}
               <TouchableOpacity
-                // style={styles.removeImageButton}
                 onPress={() => setSelectedImage(null)}
               >
                 <XIcon size={24} color="#000000" />
@@ -127,25 +125,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
   },
-  textInputTitle: {
-    fontSize: 16,
-    lineHeight: 30,
-    color: '#000000',
-    marginLeft: 8,
-    marginVertical: 8,
-  },
   textInput: {
     height: 250,
     padding: 16,
     fontSize: 16,
     backgroundColor: '#F8F8F8',
     borderRadius: 8,
-  },
-  selectedImageContainer: {
-    backgroundColor: '#F8F8F8',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 200,
   },
   imageContainer: {
     paddingHorizontal: 16,
@@ -157,6 +142,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  textInputTitle: {
+    fontSize: 16,
+    lineHeight: 30,
+    color: '#000000',
+    marginLeft: 8,
+    marginVertical: 8,
+  },
+  selectedImageContainer: {
+    backgroundColor: '#F8F8F8',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 200,
   },
   selectedImage: {
     width: '100%',
