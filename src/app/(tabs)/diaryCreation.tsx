@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text } from 'react-native';
+import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import Feeling from '../diaryCreation/components/Feeling';
@@ -36,7 +36,6 @@ export default function DiaryCreation() {
       // 画像選択を実行
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ['images'],
-        allowsEditing: true, // 画像編集を許可
         aspect: [4, 3],
         quality: 0.8,
       });
@@ -49,6 +48,10 @@ export default function DiaryCreation() {
       console.error('画像選択エラー:', error);
       Alert.alert('エラー', '画像の選択に失敗しました');
     }
+  };
+
+  const handleImageDelete = () => {
+    setSelectedImage(null);
   };
 
   return (
@@ -64,7 +67,7 @@ export default function DiaryCreation() {
           />
           <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
         </View>
-        <View style={styles.contentArea}>
+        <ScrollView style={styles.contentArea}>
           {/* 今日の出来事 */}
           <View style={styles.textInputContainer}>
             <Text style={styles.textInputTitle}>今日の出来事</Text>
@@ -82,24 +85,24 @@ export default function DiaryCreation() {
             <View style={styles.imageTitleContainer}>
               <Text style={styles.textInputTitle}>今日の画像</Text>
               <TouchableOpacity
-                onPress={() => setSelectedImage(null)}
+                onPress={handleImageDelete}
               >
                 <XIcon size={24} color="#000000" />
               </TouchableOpacity>
             </View>
             {/* 画像表示部分 */}
-            <View style={styles.selectedImageContainer}>
+            <TouchableOpacity style={styles.selectedImageContainer} onPress={handleImageSelect}>
                 {selectedImage ? (
                   <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
                 ) : (
                   <View style={styles.addImageContainer}>
-                    <AddImageIcon size={48} color="#000000" />
+                      <AddImageIcon size={48} color="#000000" />
                     <Text style={styles.addImageText}>今日の写真を選択して下さい</Text>
                   </View>
                 )}
-            </View>
+            </TouchableOpacity>
           </View>
-        </View>
+        </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
@@ -154,11 +157,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#F8F8F8',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 200,
+    height: 300,
   },
   selectedImage: {
     width: '100%',
-    height: 200,
+    height: '100%',
     borderRadius: 8,
   },
   addImageContainer: {
