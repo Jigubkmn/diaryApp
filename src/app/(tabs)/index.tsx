@@ -35,8 +35,8 @@ export default function home() {
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const remoteDiaryList: DiaryType[] = []
       snapshot.docs.forEach((doc) => {
-        const { diaryText, diaryDate, feeling, updatedAt } = doc.data();
-        remoteDiaryList.push({ id: doc.id, diaryText, diaryDate, feeling, updatedAt })
+        const { diaryText, diaryDate, feeling, updatedAt, selectedImage } = doc.data();
+        remoteDiaryList.push({ id: doc.id, diaryText, diaryDate, feeling, updatedAt, selectedImage })
       })
       setDiaryLists(remoteDiaryList)
     })

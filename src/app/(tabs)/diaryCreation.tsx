@@ -13,8 +13,6 @@ export default function DiaryCreation() {
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
-  console.log('selectedImage', selectedImage);
-
   // 画面がフォーカスされた時に状態をリセット
   useFocusEffect(
     React.useCallback(() => {
