@@ -135,12 +135,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   headerBackButton: {
-    width: 80,
+    width: 30,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
   headerLeft: {
-    width: 80,
+    width: 30,
   },
   headerButton: {
     padding: 8,
