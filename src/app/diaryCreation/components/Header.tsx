@@ -52,10 +52,23 @@ export default function Header({
     router.back();
   };
 
+  // 必須項目が全て入力されているかチェック
+  const isFormValid = () => {
+    return diaryText && diaryText.trim() !== '' && date && selectedFeeling;
+  };
+
   // 日記を保存
-  const handleSave = (diaryText: string, date: dayjs.Dayjs) => {
+  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null) => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
+    if (!selectedFeeling) {
+      Alert.alert("現在の感情を選択してください");
+      return;
+    }
+    if (!diaryText || diaryText.trim() === '') {
+      Alert.alert("日記内容を入力してください");
+      return;
+    }
     const ref = collection(db, `users/${userId}/diary`)
     addDoc(ref, {
       diaryText: diaryText,
@@ -96,8 +109,12 @@ export default function Header({
           <RightArrowIcon size={24} color="black" />
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => {handleSave(diaryText, date)}} style={styles.headerSaveButton}>
-        <Text style={styles.headerButtonText}>保存</Text>
+      <TouchableOpacity
+        onPress={() => {handleSave(diaryText, date, selectedFeeling)}}
+        style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
+        disabled={!isFormValid()}
+      >
+        <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>保存</Text>
       </TouchableOpacity>
     </View>
   )
@@ -150,5 +167,11 @@ const styles = StyleSheet.create({
     width: 80,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
+  },
+  disabledButton: {
+    opacity: 0.5,
+  },
+  disabledButtonText: {
+    color: '#999999',
   },
 });
