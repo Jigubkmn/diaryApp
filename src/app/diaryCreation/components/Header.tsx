@@ -15,6 +15,7 @@ type Props = {
   setDiaryText: (text: string) => void;
   setSelectedFeeling: (feeling: string | null) => void;
   isShowBackButton: boolean;
+  selectedImage: string | null;
 }
 
 export default function Header({
@@ -22,7 +23,8 @@ export default function Header({
   selectedFeeling,
   setDiaryText,
   setSelectedFeeling,
-  isShowBackButton
+  isShowBackButton,
+  selectedImage
 }: Props) {
   const today = dayjs();
   const router = useRouter();
@@ -58,7 +60,7 @@ export default function Header({
   };
 
   // 日記を保存
-  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null) => {
+  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null, selectedImage: string | null) => {
     const userId = auth.currentUser?.uid;
     if (userId === null) return;
     if (!selectedFeeling) {
@@ -74,7 +76,8 @@ export default function Header({
       diaryText: diaryText,
       diaryDate: Timestamp.fromDate(date.toDate()),
       feeling: selectedFeeling,
-      updatedAt: Timestamp.fromDate(new Date())
+      updatedAt: Timestamp.fromDate(new Date()),
+      selectedImage: selectedImage
     })
       .then(() => {
         Alert.alert("日記を保存しました");
@@ -110,7 +113,7 @@ export default function Header({
         </TouchableOpacity>
       </View>
       <TouchableOpacity
-        onPress={() => {handleSave(diaryText, date, selectedFeeling)}}
+        onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
         style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
         disabled={!isFormValid()}
       >
