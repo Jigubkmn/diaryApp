@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 import { auth, db } from '../../../config';
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import formatDate from '../../actions/formatData';
-import handleBack from '../../actions/handleBack';
 import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
+import BackButton from '../../components/button/BackButton';
 
 
 type Props = {
@@ -75,9 +75,7 @@ export default function Header({
   return (
     <View style={styles.header}>
       {/* ヘッダー左側 */}
-      <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
-        <Text style={styles.headerButtonText}>戻る</Text>
-      </TouchableOpacity>
+      <BackButton />
       {/* 日付タイトル */}
       <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} />
       {/* ヘッダー右側 */}
@@ -102,11 +100,6 @@ const styles = StyleSheet.create({
     borderBottomColor: '#E0E0E0',
     height: 60,
     backgroundColor: '#ffffff',
-  },
-  headerBackButton: {
-    width: 30,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
   },
   headerButtonText: {
     fontSize: 16,
