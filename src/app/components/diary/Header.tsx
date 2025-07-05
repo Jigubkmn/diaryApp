@@ -76,6 +76,7 @@ export default function Header({
 
   return (
     <View style={styles.header}>
+      {/* ヘッダー左側 */}
       {isShowBackButton ? (
         <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
           <Text style={styles.headerButtonText}>戻る</Text>
@@ -87,6 +88,7 @@ export default function Header({
       )}
       {/* 日付タイトル */}
       <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} />
+      {/* ヘッダー右側 */}
       <TouchableOpacity
         onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
         style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}

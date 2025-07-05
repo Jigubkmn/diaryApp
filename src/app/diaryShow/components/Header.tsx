@@ -14,7 +14,6 @@ type Props = {
   selectedFeeling: string | null;
   setDiaryText: (text: string) => void;
   setSelectedFeeling: (feeling: string | null) => void;
-  isShowBackButton: boolean;
   selectedImage: string | null;
 }
 
@@ -23,7 +22,6 @@ export default function Header({
   selectedFeeling,
   setDiaryText,
   setSelectedFeeling,
-  isShowBackButton,
   selectedImage
 }: Props) {
   const today = dayjs();
@@ -76,17 +74,13 @@ export default function Header({
 
   return (
     <View style={styles.header}>
-      {isShowBackButton ? (
-        <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
-          <Text style={styles.headerButtonText}>戻る</Text>
-        </TouchableOpacity>
-      ) : (
-        <View style={styles.headerLeft}>
-          {/* 左側のスペーサー - タブからアクセスした場合は空のスペース */}
-        </View>
-      )}
+      {/* ヘッダー左側 */}
+      <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
+        <Text style={styles.headerButtonText}>戻る</Text>
+      </TouchableOpacity>
       {/* 日付タイトル */}
       <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} />
+      {/* ヘッダー右側 */}
       <TouchableOpacity
         onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
         style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
@@ -113,12 +107,6 @@ const styles = StyleSheet.create({
     width: 30,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-  },
-  headerLeft: {
-    width: 30,
-  },
-  headerButton: {
-    padding: 8,
   },
   headerButtonText: {
     fontSize: 16,

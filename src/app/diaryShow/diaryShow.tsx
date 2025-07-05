@@ -62,7 +62,6 @@ export default function diaryShow() {
             selectedFeeling={selectedDiaryInfo?.feeling || null}
             setDiaryText={() => {}}
             setSelectedFeeling={() => {}}
-            isShowBackButton={true}
             selectedImage={selectedDiaryInfo?.selectedImage || null}
           />
           <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
