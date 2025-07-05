@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
 import { Stack } from 'expo-router';
-import Feeling from '../diaryCreation/components/Feeling';
+import Feeling from '../components/diary/Feeling';
 import Header from './components/Header';
 
 export default function DiaryEdit() {
@@ -12,7 +12,7 @@ export default function DiaryEdit() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <Header diaryText={diaryText} />
-        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
+        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={true} />
         <TextInput
           style={styles.textInput}
           multiline

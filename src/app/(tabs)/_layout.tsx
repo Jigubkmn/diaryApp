@@ -51,7 +51,10 @@ export default function TabLayout() {
             // パラメータを付けて自分で画面遷移を命令する
             router.push({
               pathname: '/diaryCreation',
-              params: { isShowBackButton: 'false' }
+              params: {
+                isShowBackButton: 'false',
+                isTouchFeelingButton: 'true'
+              }
             });
           },
         }}
