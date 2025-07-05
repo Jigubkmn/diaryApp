@@ -12,7 +12,7 @@ export default function DiaryEdit() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <Header diaryText={diaryText} />
-        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
+        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={true} />
         <TextInput
           style={styles.textInput}
           multiline
