@@ -52,15 +52,6 @@ export default function Header({
           <DeleteIcon size={24} color="#FFA500" />
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        onPress={() => router.push({
-          pathname: '/diaryEdit/diaryEdit',
-          params: { id: id }
-        })}
-        style={styles.headerEditButton}
-      >
-        <Text style={styles.headerButtonText}>編集</Text>
-      </TouchableOpacity> */}
     </View>
   )
 }
