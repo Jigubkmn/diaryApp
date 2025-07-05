@@ -72,11 +72,13 @@ export default function diaryShow() {
               <Text style={styles.textInputTitle}>今日の画像</Text>
             </View>
             {/* 画像表示部分 */}
-            {selectedDiaryInfo.selectedImage && (
-              <View style={styles.selectedImageContainer}>
+            <View style={styles.selectedImageContainer}>
+              {selectedDiaryInfo.selectedImage ? (
                 <Image source={{ uri: selectedDiaryInfo.selectedImage }} style={styles.selectedImage} />
-              </View>
-            )}
+              ) : (
+                <Text style={styles.ImageText}>写真を選択していません</Text>
+              )}
+            </View>
           </View>
           </ScrollView>
         )}
@@ -138,4 +140,9 @@ const styles = StyleSheet.create({
     height: '100%',
     borderRadius: 8,
   },
+  ImageText: {
+    fontSize: 16,
+    lineHeight: 30,
+    color: '#000000',
+  }
 });
