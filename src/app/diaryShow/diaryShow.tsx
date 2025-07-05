@@ -3,9 +3,10 @@ import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView } from 'react-n
 import Feeling from '../components/diary/Feeling';
 import { DiaryType } from '../../../type/diary';
 import { auth, db } from '../../config';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import Header from './components/Header';
+import handleBack from '../actions/handleBack';
 
 
 export default function diaryShow() {
@@ -49,12 +50,24 @@ export default function diaryShow() {
     setSelectedFeeling(feelingName);
   }, [selectedDiaryInfo?.feeling]);
 
+  const handleDelete = async () => {
+    if (!userId || !diaryId) return;
+    try {
+      const diaryRef = doc(db, `users/${userId}/diary/${diaryId}`);
+      await deleteDoc(diaryRef);
+      console.log('日記を削除しました');
+      handleBack()
+    } catch (error) {
+      console.error('日記の削除に失敗しました:', error);
+    }
+  };
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerArea}>
-          <Header id={selectedDiaryInfo?.id || ''}/>
+          <Header diaryId={selectedDiaryInfo?.id || ''} onDelete={handleDelete} />
           <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
         {selectedDiaryInfo && (

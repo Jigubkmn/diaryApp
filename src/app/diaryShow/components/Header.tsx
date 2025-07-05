@@ -9,16 +9,14 @@ import EditIcon from '../../components/Icon/EditIcon';
 import DeleteIcon from '../../components/Icon/DeleteIcon';
 
 type Props = {
-  id: string;
+  diaryId: string;
+  onDelete?: () => void;
 }
 
-export default function Header({
-  id,
-}: Props) {
-  const today = dayjs();
+export default function Header({ diaryId, onDelete }: Props) {
   const router = useRouter();
-  const [date, setDate] = useState(today);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [date, setDate] = useState(dayjs());
+  const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
   // 日付を文字列に変換する関数：◯月◯日(◯)
@@ -29,12 +27,14 @@ export default function Header({
   const handleEdit = () => {
     router.push({
       pathname: '/diaryEdit/diaryEdit',
-      params: { id: id }
+      params: { id: diaryId }
     })
   }
 
   const handleDelete = () => {
-    console.log('delete');
+    if (onDelete) {
+      onDelete();
+    }
   }
 
   return (
