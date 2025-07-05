@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import Feeling from '../diaryCreation/components/Feeling';
-import Header from '../diaryCreation/components/Header';
+import Feeling from '../components/diary/Feeling';
+import Header from '../components/diary/Header';
 import AddImageIcon from '../components/Icon/AddImageIcon';
 import XIcon from '../components/Icon/XIcon';
 
