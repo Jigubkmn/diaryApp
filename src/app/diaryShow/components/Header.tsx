@@ -73,11 +73,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
-  headerEditButton: {
-    width: 30,
-    // justifyContent: 'flex-end',
-    // alignItems: 'flex-end',
-  },
   editIcon: {
     marginRight: 8,
   },
