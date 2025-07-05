@@ -23,7 +23,6 @@ export default function diaryShow() {
       try {
         const diaryRef = doc(db, `users/${userId}/diary/${diaryId}`);
         const diarySnap = await getDoc(diaryRef);
-
         if (diarySnap.exists()) {
           const data = diarySnap.data();
           const diary: DiaryType = {
@@ -57,13 +56,7 @@ export default function diaryShow() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerArea}>
-          <Header
-            diaryText={selectedDiaryInfo?.diaryText || ''}
-            selectedFeeling={selectedDiaryInfo?.feeling || null}
-            setDiaryText={() => {}}
-            setSelectedFeeling={() => {}}
-            selectedImage={selectedDiaryInfo?.selectedImage || null}
-          />
+          <Header id={selectedDiaryInfo?.id || ''}/>
           <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
         {selectedDiaryInfo && (
