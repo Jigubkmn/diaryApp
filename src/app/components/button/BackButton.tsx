@@ -12,7 +12,7 @@ export default function BackButton() {
 
 const styles = StyleSheet.create({
   headerBackButton: {
-    width: 30,
+    width: 80,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
