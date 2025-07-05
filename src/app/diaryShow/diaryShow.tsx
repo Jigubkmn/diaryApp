@@ -15,8 +15,6 @@ export default function diaryShow() {
   const { diaryId } = useLocalSearchParams<{ diaryId?: string }>(); //idだけを取得
   const { isTouchFeelingButton } = useLocalSearchParams<{ isTouchFeelingButton?: string }>();
 
-
-
   useEffect(() => {
     const fetchDiary = async () => {
       if (userId === null || diaryId === null) return;
