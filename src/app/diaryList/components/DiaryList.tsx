@@ -23,8 +23,14 @@ export default function DiaryList({ diaryList } :Props) {
   const formattedTime = formatTimestampToTime({diaryList});
 
   const handleDiaryPress = () => {
-    // 日記編集画面に遷移（仮のID: 1を使用）
-    router.push('/diaryEdit/diaryEdit?id=1');
+    // 日記詳細画面に遷移
+    router.push({
+      pathname: `/diaryShow/diaryShow`,
+      params: {
+        diaryId: diaryList.id,
+        isTouchFeelingButton: 'false'
+      }
+    });
   };
 
   useEffect(() => {
