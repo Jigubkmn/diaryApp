@@ -1,28 +1,19 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
-import { auth, db } from '../../../config';
-import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import formatDate from '../../actions/formatData';
 import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
 import BackButton from '../../components/button/BackButton';
-
+import EditIcon from '../../components/Icon/EditIcon';
+import DeleteIcon from '../../components/Icon/DeleteIcon';
 
 type Props = {
-  diaryText: string;
-  selectedFeeling: string | null;
-  setDiaryText: (text: string) => void;
-  setSelectedFeeling: (feeling: string | null) => void;
-  selectedImage: string | null;
+  id: string;
 }
 
 export default function Header({
-  diaryText,
-  selectedFeeling,
-  setDiaryText,
-  setSelectedFeeling,
-  selectedImage
+  id,
 }: Props) {
   const today = dayjs();
   const router = useRouter();
@@ -35,42 +26,16 @@ export default function Header({
     setSelectedDate(formattedDate);
   }, [date])
 
-  // 必須項目が全て入力されているかチェック
-  const isFormValid = () => {
-    return diaryText && diaryText.trim() !== '' && date && selectedFeeling;
-  };
-
-  // 日記を保存
-  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null, selectedImage: string | null) => {
-    const userId = auth.currentUser?.uid;
-    if (userId === null) return;
-    if (!selectedFeeling) {
-      Alert.alert("現在の感情を選択してください");
-      return;
-    }
-    if (!diaryText || diaryText.trim() === '') {
-      Alert.alert("日記内容を入力してください");
-      return;
-    }
-    const ref = collection(db, `users/${userId}/diary`)
-    addDoc(ref, {
-      diaryText: diaryText,
-      diaryDate: Timestamp.fromDate(date.toDate()),
-      feeling: selectedFeeling,
-      updatedAt: Timestamp.fromDate(new Date()),
-      selectedImage: selectedImage
+  const handleEdit = () => {
+    router.push({
+      pathname: '/diaryEdit/diaryEdit',
+      params: { id: id }
     })
-      .then(() => {
-        Alert.alert("日記を保存しました");
-        setDiaryText("");
-        setSelectedFeeling(null);
-        router.push("/(tabs)")
-      })
-      .catch((error) => {
-        console.log("error", error);
-        Alert.alert("日記の保存に失敗しました");
-      })
-  };
+  }
+
+  const handleDelete = () => {
+    console.log('delete');
+  }
 
   return (
     <View style={styles.header}>
@@ -79,13 +44,23 @@ export default function Header({
       {/* 日付タイトル */}
       <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} />
       {/* ヘッダー右側 */}
-      <TouchableOpacity
-        onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
-        style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
-        disabled={!isFormValid()}
+      <View style={styles.headerRight}>
+        <TouchableOpacity onPress={handleEdit} style={styles.editIcon}>
+          <EditIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleDelete}>
+          <DeleteIcon size={24} color="#FFA500" />
+        </TouchableOpacity>
+      </View>
+      {/* <TouchableOpacity
+        onPress={() => router.push({
+          pathname: '/diaryEdit/diaryEdit',
+          params: { id: id }
+        })}
+        style={styles.headerEditButton}
       >
-        <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>保存</Text>
-      </TouchableOpacity>
+        <Text style={styles.headerButtonText}>編集</Text>
+      </TouchableOpacity> */}
     </View>
   )
 }
@@ -101,20 +76,18 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#ffffff',
   },
-  headerButtonText: {
-    fontSize: 16,
-    lineHeight: 30,
-    color: '#FFA500',
-  },
-  headerSaveButton: {
+  headerRight: {
     width: 80,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'flex-end',
-    alignItems: 'flex-end',
   },
-  disabledButton: {
-    opacity: 0.5,
+  headerEditButton: {
+    width: 30,
+    // justifyContent: 'flex-end',
+    // alignItems: 'flex-end',
   },
-  disabledButtonText: {
-    color: '#999999',
+  editIcon: {
+    marginRight: 8,
   },
 });
