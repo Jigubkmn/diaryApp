@@ -10,19 +10,26 @@ type Props = {
   selectedDate: string;
   date: dayjs.Dayjs;
   setDate: (date: dayjs.Dayjs) => void;
+  isArrowIcon: boolean;
 }
 
-export default function HeaderDiaryDateTitle({ selectedDate, date, setDate }: Props) {
+export default function HeaderDiaryDateTitle({ selectedDate, date, setDate, isArrowIcon }: Props) {
   return (
     <View style={styles.dateContainer}>
-      <TouchableOpacity onPress={() => {handlePreviousDay(date, setDate)}} style={styles.iconButton}>
-        <LeftArrowIcon size={24} color="black" />
-      </TouchableOpacity>
-      {/* 日付表示 */}
-      <Text style={styles.headerTitle}>{selectedDate}</Text>
-      <TouchableOpacity onPress={() => {handleNextDay(date, setDate)}} style={styles.iconButton}>
-        <RightArrowIcon size={24} color="black" />
-      </TouchableOpacity>
+      {isArrowIcon ? (
+        <>
+          <TouchableOpacity onPress={() => {handlePreviousDay(date, setDate)}} style={styles.iconButton}>
+            <LeftArrowIcon size={24} color="black" />
+          </TouchableOpacity>
+          {/* 日付表示 */}
+          <Text style={styles.headerTitle}>{selectedDate}</Text>
+          <TouchableOpacity onPress={() => {handleNextDay(date, setDate)}} style={styles.iconButton}>
+            <RightArrowIcon size={24} color="black" />
+          </TouchableOpacity>
+        </>
+      ) : (
+        <Text style={styles.headerTitle}>{selectedDate}</Text>
+      )}
     </View>
   )
 }

@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, Touchabl
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import Feeling from '../components/diary/Feeling';
-import Header from '../components/diary/Header';
+import Header from '../diaryCreation/components/Header';
 import AddImageIcon from '../components/Icon/AddImageIcon';
 import XIcon from '../components/Icon/XIcon';
 
