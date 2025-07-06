@@ -26,10 +26,10 @@ export default function Header({
   isShowBackButton,
   selectedImage
 }: Props) {
-  const today = dayjs();
+  const today = dayjs(); // "2025-07-06T09:17:23.408Z"
   const router = useRouter();
-  const [date, setDate] = useState(today);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [date, setDate] = useState(today); // "2025-07-06T09:16:59.082Z"
+  const [selectedDate, setSelectedDate] = useState(""); // 7月6日(日)
 
   useEffect(() => {
   // 日付を文字列に変換する関数：◯月◯日(◯)

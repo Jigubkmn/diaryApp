@@ -7,6 +7,7 @@ import { doc, getDoc, deleteDoc } from 'firebase/firestore';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import Header from './components/Header';
 import handleBack from '../actions/handleBack';
+import dayjs from 'dayjs';
 
 
 export default function diaryShow() {
@@ -27,9 +28,9 @@ export default function diaryShow() {
           const diary: DiaryType = {
             id: diarySnap.id,
             diaryText: data.diaryText,
-            diaryDate: data.diaryDate,
+            diaryDate: dayjs(data.diaryDate.toDate()),
             feeling: data.feeling || null,
-            updatedAt: data.updatedAt,
+            updatedAt: data.updatedAt.toDate(),
             selectedImage: data.selectedImage
           };
           setSelectedDiaryInfo(diary);
@@ -67,7 +68,7 @@ export default function diaryShow() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerArea}>
-          <Header diaryId={selectedDiaryInfo?.id || ''} onDelete={handleDelete} />
+          <Header diaryId={selectedDiaryInfo?.id || ''} diaryDate={selectedDiaryInfo?.diaryDate || dayjs()} onDelete={handleDelete} />
           <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
         {selectedDiaryInfo && (

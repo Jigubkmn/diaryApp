@@ -2,27 +2,33 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
-import formatDate from '../../actions/formatData';
 import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
 import BackButton from '../../components/button/BackButton';
 import EditIcon from '../../components/Icon/EditIcon';
 import DeleteIcon from '../../components/Icon/DeleteIcon';
+import formatDate from '../../actions/formatData';
 
 type Props = {
   diaryId: string;
+  diaryDate: dayjs.Dayjs;
   onDelete?: () => void;
 }
 
-export default function Header({ diaryId, onDelete }: Props) {
+export default function Header({ diaryId, diaryDate, onDelete }: Props) {
   const router = useRouter();
-  const [date, setDate] = useState(dayjs());
+  const [date, setDate] = useState(diaryDate);  // diaryDate："2025-07-06T09:21:43.658Z"
   const [selectedDate, setSelectedDate] = useState('');
 
   useEffect(() => {
-  // 日付を文字列に変換する関数：◯月◯日(◯)
+    // diaryDateが変更されたらdateも更新
+    setDate(diaryDate);
+  }, [diaryDate]);
+
+  useEffect(() => {
+    // 日付を文字列に変換する関数：◯月◯日(◯)
     const formattedDate = formatDate(date);
     setSelectedDate(formattedDate);
-  }, [date])
+  }, [date]);
 
   const handleEdit = () => {
     router.push({
