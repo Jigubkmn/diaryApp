@@ -48,7 +48,7 @@ export default function Header({ diaryId, diaryDate, onDelete }: Props) {
       {/* ヘッダー左側 */}
       <BackButton />
       {/* 日付タイトル */}
-      <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} />
+      <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} isArrowIcon={false} />
       {/* ヘッダー右側 */}
       <View style={styles.headerRight}>
         <TouchableOpacity onPress={handleEdit} style={styles.editIcon}>
