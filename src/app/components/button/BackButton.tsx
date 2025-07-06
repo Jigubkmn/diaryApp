@@ -1,18 +1,21 @@
 import React from 'react'
-import { TouchableOpacity, Text, StyleSheet } from 'react-native'
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native'
 import handleBack from '../../actions/handleBack';
 
 export default function BackButton() {
   return (
-    <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
-      <Text style={styles.headerButtonText}>戻る</Text>
-    </TouchableOpacity>
+    <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={handleBack}>
+        <Text style={styles.headerButtonText}>戻る</Text>
+      </TouchableOpacity>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  headerBackButton: {
+  headerContainer: {
     width: 80,
+    height: 30,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
   },
