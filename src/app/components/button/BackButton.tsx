@@ -14,7 +14,7 @@ export default function BackButton() {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    width: 80,
+    width: 60,
     height: 30,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',

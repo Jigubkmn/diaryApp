@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { useRouter } from 'expo-router';
 import LeftArrowIcon from '../../components/Icon/LeftArrowIcon';
 import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
 import EditIcon from '../../components/Icon/EditIcon';
 import DeleteIcon from '../../components/Icon/DeleteIcon';
+import BackButton from '../../components/button/BackButton';
 
 type Props = {
   diaryText: string;
@@ -13,7 +13,6 @@ type Props = {
 
 export default function Header({ diaryText }: Props) {
   const today = dayjs();
-  const router = useRouter();
   const [selectedDate, setSelectedDate] = useState(today);
 
   // 日付を文字列に変換する関数
@@ -37,10 +36,6 @@ export default function Header({ diaryText }: Props) {
     setSelectedDate(newDate);
   };
 
-  const handleBack = () => {
-    router.back();
-  };
-
   const handleEdit = () => {
     // 保存処理をここに実装
     console.log('保存:', diaryText);
@@ -53,9 +48,7 @@ export default function Header({ diaryText }: Props) {
 
   return (
     <View style={styles.header}>
-      <TouchableOpacity onPress={handleBack} style={styles.headerButton}>
-        <Text style={styles.headerButtonText}>戻る</Text>
-      </TouchableOpacity>
+      <BackButton />
       <View style={styles.dateContainer}>
         <TouchableOpacity onPress={handlePreviousDay} style={styles.iconButton}>
           <LeftArrowIcon size={24} color="black" />
