@@ -1,26 +1,40 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, SafeAreaView } from 'react-native';
 import { Stack } from 'expo-router';
 import Feeling from '../components/diary/Feeling';
 import Header from './components/Header';
+import { DiaryType } from '../../../type/diary';
+import { auth } from '../../config';
+import { useLocalSearchParams } from 'expo-router';
+import fetchSelectedDiary from '../actions/fetchSelectedDiary';
+import dayjs from 'dayjs';
 
 export default function DiaryEdit() {
-  const [diaryText, setDiaryText] = useState('');
+  const [selectedDiaryInfo, setSelectedDiaryInfo] = useState<DiaryType | null>(null);
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
+  const userId = auth.currentUser?.uid;
+  const { diaryId } = useLocalSearchParams<{ diaryId?: string }>(); //idだけを取得
+  const { isTouchFeelingButton } = useLocalSearchParams<{ isTouchFeelingButton?: string }>();
+
+  useEffect(() => {
+    // 日記の情報を取得
+    fetchSelectedDiary({ userId, diaryId, setSelectedDiaryInfo });
+  }, []);
+
+  useEffect(() => {
+    // 体調のnameを取得
+    const feelingName = selectedDiaryInfo?.feeling || null;
+    setSelectedFeeling(feelingName);
+  }, [selectedDiaryInfo?.feeling]);
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
-        <Header diaryText={diaryText} />
-        <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={true} />
-        <TextInput
-          style={styles.textInput}
-          multiline
-          placeholder="今日の出来事を入力してください"
-          value={diaryText}
-          onChangeText={setDiaryText}
-          textAlignVertical="top"
-        />
+        <View style={styles.headerArea}>
+          <Header diaryId={selectedDiaryInfo?.id || ''} diaryDate={selectedDiaryInfo?.diaryDate || dayjs()} />
+          <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
+        </View>
       </SafeAreaView>
     </>
   );
@@ -29,7 +43,10 @@ export default function DiaryEdit() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
+  },
+  headerArea: {
+    backgroundColor: '#FFFFFF',
   },
   textInput: {
     flex: 1,

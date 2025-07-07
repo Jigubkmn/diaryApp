@@ -1,69 +1,45 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import LeftArrowIcon from '../../components/Icon/LeftArrowIcon';
-import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
-import EditIcon from '../../components/Icon/EditIcon';
-import DeleteIcon from '../../components/Icon/DeleteIcon';
 import BackButton from '../../components/button/BackButton';
+import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
+import formatDate from '../../actions/formatData';
 
 type Props = {
-  diaryText: string;
+  diaryId: string;
+  diaryDate: dayjs.Dayjs;
 }
 
-export default function Header({ diaryText }: Props) {
-  const today = dayjs();
-  const [selectedDate, setSelectedDate] = useState(today);
+export default function Header({ diaryDate }: Props) {
+  const [date, setDate] = useState(diaryDate);  // diaryDate："2025-07-06T09:21:43.658Z"
+  const [selectedDate, setSelectedDate] = useState('');
 
-  // 日付を文字列に変換する関数
-  // TODO 共通関数を使用する
-  const formatDate = (date: dayjs.Dayjs) => {
-    const month = date.month() + 1; // dayjsは0ベースなので+1
-    const day = date.date();
-    const dayOfWeek = ['日', '月', '火', '水', '木', '金', '土'][date.day()];
-    return `${month}月${day}日(${dayOfWeek})`;
-  };
+  useEffect(() => {
+    // diaryDateが変更されたらdateも更新
+    setDate(diaryDate);
+  }, [diaryDate]);
 
-  // 1日前に移動
-  const handlePreviousDay = () => {
-    const newDate = selectedDate.subtract(1, 'day');
-    setSelectedDate(newDate);
-  };
-
-  // 1日後に移動
-  const handleNextDay = () => {
-    const newDate = selectedDate.add(1, 'day');
-    setSelectedDate(newDate);
-  };
-
-  const handleEdit = () => {
-    // 保存処理をここに実装
-    console.log('保存:', diaryText);
-  };
-
-  const handleDelete = () => {
-    // 保存処理をここに実装
-    console.log('保存:', diaryText);
-  };
+  useEffect(() => {
+    // 日付を文字列に変換する関数：◯月◯日(◯)
+    const formattedDate = formatDate(date);
+    setSelectedDate(formattedDate);
+  }, [date]);
 
   return (
     <View style={styles.header}>
+      {/* ヘッダー左側 */}
       <BackButton />
-      <View style={styles.dateContainer}>
-        <TouchableOpacity onPress={handlePreviousDay} style={styles.iconButton}>
-          <LeftArrowIcon size={24} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>{formatDate(selectedDate)}</Text>
-        <TouchableOpacity onPress={handleNextDay} style={styles.iconButton}>
-          <RightArrowIcon size={24} color="black" />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.headerRightIcon}>
-        <TouchableOpacity onPress={handleEdit} style={styles.editIcon}>
-          <EditIcon size={24} color="#FFA500" />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={handleDelete}>
-          <DeleteIcon size={24} color="#FFA500" />
+      {/* 日付タイトル */}
+      <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} isArrowIcon={false} />
+      <View style={styles.headerRight}>
+        <TouchableOpacity
+          // onPress={() => {handleUpdate(diaryText, date, selectedFeeling, selectedImage)}}
+          onPress={() => {}}
+          // style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
+          // disabled={!isFormValid()}
+        >
+          {/* <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>保存</Text> */}
+          <Text style={styles.headerButtonText}>更新</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -81,37 +57,15 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#ffffff',
   },
-  headerButton: {
-    padding: 8,
+  headerRight: {
+    width: 60,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   },
   headerButtonText: {
     fontSize: 16,
     lineHeight: 30,
     color: '#FFA500',
-  },
-  dateContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 16,
-    lineHeight: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginHorizontal: 8,
-  },
-  iconButton: {
-    padding: 0,
-  },
-  headerRightIcon: {
-    marginLeft: 'auto',
-    justifyContent: 'flex-end',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  editIcon: {
-    marginRight: 8,
   },
 });
