@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import Feeling from '../components/diary/Feeling';
 import Header from '../diaryCreation/components/Header';
 import AddImageIcon from '../components/Icon/AddImageIcon';
 import XIcon from '../components/Icon/XIcon';
+import DiaryText from '../components/diary/DiaryText';
 
 export default function DiaryCreation() {
   const { isShowBackButton } = useLocalSearchParams<{ isShowBackButton?: string }>();
@@ -71,17 +72,7 @@ export default function DiaryCreation() {
         </View>
         <ScrollView style={styles.contentArea}>
           {/* 今日の出来事 */}
-          <View style={styles.textInputContainer}>
-            <Text style={styles.textInputTitle}>今日の出来事</Text>
-            <TextInput
-              style={styles.textInput}
-              multiline
-              placeholder="今日の出来事を入力してください"
-              value={diaryText}
-              onChangeText={setDiaryText}
-              textAlignVertical="top"
-            />
-          </View>
+          <DiaryText diaryText={diaryText} setDiaryText={setDiaryText} />
           {/* 今日の出来事の画像 */}
           <View style={styles.imageContainer}>
             <View style={styles.imageTitleContainer}>
@@ -122,20 +113,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0F0F0',
     padding: 16,
-  },
-  textInputContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    marginBottom: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-  },
-  textInput: {
-    height: 250,
-    padding: 16,
-    fontSize: 16,
-    backgroundColor: '#F8F8F8',
-    borderRadius: 8,
   },
   imageContainer: {
     paddingHorizontal: 16,
