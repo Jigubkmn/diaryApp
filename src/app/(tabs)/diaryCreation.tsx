@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, View, Alert, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
 import Feeling from '../components/diary/Feeling';
 import Header from '../diaryCreation/components/Header';
-import AddImageIcon from '../components/Icon/AddImageIcon';
-import XIcon from '../components/Icon/XIcon';
 import DiaryText from '../components/diary/DiaryText';
+import DiaryImage from '../components/diary/DiaryImage';
 
 export default function DiaryCreation() {
   const { isShowBackButton } = useLocalSearchParams<{ isShowBackButton?: string }>();
@@ -74,27 +73,7 @@ export default function DiaryCreation() {
           {/* 今日の出来事 */}
           <DiaryText diaryText={diaryText} setDiaryText={setDiaryText} />
           {/* 今日の出来事の画像 */}
-          <View style={styles.imageContainer}>
-            <View style={styles.imageTitleContainer}>
-              <Text style={styles.textInputTitle}>今日の画像</Text>
-              <TouchableOpacity
-                onPress={handleImageDelete}
-              >
-                <XIcon size={24} color="#000000" />
-              </TouchableOpacity>
-            </View>
-            {/* 画像表示部分 */}
-            <TouchableOpacity style={styles.selectedImageContainer} onPress={handleImageSelect}>
-                {selectedImage ? (
-                  <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
-                ) : (
-                  <View style={styles.addImageContainer}>
-                      <AddImageIcon size={48} color="#000000" />
-                    <Text style={styles.addImageText}>今日の写真を選択して下さい</Text>
-                  </View>
-                )}
-            </TouchableOpacity>
-          </View>
+          <DiaryImage handleImageDelete={handleImageDelete} handleImageSelect={handleImageSelect} selectedImage={selectedImage} />
         </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>
@@ -113,42 +92,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0F0F0',
     padding: 16,
-  },
-  imageContainer: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    backgroundColor: '#FFFFFF',
-    borderRadius: 10,
-  },
-  imageTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  textInputTitle: {
-    fontSize: 16,
-    lineHeight: 30,
-    color: '#000000',
-    marginLeft: 8,
-    marginVertical: 8,
-  },
-  selectedImageContainer: {
-    backgroundColor: '#F8F8F8',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 300,
-  },
-  selectedImage: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 8,
-  },
-  addImageContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addImageText: {
-    fontSize: 16,
-    color: '#000000',
-  },
+  }
 });
