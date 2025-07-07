@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView, Alert } from 'react-native';
 import Feeling from '../components/diary/Feeling';
 import { DiaryType } from '../../../type/diary';
 import { auth, db } from '../../config';
@@ -53,14 +53,31 @@ export default function diaryShow() {
 
   const handleDelete = async () => {
     if (!userId || !diaryId) return;
-    try {
-      const diaryRef = doc(db, `users/${userId}/diary/${diaryId}`);
-      await deleteDoc(diaryRef);
-      console.log('日記を削除しました');
-      handleBack()
-    } catch (error) {
-      console.error('日記の削除に失敗しました:', error);
-    }
+    Alert.alert(
+      '日記を削除',
+      'この日記を削除しますか？\nこの操作は取り消せません。',
+      [
+        {
+          text: 'キャンセル',
+          style: 'cancel',
+        },
+        {
+          text: '削除',
+          style: 'destructive',
+          onPress: async () => {
+            try {
+              const diaryRef = doc(db, `users/${userId}/diary/${diaryId}`);
+              await deleteDoc(diaryRef);
+              console.log('日記を削除しました');
+              handleBack();
+            } catch (error) {
+              console.error('日記の削除に失敗しました:', error);
+              Alert.alert('エラー', '日記の削除に失敗しました。');
+            }
+          },
+        },
+      ]
+    );
   };
 
   return (
