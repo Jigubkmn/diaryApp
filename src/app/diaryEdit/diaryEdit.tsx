@@ -22,10 +22,12 @@ export default function DiaryEdit() {
   }, []);
 
   useEffect(() => {
-    // 体調のnameを取得
-    const feelingName = selectedDiaryInfo?.feeling || null;
-    setSelectedFeeling(feelingName);
+    if (selectedDiaryInfo) {
+      setSelectedFeeling(selectedDiaryInfo.feeling);
+    }
   }, [selectedDiaryInfo?.feeling]);
+
+  console.log("selectedFeeling", selectedFeeling);
 
   return (
     <>
@@ -33,7 +35,7 @@ export default function DiaryEdit() {
       <SafeAreaView style={styles.container}>
         <View style={styles.headerArea}>
           <Header diaryId={selectedDiaryInfo?.id || ''} diaryDate={selectedDiaryInfo?.diaryDate || dayjs()} />
-          <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={() => {}} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
+          <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
       </SafeAreaView>
     </>
