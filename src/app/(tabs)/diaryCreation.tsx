@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, View, Alert, ScrollView } from 'react-native';
+import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, View, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
-import * as ImagePicker from 'expo-image-picker';
 import Feeling from '../components/diary/Feeling';
 import Header from '../diaryCreation/components/Header';
 import DiaryText from '../components/diary/DiaryText';
@@ -22,34 +21,6 @@ export default function DiaryCreation() {
       setSelectedImage(null);
     }, [])
   );
-
-  // 画像選択ボタンの処理
-  const handleImageSelect = async () => {
-    try {
-      // カメラロールへのアクセス許可をリクエスト
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-      if (status !== 'granted') {
-        Alert.alert('エラー', 'カメラロールへのアクセス許可が必要です');
-        return;
-      }
-
-      // 画像選択を実行
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ['images'],
-        aspect: [4, 3],
-        quality: 0.8,
-      });
-
-      if (!result.canceled && result.assets[0]) {
-        setSelectedImage(result.assets[0].uri);
-        console.log('選択された画像:', result.assets[0].uri);
-      }
-    } catch (error) {
-      console.error('画像選択エラー:', error);
-      Alert.alert('エラー', '画像の選択に失敗しました');
-    }
-  };
 
   const handleImageDelete = () => {
     setSelectedImage(null);
@@ -73,7 +44,7 @@ export default function DiaryCreation() {
           {/* 今日の出来事 */}
           <DiaryText diaryText={diaryText} setDiaryText={setDiaryText} />
           {/* 今日の出来事の画像 */}
-          <DiaryImage handleImageDelete={handleImageDelete} handleImageSelect={handleImageSelect} selectedImage={selectedImage} />
+          <DiaryImage handleImageDelete={handleImageDelete} setSelectedImage={setSelectedImage} selectedImage={selectedImage} />
         </ScrollView>
       </SafeAreaView>
     </TouchableWithoutFeedback>

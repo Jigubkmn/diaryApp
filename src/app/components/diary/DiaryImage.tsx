@@ -2,14 +2,20 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import XIcon from '../Icon/XIcon';
 import AddImageIcon from '../Icon/AddImageIcon';
+import handleImageSelect from '../../actions/handleImageSelect';
 
 type Props = {
   handleImageDelete: () => void;
-  handleImageSelect: () => void;
+  setSelectedImage: (image: string) => void;
   selectedImage: string | null;
 }
 
-export default function DiaryImage({ handleImageDelete, handleImageSelect, selectedImage }: Props) {
+export default function DiaryImage({ handleImageDelete, setSelectedImage, selectedImage }: Props) {
+
+  const ImageSelect = async () => {
+    await handleImageSelect(setSelectedImage);
+  };
+
   return (
     <View style={styles.imageContainer}>
       <View style={styles.imageTitleContainer}>
@@ -21,7 +27,7 @@ export default function DiaryImage({ handleImageDelete, handleImageSelect, selec
         </TouchableOpacity>
       </View>
       {/* 画像表示部分 */}
-      <TouchableOpacity style={styles.selectedImageContainer} onPress={handleImageSelect}>
+      <TouchableOpacity style={styles.selectedImageContainer} onPress={() => ImageSelect()}>
           {selectedImage ? (
             <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
           ) : (
