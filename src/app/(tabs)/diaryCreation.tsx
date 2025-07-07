@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, TextInput, SafeAreaView, TouchableWithoutFeedback, TouchableOpacity, View, Image, Alert, Text, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import Feeling from '../diaryCreation/components/Feeling';
+import Feeling from '../components/diary/Feeling';
 import Header from '../diaryCreation/components/Header';
 import AddImageIcon from '../components/Icon/AddImageIcon';
 import XIcon from '../components/Icon/XIcon';
@@ -12,6 +12,7 @@ export default function DiaryCreation() {
   const [diaryText, setDiaryText] = useState('');
   const [selectedFeeling, setSelectedFeeling] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const { isTouchFeelingButton } = useLocalSearchParams<{ isTouchFeelingButton?: string }>();
 
   // 画面がフォーカスされた時に状態をリセット
   useFocusEffect(
@@ -66,7 +67,7 @@ export default function DiaryCreation() {
             isShowBackButton={isShowBackButton === 'true'}
             selectedImage={selectedImage}
           />
-          <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} />
+          <Feeling selectedFeeling={selectedFeeling} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
         <ScrollView style={styles.contentArea}>
           {/* 今日の出来事 */}

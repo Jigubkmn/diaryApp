@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
-import LeftArrowIcon from '../../components/Icon/LeftArrowIcon';
-import RightArrowIcon from '../../components/Icon/RightArrowIcon';
 import dayjs from 'dayjs';
 import { auth, db } from '../../../config';
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import formatDate from '../../actions/formatData';
+import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
+import BackButton from '../../components/button/BackButton';
 
 
 type Props = {
@@ -26,33 +26,16 @@ export default function Header({
   isShowBackButton,
   selectedImage
 }: Props) {
-  const today = dayjs();
+  const today = dayjs(); // "2025-07-06T09:17:23.408Z"
   const router = useRouter();
-  const [date, setDate] = useState(today);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [date, setDate] = useState(today); // "2025-07-06T09:16:59.082Z"
+  const [selectedDate, setSelectedDate] = useState(""); // 7月6日(日)
 
   useEffect(() => {
   // 日付を文字列に変換する関数：◯月◯日(◯)
     const formattedDate = formatDate(date);
     setSelectedDate(formattedDate);
   }, [date])
-
-  // 1日前に移動
-  const handlePreviousDay = () => {
-    const newDate = date.subtract(1, 'day');
-    setDate(newDate);
-  };
-
-  // 1日後に移動
-  const handleNextDay = () => {
-    const newDate = date.add(1, 'day');
-    setDate(newDate);
-  };
-
-  // 戻るボタンの処理
-  const handleBack = () => {
-    router.back();
-  };
 
   // 必須項目が全て入力されているかチェック
   const isFormValid = () => {
@@ -93,25 +76,17 @@ export default function Header({
 
   return (
     <View style={styles.header}>
+      {/* ヘッダー左側 */}
       {isShowBackButton ? (
-        <TouchableOpacity onPress={handleBack} style={styles.headerBackButton}>
-          <Text style={styles.headerButtonText}>戻る</Text>
-        </TouchableOpacity>
+        <BackButton />
       ) : (
         <View style={styles.headerLeft}>
           {/* 左側のスペーサー - タブからアクセスした場合は空のスペース */}
         </View>
       )}
-      <View style={styles.dateContainer}>
-        <TouchableOpacity onPress={() => {handlePreviousDay()}} style={styles.iconButton}>
-          <LeftArrowIcon size={24} color="black" />
-        </TouchableOpacity>
-        {/* 日付表示 */}
-        <Text style={styles.headerTitle}>{selectedDate}</Text>
-        <TouchableOpacity onPress={() => {handleNextDay()}} style={styles.iconButton}>
-          <RightArrowIcon size={24} color="black" />
-        </TouchableOpacity>
-      </View>
+      {/* 日付タイトル */}
+      <HeaderDiaryDateTitle selectedDate={selectedDate} date={date} setDate={setDate} isArrowIcon={true} />
+      {/* ヘッダー右側 */}
       <TouchableOpacity
         onPress={() => {handleSave(diaryText, date, selectedFeeling, selectedImage)}}
         style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
@@ -134,11 +109,6 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#ffffff',
   },
-  headerBackButton: {
-    width: 30,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
   headerLeft: {
     width: 30,
   },
@@ -149,22 +119,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 30,
     color: '#FFA500',
-  },
-  dateContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 16,
-    lineHeight: 30,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginHorizontal: 8,
-  },
-  iconButton: {
-    padding: 0,
   },
   headerSaveButton: {
     width: 80,
