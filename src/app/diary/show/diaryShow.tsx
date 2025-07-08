@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView, Alert } from 'react-native';
+import { StyleSheet, SafeAreaView, View, Text, ScrollView, Alert } from 'react-native';
+import { Image } from 'expo-image';
 import Feeling from '../../components/diary/Feeling';
 import { DiaryType } from '../../../../type/diary';
 import { auth, db } from '../../../config';
@@ -81,7 +82,12 @@ export default function diaryShow() {
             {/* 画像表示部分 */}
             <View style={styles.selectedImageContainer}>
               {selectedDiaryInfo.selectedImage ? (
-                <Image source={{ uri: selectedDiaryInfo.selectedImage }} style={styles.selectedImage} />
+                <Image
+                  source={{ uri: selectedDiaryInfo.selectedImage }}
+                  style={styles.selectedImage}
+                  contentFit="contain"
+                  cachePolicy="memory-disk"
+                />
               ) : (
                 <Text style={styles.ImageText}>写真を選択していません</Text>
               )}

@@ -1,5 +1,7 @@
 import React from 'react'
-import { Text, StyleSheet, TouchableOpacity, Image, ImageSourcePropType } from 'react-native';
+import { Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image } from 'expo-image';
+import { ImageSourcePropType } from 'react-native';
 
 type Props = {
   selectedFeeling: string | null;
@@ -19,6 +21,8 @@ export default function SelectedFeelingButton({ selectedFeeling, handleFeelingSe
         source={image}
         style={[
           styles.feelingImage,{ opacity: selectedFeeling === name ? 1 : 0.4 }]}
+        contentFit="contain"
+        cachePolicy="memory-disk"
       />
       <Text style={[styles.feelingText, { opacity: selectedFeeling === name ? 1 : 0.4 }]}>{name}</Text>
     </TouchableOpacity>
