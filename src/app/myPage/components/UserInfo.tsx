@@ -15,20 +15,21 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
   const userImage = require('../../../../assets/images/user.png')
 
   const [isUserIdEdit, setIsUserIdEdit] = useState(false);
-  const [accountId, setAccountId] = useState(userInfos?.accountId);
+  const [accountId, setAccountId] = useState('');
 
   useEffect(() => {
     setIsUserIdEdit(false)
-  }, [userInfos]);
+    setAccountId(userInfos?.accountId || '')
+  }, [userInfos?.accountId]);
 
   // ログアウト
   const handleLogout = () => {
     UserLogout();
   }
 
-  const handleUserInfoUpdate = (accountId: string | undefined) => {
-    if (!accountId) return;
-    console.log("accountId", accountId);
+  const handleUserInfoUpdate = (userInfo: string | undefined) => {
+    if (!userInfo) return;
+    console.log("userInfo", userInfo);
   }
 
   return (
@@ -57,11 +58,11 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
             )}
           </View>
           <UserEditContents
-            userInfos={userInfos}
-            isUserIdEdit={isUserIdEdit}
-            setIsUserIdEdit={setIsUserIdEdit}
-            accountId={accountId}
-            setAccountId={setAccountId}
+            userContent={userInfos?.accountId}
+            isUserContentEdit={isUserIdEdit}
+            setIsContentEdit={setIsUserIdEdit}
+            userUpdateContent={accountId}
+            setUserUpdateContent={setAccountId}
             handleUserInfoUpdate={handleUserInfoUpdate}
           />
         </View>

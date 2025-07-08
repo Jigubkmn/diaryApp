@@ -1,38 +1,37 @@
 import React from 'react'
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
-import { UserInfoType } from '../../../../type/userInfo';
 
 type UserEditContentsProps = {
-  userInfos: UserInfoType | null
-  isUserIdEdit: boolean;
-  setIsUserIdEdit: (isUserIdEdit: boolean) => void;
-  accountId?: string;
-  setAccountId: (accountId: string) => void;
+  userContent?: string;
+  isUserContentEdit: boolean;
+  setIsContentEdit: (isUserIdEdit: boolean) => void;
+  userUpdateContent?: string;
+  setUserUpdateContent: (accountId: string) => void;
   handleUserInfoUpdate: (accountId: string | undefined) => void;
 }
 
-export default function UserEditContents({ userInfos, isUserIdEdit, setIsUserIdEdit, accountId, setAccountId, handleUserInfoUpdate }: UserEditContentsProps) {
+export default function UserEditContents({ userContent, isUserContentEdit, setIsContentEdit, userUpdateContent, setUserUpdateContent, handleUserInfoUpdate }: UserEditContentsProps) {
   return (
     <>
-      {isUserIdEdit ? (
+      {isUserContentEdit ? (
         <View>
           <TextInput
             style={styles.userInputContent}
-            value={accountId}
-            onChangeText={(text) => setAccountId(text)}
+            value={userUpdateContent}
+            onChangeText={(text) => setUserUpdateContent(text)}
             autoCapitalize="none"
           />
           <View style={styles.userIdEditButtonContainer}>
-            <TouchableOpacity style={styles.cancelButton} onPress={() => {setIsUserIdEdit(false)}}>
+            <TouchableOpacity style={styles.cancelButton} onPress={() => {setIsContentEdit(false)}}>
               <Text style={styles.userIdEditButtonText}>キャンセル</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.userIdEditButton} onPress={() => {handleUserInfoUpdate(accountId)}}>
+            <TouchableOpacity style={styles.userIdEditButton} onPress={() => {handleUserInfoUpdate(userUpdateContent)}}>
               <Text style={styles.userIdEditButtonText}>更新</Text>
             </TouchableOpacity>
           </View>
         </View>
       ) : (
-        <Text style={styles.userText}>{userInfos?.accountId}</Text>
+        <Text style={styles.userText}>{userContent}</Text>
       )}
     </>
   )
