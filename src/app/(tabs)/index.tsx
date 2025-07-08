@@ -70,7 +70,10 @@ export default function home() {
       {/* 日記作成ボタン */}
       <TouchableOpacity style={styles.plusButton} onPress={() => router.push({
           pathname: '/(tabs)/diaryCreation',
-          params: { isShowBackButton: 'true' }
+          params: {
+            isShowBackButton: 'true',
+            isTouchFeelingButton: 'true'
+          }
         })}>
         <PlusIcon width={30} height={30} color="white" />
       </TouchableOpacity>
