@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { View, ScrollView, StyleSheet, SafeAreaView } from 'react-native';
 import { Stack } from 'expo-router';
-import Feeling from '../components/diary/Feeling';
-import Header from './components/Header';
-import { DiaryType } from '../../../type/diary';
-import { auth } from '../../config';
+import Feeling from '../../components/diary/Feeling';
+import Header from '../edit/components/Header';
+import { DiaryType } from '../../../../type/diary';
+import { auth } from '../../../config';
 import { useLocalSearchParams } from 'expo-router';
-import fetchSelectedDiary from '../actions/fetchSelectedDiary';
+import fetchSelectedDiary from '../../actions/fetchSelectedDiary';
 import dayjs from 'dayjs';
-import DiaryText from '../components/diary/DiaryText';
-import DiaryImage from '../components/diary/DiaryImage';
+import DiaryText from '../../components/diary/DiaryText';
+import DiaryImage from '../../components/diary/DiaryImage';
 
 export default function DiaryEdit() {
   const [selectedDiaryInfo, setSelectedDiaryInfo] = useState<DiaryType | null>(null);

@@ -32,7 +32,7 @@ export default function Header({ diaryId, diaryDate, onDelete }: Props) {
 
   const handleEdit = () => {
     router.push({
-      pathname: '/diaryEdit/diaryEdit',
+      pathname: '/diary/edit/diaryEdit',
       params: {
         diaryId: diaryId,
         isTouchFeelingButton: 'true'

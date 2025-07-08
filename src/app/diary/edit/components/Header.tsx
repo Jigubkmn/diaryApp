@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import dayjs from 'dayjs';
-import { db } from '../../../config';
+import { db } from '../../../../config';
 import { doc, updateDoc, Timestamp } from 'firebase/firestore'
-import BackButton from '../../components/button/BackButton';
-import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
-import formatDate from '../../actions/formatData';
+import BackButton from '../../../components/button/BackButton';
+import HeaderDiaryDateTitle from '../../../components/diary/HeaderDiaryDateTitle';
+import formatDate from '../../../actions/formatData';
 import { router } from 'expo-router';
 
 type Props = {
@@ -92,7 +92,7 @@ export default function Header({ userId, diaryId, diaryText, selectedFeeling, se
           style={[!isFormValid() ? styles.disabledButton : styles.headerUpdateButton]}
           disabled={!isFormValid()}
         >
-          <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>保存</Text>
+          <Text style={[styles.headerButtonText, !isFormValid() && styles.disabledButtonText]}>更新</Text>
         </TouchableOpacity>
       </View>
     </View>
