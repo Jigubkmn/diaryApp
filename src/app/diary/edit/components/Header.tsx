@@ -68,7 +68,7 @@ export default function Header({ userId, diaryId, diaryText, selectedFeeling, se
       setSelectedFeeling(null);
       setSelectedImage(null);
       router.push({
-        pathname: `/diaryShow/diaryShow`,
+        pathname: `/diary/show/diaryShow`,
         params: {
           diaryId: diaryId,
           isTouchFeelingButton: 'false'
