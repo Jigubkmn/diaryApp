@@ -19,24 +19,26 @@ export default function DiaryShareInfo() {
         <Image
           source={userImage}
           style={styles.diaryShareUserImage}
+          contentFit="contain"
+          cachePolicy="memory-disk"
         />
         <Text style={styles.diaryShareUserName}>山田太郎</Text>
-        <View style={styles.diaryShareToggleButton}>
-          {/* 通知設定用トグルスイッチ */}
-          <Text style={styles.notificationText}>通知設定</Text>
-          <Switch
-            trackColor={{ false: '#FFFFFF', true: '#0080FF' }}
-            thumbColor={isNotificationEnabled ? '#FFFFFF' : '#FFFFFF'}
-            ios_backgroundColor="#D9D9D9"
-            onValueChange={toggleNotification}
-            value={isNotificationEnabled}
-            style={styles.switch}
-          />
-        </View>
+        <TouchableOpacity onPress={()=>{}} style={styles.diaryShareDeleteIcon}>
+          <Text style={styles.diaryShareDeleteText}>削除</Text>
+        </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={()=>{}} style={styles.diaryShareDeleteIcon}>
-        <Text style={styles.diaryShareDeleteText}>削除</Text>
-      </TouchableOpacity>
+      <View style={styles.diaryShareToggleButton}>
+        {/* 通知設定用トグルスイッチ */}
+        <Text style={styles.notificationText}>山田太郎さんの日記作成・更新を通知する</Text>
+        <Switch
+          trackColor={{ false: '#FFFFFF', true: '#0080FF' }}
+          thumbColor={isNotificationEnabled ? '#FFFFFF' : '#FFFFFF'}
+          ios_backgroundColor="#D9D9D9"
+          onValueChange={toggleNotification}
+          value={isNotificationEnabled}
+          style={styles.switch}
+        />
+      </View>
     </View>
   )
 }

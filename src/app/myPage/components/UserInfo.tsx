@@ -1,77 +1,144 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Image } from 'expo-image'
 import EditIcon from '../../components/Icon/EditIcon';
-import { auth } from '../../../config';
-import { signOut } from 'firebase/auth';
-import { router } from 'expo-router';
 import { UserInfoType } from '../../../../type/userInfo';
+import UserLogout from '../../actions/handleLogout';
+import UserEditContents from './UserEditButtons';
+import { db } from '../../../config';
+import { doc, updateDoc } from 'firebase/firestore'
 
 type UserInfoProps = {
-  userInfo: UserInfoType
+  userInfos: UserInfoType | null
+  userId?: string
+  userInfoId?: string
 }
 
-export default function UserInfo({ userInfo }: UserInfoProps) {
+export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProps) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../../assets/images/user.png')
 
+  const [isAccountIdEdit, setIsAccountIdEdit] = useState(false);
+  const [accountId, setAccountId] = useState('');
+  const [isUserNameEdit, setIsUserNameEdit] = useState(false);
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    setAccountId(userInfos?.accountId || '')
+  }, [userInfos?.accountId]);
+
+  useEffect(() => {
+    setUserName(userInfos?.userName || '')
+  }, [userInfos?.userName]);
+
+  useEffect(() => {
+    setIsAccountIdEdit(false)
+    setIsUserNameEdit(false)
+  }, []);
+
   // ログアウト
   const handleLogout = () => {
-    signOut(auth)
-    .then(() => {
-      router.replace("/auth/login")
-    })
-    .catch((error) => {
-      console.log("error", error)
-      Alert.alert("ログアウト処理を失敗しました")
-    })
+    UserLogout();
+  }
+
+  const handleAccountIdUpdate = async (userUpdateInfo: string | undefined) => {
+    if (!userUpdateInfo || !userId || !userInfoId) return;
+    try {
+      const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
+      await updateDoc(userRef, {
+        accountId: userUpdateInfo,
+      });
+      setIsAccountIdEdit(false)
+      Alert.alert("ユーザーIDの更新に成功しました");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("ユーザーIDの更新に失敗しました");
+    }
+  }
+
+  const handleUserNameUpdate = async (userUpdateInfo: string | undefined) => {
+    if (!userUpdateInfo || !userId || !userInfoId) return;
+    try {
+      const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
+      await updateDoc(userRef, {
+        userName: userUpdateInfo,
+      });
+      setIsUserNameEdit(false)
+      Alert.alert("ユーザー名の更新に成功しました");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("ユーザー名の更新に失敗しました");
+    }
   }
 
   return (
     <View style={styles.userInfoContainer}>
-    {/* ユーザー画像 */}
-    <View style={styles.userImageContainer}>
-      <Image source={userImage} style={styles.userImage} />
-      <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
-        <EditIcon size={24} color="#FFA500" />
+      <View style={styles.userInfoWrapper}>
+        {/* ユーザー画像 */}
+        <View style={styles.userImageContainer}>
+          <Image
+            source={userImage}
+            style={styles.userImage}
+            contentFit="contain"
+            cachePolicy="memory-disk"
+          />
+          <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
+            <EditIcon size={24} color="#FFA500" />
+          </TouchableOpacity>
+        </View>
+        {/* ユーザーID */}
+        <UserEditContents
+          userTitle="ユーザーID"
+          userContent={userInfos?.accountId}
+          isUserContentEdit={isAccountIdEdit}
+          setIsContentEdit={setIsAccountIdEdit}
+          userUpdateContent={accountId}
+          setUserUpdateContent={setAccountId}
+          handleUserInfoUpdate={handleAccountIdUpdate}
+        />
+        {/* ユーザー名 */}
+        <UserEditContents
+          userTitle="ユーザー名"
+          userContent={userInfos?.userName}
+          isUserContentEdit={isUserNameEdit}
+          setIsContentEdit={setIsUserNameEdit}
+          userUpdateContent={userName}
+          setUserUpdateContent={setUserName}
+          handleUserInfoUpdate={handleUserNameUpdate}
+        />
+      </View>
+      {/* 区切り線 */}
+      <View style={styles.divider} />
+      {/* ログアウトボタン */}
+      <TouchableOpacity style={styles.logoutButton} onPress={() => {handleLogout()}}>
+        <Text style={styles.logoutButtonText}>ログアウト</Text>
       </TouchableOpacity>
     </View>
-    {/* ユーザーID */}
-    <View style={styles.userTextContainer}>
-      <Text style={styles.userTitle}>ユーザーID</Text>
-      <Text style={styles.userText}>{userInfo.accountId}</Text>
-    </View>
-    {/* ユーザー名 */}
-    <View style={styles.userTextContainer}>
-      <View style={styles.userTextWrapper}>
-        <Text style={styles.userTitle}>ユーザー名</Text>
-        <TouchableOpacity onPress={() => {}}>
-          <EditIcon size={24} color="#FFA500" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.userText}>{userInfo.userName}</Text>
-    </View>
-    <TouchableOpacity style={styles.logoutButton} onPress={() => {handleLogout()}}>
-      <Text style={styles.logoutButtonText}>ログアウト</Text>
-    </TouchableOpacity>
-  </View>
   )
 }
 
 const styles = StyleSheet.create({
   userInfoContainer: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    marginTop: 16,
-    marginHorizontal: 24,
+    marginVertical: 16,
+    marginHorizontal: 'auto',
+    paddingTop: 16,
+    paddingBottom: 8,
     backgroundColor: '#ffffff',
     borderRadius: 10,
+    flexDirection: 'column',
     alignItems: 'center',
+    width: 250,
+  },
+  userInfoWrapper: {
+    width: '100%',
+    paddingHorizontal: 16,
   },
   userImageContainer: {
     width: 100,
     height: 100,
     position: 'relative',
+    marginBottom: 16,
+    alignSelf: 'center',
   },
   userImage: {
     width: 100,
@@ -87,40 +154,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 3,
   },
-  userTextContainer: {
-    marginTop: 16,
-    marginRight: 'auto',
-  },
-  userTextWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userTitle: {
-    fontSize: 14,
-    lineHeight: 24,
-    fontWeight: 'bold',
-    marginRight: 8,
-  },
-  userText: {
-    fontSize: 14,
-    lineHeight: 24,
-  },
   logoutButton: {
     height: 24,
     width: 90,
-    paddingHorizontal: 10,
-    paddingVertical: 0,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 0, 0, 0.6)',
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
+    alignSelf: 'center',
   },
   logoutButtonText: {
     fontSize: 14,
     lineHeight: 24,
     color: '#ffffff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    marginVertical: 8,
+    width: '100%',
   },
 })

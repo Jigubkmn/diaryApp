@@ -8,24 +8,23 @@ import { collection, onSnapshot, query } from 'firebase/firestore'
 import UserInfo from '../myPage/components/UserInfo';
 
 export default function myPage() {
-  const [userInfos, setUserInfos] = useState<UserInfoType[]>([])
+  const [userInfos, setUserInfos] = useState<UserInfoType | null>(null)
+  const [userInfoId, setUserInfoId] = useState<string>('')
+  const userId = auth.currentUser?.uid
 
   useEffect(() => {
     // ユーザー情報取得
-    const userId = auth.currentUser?.uid
     if (userId === null) return;
       const ref = collection(db, `users/${userId}/userInfo`)
       const q = query(ref) // ユーザー情報の参照を取得。
       // snapshot：userInfoのデータを取得。
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const remoteUserInfo: UserInfoType[] = []
         // データ1つずつの処理
         snapshot.docs.forEach((doc) => {
-          console.log("ユーザー情報", doc.data())
           const { accountId, userName } = doc.data();
-          remoteUserInfo.push({ accountId, userName })
+          setUserInfos({ accountId, userName })
+          setUserInfoId(doc.id) // userInfoのIDを保存
         })
-        setUserInfos(remoteUserInfo)
       })
     return unsubscribe;
   }, [])
@@ -34,12 +33,8 @@ export default function myPage() {
     <SafeAreaView style={styles.container}>
       <Header />
       <ScrollView style={styles.bodyContainer}>
-        {userInfos.map((userInfo) => {
-          return (
-            <UserInfo key={userInfo.accountId} userInfo={userInfo} />
-          )
-        })}
-        {/* <UserInfo /> */}
+        {/* ログインユーザー情報 */}
+        <UserInfo userInfos={userInfos} userId={userId} userInfoId={userInfoId} />
         <View style={styles.diaryShareContainer}>
           <Text style={styles.diaryShareTitle}>日記共通相手</Text>
           <View style={styles.diaryShareInfoContainer}>
@@ -76,5 +71,6 @@ const styles = StyleSheet.create({
   diaryShareInfoContainer: {
     borderRadius: 10,
     backgroundColor: '#ffffff',
+    width: 350,
   },
 })
