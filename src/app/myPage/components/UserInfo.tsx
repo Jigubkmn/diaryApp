@@ -15,12 +15,22 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
   const userImage = require('../../../../assets/images/user.png')
 
   const [isUserIdEdit, setIsUserIdEdit] = useState(false);
+  const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [accountId, setAccountId] = useState('');
+  const [userName, setUserName] = useState('');
+
+  useEffect(() => {
+    setAccountId(userInfos?.accountId || '')
+  }, [userInfos?.accountId]);
+
+  useEffect(() => {
+    setUserName(userInfos?.userName || '')
+  }, [userInfos?.userName]);
 
   useEffect(() => {
     setIsUserIdEdit(false)
-    setAccountId(userInfos?.accountId || '')
-  }, [userInfos?.accountId]);
+    setIsUserNameEdit(false)
+  }, []);
 
   // ログアウト
   const handleLogout = () => {
@@ -48,25 +58,25 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
           </TouchableOpacity>
         </View>
         {/* ユーザーID */}
-          <UserEditContents
-            userTitle="ユーザーID"
-            userContent={userInfos?.accountId}
-            isUserContentEdit={isUserIdEdit}
-            setIsContentEdit={setIsUserIdEdit}
-            userUpdateContent={accountId}
-            setUserUpdateContent={setAccountId}
-            handleUserInfoUpdate={handleUserInfoUpdate}
-          />
+        <UserEditContents
+          userTitle="ユーザーID"
+          userContent={userInfos?.accountId}
+          isUserContentEdit={isUserIdEdit}
+          setIsContentEdit={setIsUserIdEdit}
+          userUpdateContent={accountId}
+          setUserUpdateContent={setAccountId}
+          handleUserInfoUpdate={handleUserInfoUpdate}
+        />
         {/* ユーザー名 */}
-        <View style={styles.userContentsContainer}>
-          <View style={styles.userContentsTitle}>
-            <Text style={styles.userTitle}>ユーザー名</Text>
-            <TouchableOpacity onPress={() => {}}>
-              <EditIcon size={24} color="#FFA500" />
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.userText}>{userInfos?.userName}</Text>
-        </View>
+        <UserEditContents
+          userTitle="ユーザー名"
+          userContent={userInfos?.userName}
+          isUserContentEdit={isUserNameEdit}
+          setIsContentEdit={setIsUserNameEdit}
+          userUpdateContent={userName}
+          setUserUpdateContent={setUserName}
+          handleUserInfoUpdate={handleUserInfoUpdate}
+        />
       </View>
       {/* 区切り線 */}
       <View style={styles.divider} />
@@ -114,25 +124,6 @@ const styles = StyleSheet.create({
     borderColor: '#FFA500',
     backgroundColor: '#ffffff',
     padding: 3,
-  },
-  userContentsContainer: {
-    marginBottom: 16,
-    alignSelf: 'flex-start',
-    width: '100%',
-  },
-  userContentsTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userTitle: {
-    fontSize: 14,
-    lineHeight: 24,
-    fontWeight: 'bold',
-    marginRight: 8,
-  },
-  userText: {
-    fontSize: 14,
-    lineHeight: 24,
   },
   logoutButton: {
     height: 24,
