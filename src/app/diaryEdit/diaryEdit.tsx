@@ -55,7 +55,17 @@ export default function DiaryEdit() {
       <Stack.Screen options={{ headerShown: false }} />
       <SafeAreaView style={styles.container}>
         <View style={styles.headerArea}>
-          <Header diaryId={selectedDiaryInfo?.id || ''} diaryDate={selectedDiaryInfo?.diaryDate || dayjs()} />
+          <Header
+            userId={userId || ''}
+            diaryId={selectedDiaryInfo?.id || ''}
+            diaryText={diaryText}
+            selectedFeeling={selectedFeeling}
+            setDiaryText={setDiaryText}
+            setSelectedFeeling={setSelectedFeeling}
+            setSelectedImage={setSelectedImage}
+            selectedImage={selectedImage}
+            diaryDate={selectedDiaryInfo?.diaryDate || dayjs()}
+          />
           <Feeling selectedFeeling={selectedFeeling || null} setSelectedFeeling={setSelectedFeeling} isTouchFeelingButton={isTouchFeelingButton === 'true'} />
         </View>
         <ScrollView style={styles.contentArea}>
