@@ -25,7 +25,7 @@ export default function DiaryList({ diaryList } :Props) {
   const handleDiaryPress = () => {
     // 日記詳細画面に遷移
     router.push({
-      pathname: `/diaryShow/diaryShow`,
+      pathname: `/diary/show/diaryShow`,
       params: {
         diaryId: diaryList.id,
         isTouchFeelingButton: 'false'

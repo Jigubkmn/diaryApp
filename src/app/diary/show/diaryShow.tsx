@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView, Alert } from 'react-native';
-import Feeling from '../components/diary/Feeling';
-import { DiaryType } from '../../../type/diary';
-import { auth, db } from '../../config';
+import Feeling from '../../components/diary/Feeling';
+import { DiaryType } from '../../../../type/diary';
+import { auth, db } from '../../../config';
 import { doc, deleteDoc } from 'firebase/firestore';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import Header from './components/Header';
-import handleBack from '../actions/handleBack';
+import handleBack from '../../actions/handleBack';
 import dayjs from 'dayjs';
-import fetchSelectedDiary from '../actions/fetchSelectedDiary';
+import fetchSelectedDiary from '../../actions/fetchSelectedDiary';
 
 
 export default function diaryShow() {
