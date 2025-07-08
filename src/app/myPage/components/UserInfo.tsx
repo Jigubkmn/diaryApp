@@ -1,11 +1,9 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Image } from 'expo-image'
 import EditIcon from '../../components/Icon/EditIcon';
-import { auth } from '../../../config';
-import { signOut } from 'firebase/auth';
-import { router } from 'expo-router';
 import { UserInfoType } from '../../../../type/userInfo';
+import UserLogout from '../../actions/handleLogout';
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
@@ -17,14 +15,7 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
 
   // ログアウト
   const handleLogout = () => {
-    signOut(auth)
-    .then(() => {
-      router.replace("/auth/login")
-    })
-    .catch((error) => {
-      console.log("error", error)
-      Alert.alert("ログアウト処理を失敗しました")
-    })
+    UserLogout();
   }
 
   return (
