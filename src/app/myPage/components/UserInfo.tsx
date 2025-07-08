@@ -8,10 +8,10 @@ import { router } from 'expo-router';
 import { UserInfoType } from '../../../../type/userInfo';
 
 type UserInfoProps = {
-  userInfo: UserInfoType
+  userInfos: UserInfoType | null
 }
 
-export default function UserInfo({ userInfo }: UserInfoProps) {
+export default function UserInfo({ userInfos }: UserInfoProps) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../../assets/images/user.png')
 
@@ -39,7 +39,7 @@ export default function UserInfo({ userInfo }: UserInfoProps) {
     {/* ユーザーID */}
     <View style={styles.userTextContainer}>
       <Text style={styles.userTitle}>ユーザーID</Text>
-      <Text style={styles.userText}>{userInfo.accountId}</Text>
+      <Text style={styles.userText}>{userInfos?.accountId}</Text>
     </View>
     {/* ユーザー名 */}
     <View style={styles.userTextContainer}>
@@ -49,7 +49,7 @@ export default function UserInfo({ userInfo }: UserInfoProps) {
           <EditIcon size={24} color="#FFA500" />
         </TouchableOpacity>
       </View>
-      <Text style={styles.userText}>{userInfo.userName}</Text>
+      <Text style={styles.userText}>{userInfos?.userName}</Text>
     </View>
     <TouchableOpacity style={styles.logoutButton} onPress={() => {handleLogout()}}>
       <Text style={styles.logoutButtonText}>ログアウト</Text>

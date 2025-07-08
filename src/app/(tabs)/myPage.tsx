@@ -8,7 +8,7 @@ import { collection, onSnapshot, query } from 'firebase/firestore'
 import UserInfo from '../myPage/components/UserInfo';
 
 export default function myPage() {
-  const [userInfos, setUserInfos] = useState<UserInfoType[]>([])
+  const [userInfos, setUserInfos] = useState<UserInfoType | null>(null)
 
   useEffect(() => {
     // ユーザー情報取得
@@ -18,14 +18,11 @@ export default function myPage() {
       const q = query(ref) // ユーザー情報の参照を取得。
       // snapshot：userInfoのデータを取得。
       const unsubscribe = onSnapshot(q, (snapshot) => {
-        const remoteUserInfo: UserInfoType[] = []
         // データ1つずつの処理
         snapshot.docs.forEach((doc) => {
-          console.log("ユーザー情報", doc.data())
           const { accountId, userName } = doc.data();
-          remoteUserInfo.push({ accountId, userName })
+          setUserInfos({ accountId, userName })
         })
-        setUserInfos(remoteUserInfo)
       })
     return unsubscribe;
   }, [])
@@ -34,12 +31,7 @@ export default function myPage() {
     <SafeAreaView style={styles.container}>
       <Header />
       <ScrollView style={styles.bodyContainer}>
-        {userInfos.map((userInfo) => {
-          return (
-            <UserInfo key={userInfo.accountId} userInfo={userInfo} />
-          )
-        })}
-        {/* <UserInfo /> */}
+        <UserInfo userInfos={userInfos} />
         <View style={styles.diaryShareContainer}>
           <Text style={styles.diaryShareTitle}>日記共通相手</Text>
           <View style={styles.diaryShareInfoContainer}>
