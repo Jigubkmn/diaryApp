@@ -57,7 +57,6 @@ export default function UserEditContents({
 
 const styles = StyleSheet.create({
   userContentsContainer: {
-    marginBottom: 16,
     alignSelf: 'flex-start',
     width: '100%',
   },
