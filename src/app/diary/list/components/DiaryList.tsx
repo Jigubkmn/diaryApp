@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native'
 import { Image } from 'expo-image'
 import { useRouter } from 'expo-router'
-import { DiaryType } from '../../../../type/diary';
-import { userImage, noImage } from '../../constants/userImage';
-import { feelings } from '../../constants/feelings';
-import formatTimestampToTime from '../../actions/formatTimestampToTime';
-import formatDate from '../../actions/formatData';
+import { DiaryType } from '../../../../../type/diary';
+import { userImage, noImage } from '../../../constants/userImage';
+import { feelings } from '../../../constants/feelings';
+import formatTimestampToTime from '../../../actions/formatTimestampToTime';
+import formatDate from '../../../actions/formatData';
 import dayjs from 'dayjs';
 
 type Props = {
@@ -23,8 +23,14 @@ export default function DiaryList({ diaryList } :Props) {
   const formattedTime = formatTimestampToTime({diaryList});
 
   const handleDiaryPress = () => {
-    // 日記編集画面に遷移（仮のID: 1を使用）
-    router.push('/diaryEdit/diaryEdit?id=1');
+    // 日記詳細画面に遷移
+    router.push({
+      pathname: `/diary/show/diaryShow`,
+      params: {
+        diaryId: diaryList.id,
+        isTouchFeelingButton: 'false'
+      }
+    });
   };
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export default function DiaryList({ diaryList } :Props) {
           {/* 日記投稿画像 */}
           <View style={styles.diaryImageContainer}>
             <Image
-              source={noImage}
+              source={diaryList.selectedImage ? { uri: diaryList.selectedImage } : noImage}
               style={styles.diaryImage}
             />
           </View>
