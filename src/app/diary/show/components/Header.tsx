@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
-import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
-import BackButton from '../../components/button/BackButton';
-import EditIcon from '../../components/Icon/EditIcon';
-import DeleteIcon from '../../components/Icon/DeleteIcon';
-import formatDate from '../../actions/formatData';
+import HeaderDiaryDateTitle from '../../../components/diary/HeaderDiaryDateTitle';
+import BackButton from '../../../components/button/BackButton';
+import EditIcon from '../../../components/Icon/EditIcon';
+import DeleteIcon from '../../../components/Icon/DeleteIcon';
+import formatDate from '../../../actions/formatData';
 
 type Props = {
   diaryId: string;
@@ -32,7 +32,7 @@ export default function Header({ diaryId, diaryDate, onDelete }: Props) {
 
   const handleEdit = () => {
     router.push({
-      pathname: '/diaryEdit/diaryEdit',
+      pathname: '/diary/edit/diaryEdit',
       params: {
         diaryId: diaryId,
         isTouchFeelingButton: 'true'

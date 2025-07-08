@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
-import DiaryList from '../diaryList/components/DiaryList'
+import DiaryList from '../diary/list/components/DiaryList'
 import { auth, db } from '../../config';
 import { collection, onSnapshot, query, orderBy, where } from 'firebase/firestore';
 import { DiaryType } from '../../../type/diary';
 import PlusIcon from '../components/Icon/PlusIcon';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
-import YearMonthSelectModal from '../diaryList/components/YearMonthSelectModal';
+import YearMonthSelectModal from '../diary/list/components/YearMonthSelectModal';
 
 export default function home() {
   const [diaryLists, setDiaryLists] = useState<DiaryType[]>([]);
