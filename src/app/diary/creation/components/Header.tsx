@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
 import { auth, db } from '../../../../config';
-import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import { collection, addDoc, Timestamp, query, where, getDocs } from 'firebase/firestore'
 import formatDate from '../../../actions/formatData';
 import HeaderDiaryDateTitle from '../../../components/diary/HeaderDiaryDateTitle';
 import BackButton from '../../../components/button/BackButton';
@@ -44,10 +44,32 @@ export default function Header({
     return diaryText && diaryText.trim() !== '' && date && selectedFeeling;
   };
 
+  // 同じ日付のデータが既に存在するかチェック
+  const checkExistingDiary = async (userId: string, date: dayjs.Dayjs): Promise<boolean> => {
+    try {
+      // 日付の開始と終了を設定（その日の00:00:00から23:59:59）
+      const startOfDay = date.startOf('day').toDate();
+      const endOfDay = date.endOf('day').toDate();
+
+      const diaryRef = collection(db, `users/${userId}/diary`);
+      const q = query(
+        diaryRef,
+        where('diaryDate', '>=', Timestamp.fromDate(startOfDay)),
+        where('diaryDate', '<=', Timestamp.fromDate(endOfDay))
+      );
+
+      const querySnapshot = await getDocs(q);
+      return !querySnapshot.empty;
+    } catch (error) {
+      console.error('既存データチェックエラー:', error);
+      return false;
+    }
+  };
+
   // 日記を保存
-  const handleSave = (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null, selectedImage: string | null) => {
+  const handleSave = async (diaryText: string, date: dayjs.Dayjs, selectedFeeling: string | null, selectedImage: string | null) => {
     const userId = auth.currentUser?.uid;
-    if (userId === null) return;
+    if (!userId) return;
     if (!selectedFeeling) {
       Alert.alert("現在の感情を選択してください");
       return;
@@ -56,25 +78,33 @@ export default function Header({
       Alert.alert("日記内容を入力してください");
       return;
     }
-    const ref = collection(db, `users/${userId}/diary`)
-    addDoc(ref, {
-      diaryText: diaryText,
-      diaryDate: Timestamp.fromDate(date.toDate()),
-      feeling: selectedFeeling,
-      updatedAt: Timestamp.fromDate(new Date()),
-      selectedImage: selectedImage
-    })
-      .then(() => {
-        Alert.alert("日記を保存しました");
-        setDiaryText("");
-        setSelectedFeeling(null);
-        setSelectedImage(null);
-        router.push("/(tabs)")
-      })
-      .catch((error) => {
-        console.log("error", error);
-        Alert.alert("日記の保存に失敗しました");
-      })
+
+    // 同じ日付のデータが既に存在するかチェック
+    const hasExistingDiary = await checkExistingDiary(userId, date);
+    if (hasExistingDiary) {
+      Alert.alert("エラー", `${formatDate(date)}の日記は既に存在します。`);
+      return;
+    }
+
+    try {
+      const ref = collection(db, `users/${userId}/diary`);
+      await addDoc(ref, {
+        diaryText: diaryText,
+        diaryDate: Timestamp.fromDate(date.toDate()),
+        feeling: selectedFeeling,
+        updatedAt: Timestamp.fromDate(new Date()),
+        selectedImage: selectedImage
+      });
+
+      Alert.alert("日記を保存しました");
+      setDiaryText("");
+      setSelectedFeeling(null);
+      setSelectedImage(null);
+      router.push("/(tabs)");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("日記の保存に失敗しました");
+    }
   };
 
   return (
@@ -113,7 +143,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   headerLeft: {
-    width: 30,
+    width: 60,
   },
   headerButton: {
     padding: 8,
@@ -124,11 +154,14 @@ const styles = StyleSheet.create({
     color: '#FFA500',
   },
   headerSaveButton: {
-    width: 80,
+    width: 60,
     justifyContent: 'flex-end',
     alignItems: 'flex-end',
   },
   disabledButton: {
+    width: 60,
+    justifyContent: 'flex-end',
+    alignItems: 'flex-end',
     opacity: 0.5,
   },
   disabledButtonText: {
