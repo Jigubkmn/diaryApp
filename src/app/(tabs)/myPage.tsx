@@ -69,5 +69,6 @@ const styles = StyleSheet.create({
   diaryShareInfoContainer: {
     borderRadius: 10,
     backgroundColor: '#ffffff',
+    width: 350,
   },
 })
