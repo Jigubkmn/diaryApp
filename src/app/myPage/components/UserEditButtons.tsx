@@ -1,7 +1,9 @@
 import React from 'react'
+import EditIcon from '../../components/Icon/EditIcon';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 
 type UserEditContentsProps = {
+  userTitle: string
   userContent?: string;
   isUserContentEdit: boolean;
   setIsContentEdit: (isUserIdEdit: boolean) => void;
@@ -10,9 +12,25 @@ type UserEditContentsProps = {
   handleUserInfoUpdate: (accountId: string | undefined) => void;
 }
 
-export default function UserEditContents({ userContent, isUserContentEdit, setIsContentEdit, userUpdateContent, setUserUpdateContent, handleUserInfoUpdate }: UserEditContentsProps) {
+export default function UserEditContents({
+  userTitle,
+  userContent,
+  isUserContentEdit,
+  setIsContentEdit,
+  userUpdateContent,
+  setUserUpdateContent,
+  handleUserInfoUpdate
+}: UserEditContentsProps) {
   return (
-    <>
+    <View style={styles.userContentsContainer}>
+      <View style={styles.userContentsTitle}>
+        <Text style={styles.userTitle}>{userTitle}</Text>
+        {!isUserContentEdit && (
+          <TouchableOpacity onPress={() => {setIsContentEdit(true)}}>
+            <EditIcon size={24} color="#FFA500" />
+          </TouchableOpacity>
+        )}
+      </View>
       {isUserContentEdit ? (
         <View>
           <TextInput
@@ -33,11 +51,26 @@ export default function UserEditContents({ userContent, isUserContentEdit, setIs
       ) : (
         <Text style={styles.userText}>{userContent}</Text>
       )}
-    </>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  userContentsContainer: {
+    marginBottom: 16,
+    alignSelf: 'flex-start',
+    width: '100%',
+  },
+  userContentsTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userTitle: {
+    fontSize: 14,
+    lineHeight: 24,
+    fontWeight: 'bold',
+    marginRight: 8,
+  },
   userInputContent: {
     height: 30,
     width: '100%',

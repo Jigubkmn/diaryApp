@@ -48,16 +48,8 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
           </TouchableOpacity>
         </View>
         {/* ユーザーID */}
-        <View style={styles.userContentsContainer}>
-          <View style={styles.userContentsTitle}>
-            <Text style={styles.userTitle}>ユーザーID</Text>
-            {!isUserIdEdit && (
-              <TouchableOpacity onPress={() => {setIsUserIdEdit(true)}}>
-                <EditIcon size={24} color="#FFA500" />
-              </TouchableOpacity>
-            )}
-          </View>
           <UserEditContents
+            userTitle="ユーザーID"
             userContent={userInfos?.accountId}
             isUserContentEdit={isUserIdEdit}
             setIsContentEdit={setIsUserIdEdit}
@@ -65,7 +57,6 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
             setUserUpdateContent={setAccountId}
             handleUserInfoUpdate={handleUserInfoUpdate}
           />
-        </View>
         {/* ユーザー名 */}
         <View style={styles.userContentsContainer}>
           <View style={styles.userContentsTitle}>
