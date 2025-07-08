@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import dayjs from 'dayjs';
-import { auth, db } from '../../../config';
+import { auth, db } from '../../../../config';
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
-import formatDate from '../../actions/formatData';
-import HeaderDiaryDateTitle from '../../components/diary/HeaderDiaryDateTitle';
-import BackButton from '../../components/button/BackButton';
+import formatDate from '../../../actions/formatData';
+import HeaderDiaryDateTitle from '../../../components/diary/HeaderDiaryDateTitle';
+import BackButton from '../../../components/button/BackButton';
 
 
 type Props = {

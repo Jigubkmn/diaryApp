@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, SafeAreaView, TouchableWithoutFeedback, View, ScrollView } from 'react-native';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import Feeling from '../components/diary/Feeling';
-import Header from '../diaryCreation/components/Header';
+import Header from '../diary/creation/components/Header';
 import DiaryText from '../components/diary/DiaryText';
 import DiaryImage from '../components/diary/DiaryImage';
 
