@@ -14,6 +14,7 @@ type Props = {
   selectedFeeling: string | null;
   setDiaryText: (text: string) => void;
   setSelectedFeeling: (feeling: string | null) => void;
+  setSelectedImage: (image: string | null) => void;
   isShowBackButton: boolean;
   selectedImage: string | null;
 }
@@ -23,6 +24,7 @@ export default function Header({
   selectedFeeling,
   setDiaryText,
   setSelectedFeeling,
+  setSelectedImage,
   isShowBackButton,
   selectedImage
 }: Props) {
@@ -66,6 +68,7 @@ export default function Header({
         Alert.alert("日記を保存しました");
         setDiaryText("");
         setSelectedFeeling(null);
+        setSelectedImage(null);
         router.push("/(tabs)")
       })
       .catch((error) => {

@@ -33,7 +33,10 @@ export default function Header({ diaryId, diaryDate, onDelete }: Props) {
   const handleEdit = () => {
     router.push({
       pathname: '/diaryEdit/diaryEdit',
-      params: { id: diaryId }
+      params: {
+        diaryId: diaryId,
+        isTouchFeelingButton: 'true'
+      }
     })
   }
 
@@ -74,7 +77,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   headerRight: {
-    width: 80,
+    width: 60,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',

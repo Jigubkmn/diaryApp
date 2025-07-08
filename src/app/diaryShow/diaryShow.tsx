@@ -3,11 +3,12 @@ import { StyleSheet, SafeAreaView, View, Image, Text, ScrollView, Alert } from '
 import Feeling from '../components/diary/Feeling';
 import { DiaryType } from '../../../type/diary';
 import { auth, db } from '../../config';
-import { doc, getDoc, deleteDoc } from 'firebase/firestore';
+import { doc, deleteDoc } from 'firebase/firestore';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import Header from './components/Header';
 import handleBack from '../actions/handleBack';
 import dayjs from 'dayjs';
+import fetchSelectedDiary from '../actions/fetchSelectedDiary';
 
 
 export default function diaryShow() {
@@ -18,31 +19,8 @@ export default function diaryShow() {
   const { isTouchFeelingButton } = useLocalSearchParams<{ isTouchFeelingButton?: string }>();
 
   useEffect(() => {
-    const fetchDiary = async () => {
-      if (userId === null || diaryId === null) return;
-      try {
-        const diaryRef = doc(db, `users/${userId}/diary/${diaryId}`);
-        const diarySnap = await getDoc(diaryRef);
-        if (diarySnap.exists()) {
-          const data = diarySnap.data();
-          const diary: DiaryType = {
-            id: diarySnap.id,
-            diaryText: data.diaryText,
-            diaryDate: dayjs(data.diaryDate.toDate()),
-            feeling: data.feeling || null,
-            updatedAt: data.updatedAt.toDate(),
-            selectedImage: data.selectedImage
-          };
-          setSelectedDiaryInfo(diary);
-        } else {
-          console.log('対象データがありません。');
-        }
-      } catch (error) {
-        console.error('対象データの取得に失敗しました。', error);
-      }
-    };
-
-    fetchDiary();
+    // 日記の情報を取得
+    fetchSelectedDiary({ userId, diaryId, setSelectedDiaryInfo });
   }, []);
 
   useEffect(() => {
@@ -119,7 +97,7 @@ export default function diaryShow() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFFFFF',
   },
   headerArea: {
     backgroundColor: '#FFFFFF',
