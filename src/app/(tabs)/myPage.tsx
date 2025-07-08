@@ -31,6 +31,7 @@ export default function myPage() {
     <SafeAreaView style={styles.container}>
       <Header />
       <ScrollView style={styles.bodyContainer}>
+        {/* ログインユーザー情報 */}
         <UserInfo userInfos={userInfos} />
         <View style={styles.diaryShareContainer}>
           <Text style={styles.diaryShareTitle}>日記共通相手</Text>

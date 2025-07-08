@@ -29,49 +29,67 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
 
   return (
     <View style={styles.userInfoContainer}>
-    {/* ユーザー画像 */}
-    <View style={styles.userImageContainer}>
-      <Image source={userImage} style={styles.userImage} />
-      <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
-        <EditIcon size={24} color="#FFA500" />
+      <View style={styles.userInfoWrapper}>
+        {/* ユーザー画像 */}
+        <View style={styles.userImageContainer}>
+          <Image source={userImage} style={styles.userImage} />
+          <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
+            <EditIcon size={24} color="#FFA500" />
+          </TouchableOpacity>
+        </View>
+        {/* ユーザーID */}
+        <View style={styles.userIdContainer}>
+          <View style={styles.userIdTitle}>
+            <Text style={styles.userTitle}>ユーザーID</Text>
+            <TouchableOpacity onPress={() => {}}>
+              <EditIcon size={24} color="#FFA500" />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.userText}>{userInfos?.accountId}</Text>
+        </View>
+        {/* ユーザー名 */}
+        <View style={styles.userNameContainer}>
+          <View style={styles.userNameTitle}>
+            <Text style={styles.userTitle}>ユーザー名</Text>
+            <TouchableOpacity onPress={() => {}}>
+              <EditIcon size={24} color="#FFA500" />
+            </TouchableOpacity>
+          </View>
+          <Text style={styles.userText}>{userInfos?.userName}</Text>
+        </View>
+      </View>
+      {/* 区切り線 */}
+      <View style={styles.divider} />
+      {/* ログアウトボタン */}
+      <TouchableOpacity style={styles.logoutButton} onPress={() => {handleLogout()}}>
+        <Text style={styles.logoutButtonText}>ログアウト</Text>
       </TouchableOpacity>
     </View>
-    {/* ユーザーID */}
-    <View style={styles.userTextContainer}>
-      <Text style={styles.userTitle}>ユーザーID</Text>
-      <Text style={styles.userText}>{userInfos?.accountId}</Text>
-    </View>
-    {/* ユーザー名 */}
-    <View style={styles.userTextContainer}>
-      <View style={styles.userTextWrapper}>
-        <Text style={styles.userTitle}>ユーザー名</Text>
-        <TouchableOpacity onPress={() => {}}>
-          <EditIcon size={24} color="#FFA500" />
-        </TouchableOpacity>
-      </View>
-      <Text style={styles.userText}>{userInfos?.userName}</Text>
-    </View>
-    <TouchableOpacity style={styles.logoutButton} onPress={() => {handleLogout()}}>
-      <Text style={styles.logoutButtonText}>ログアウト</Text>
-    </TouchableOpacity>
-  </View>
   )
 }
 
 const styles = StyleSheet.create({
   userInfoContainer: {
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    marginTop: 16,
-    marginHorizontal: 24,
+    marginVertical: 16,
+    marginHorizontal: 'auto',
+    paddingTop: 16,
+    paddingBottom: 8,
     backgroundColor: '#ffffff',
     borderRadius: 10,
+    flexDirection: 'column',
     alignItems: 'center',
+    width: 250,
+  },
+  userInfoWrapper: {
+    width: '100%',
+    paddingHorizontal: 16,
   },
   userImageContainer: {
     width: 100,
     height: 100,
     position: 'relative',
+    marginBottom: 16,
+    alignSelf: 'center',
   },
   userImage: {
     width: 100,
@@ -87,11 +105,25 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 3,
   },
-  userTextContainer: {
-    marginTop: 16,
-    marginRight: 'auto',
+  userIdContainer: {
+    marginBottom: 16,
+    alignSelf: 'flex-start',
+    marginLeft: 16,
+  },
+  userIdTitle: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   userTextWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userNameContainer: {
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+    marginLeft: 16,
+  },
+  userNameTitle: {
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -108,19 +140,21 @@ const styles = StyleSheet.create({
   logoutButton: {
     height: 24,
     width: 90,
-    paddingHorizontal: 10,
-    paddingVertical: 0,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(255, 0, 0, 0.6)',
-    position: 'absolute',
-    bottom: 16,
-    right: 16,
+    alignSelf: 'center',
   },
   logoutButtonText: {
     fontSize: 14,
     lineHeight: 24,
     color: '#ffffff',
+  },
+  divider: {
+    height: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.25)',
+    marginVertical: 8,
+    width: '100%',
   },
 })
