@@ -1,5 +1,7 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image, ImageSourcePropType } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { ImageSourcePropType } from 'react-native';
 
 type Props = {
   selectedFeeling: string | null;
@@ -14,6 +16,8 @@ export default function FeelingView({ selectedFeeling, name, image }: Props) {
         source={image}
         style={[
           styles.feelingImage,{ opacity: selectedFeeling === name ? 1 : 0.4 }]}
+        contentFit="contain"
+        cachePolicy="memory-disk"
       />
       <Text style={[styles.feelingText, { opacity: selectedFeeling === name ? 1 : 0.4 }]}>{name}</Text>
   </View>
