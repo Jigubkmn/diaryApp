@@ -1,22 +1,26 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Image } from 'expo-image'
 import EditIcon from '../../components/Icon/EditIcon';
 import { UserInfoType } from '../../../../type/userInfo';
 import UserLogout from '../../actions/handleLogout';
 import UserEditContents from './UserEditButtons';
+import { db } from '../../../config';
+import { doc, updateDoc } from 'firebase/firestore'
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
+  userId?: string
+  userInfoId?: string
 }
 
-export default function UserInfo({ userInfos }: UserInfoProps) {
+export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProps) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../../assets/images/user.png')
 
-  const [isUserIdEdit, setIsUserIdEdit] = useState(false);
-  const [isUserNameEdit, setIsUserNameEdit] = useState(false);
+  const [isAccountIdEdit, setIsAccountIdEdit] = useState(false);
   const [accountId, setAccountId] = useState('');
+  const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [userName, setUserName] = useState('');
 
   useEffect(() => {
@@ -28,7 +32,7 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
   }, [userInfos?.userName]);
 
   useEffect(() => {
-    setIsUserIdEdit(false)
+    setIsAccountIdEdit(false)
     setIsUserNameEdit(false)
   }, []);
 
@@ -37,9 +41,34 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
     UserLogout();
   }
 
-  const handleUserInfoUpdate = (userInfo: string | undefined) => {
-    if (!userInfo) return;
-    console.log("userInfo", userInfo);
+  const handleAccountIdUpdate = async (userUpdateInfo: string | undefined) => {
+    if (!userUpdateInfo || !userId || !userInfoId) return;
+    try {
+      const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
+      await updateDoc(userRef, {
+        accountId: userUpdateInfo,
+      });
+      setIsAccountIdEdit(false)
+      Alert.alert("ユーザーIDの更新に成功しました");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("ユーザーIDの更新に失敗しました");
+    }
+  }
+
+  const handleUserNameUpdate = async (userUpdateInfo: string | undefined) => {
+    if (!userUpdateInfo || !userId || !userInfoId) return;
+    try {
+      const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
+      await updateDoc(userRef, {
+        userName: userUpdateInfo,
+      });
+      setIsUserNameEdit(false)
+      Alert.alert("ユーザー名の更新に成功しました");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("ユーザー名の更新に失敗しました");
+    }
   }
 
   return (
@@ -61,11 +90,11 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
         <UserEditContents
           userTitle="ユーザーID"
           userContent={userInfos?.accountId}
-          isUserContentEdit={isUserIdEdit}
-          setIsContentEdit={setIsUserIdEdit}
+          isUserContentEdit={isAccountIdEdit}
+          setIsContentEdit={setIsAccountIdEdit}
           userUpdateContent={accountId}
           setUserUpdateContent={setAccountId}
-          handleUserInfoUpdate={handleUserInfoUpdate}
+          handleUserInfoUpdate={handleAccountIdUpdate}
         />
         {/* ユーザー名 */}
         <UserEditContents
@@ -75,7 +104,7 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
           setIsContentEdit={setIsUserNameEdit}
           userUpdateContent={userName}
           setUserUpdateContent={setUserName}
-          handleUserInfoUpdate={handleUserInfoUpdate}
+          handleUserInfoUpdate={handleUserNameUpdate}
         />
       </View>
       {/* 区切り線 */}

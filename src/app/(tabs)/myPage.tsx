@@ -9,10 +9,11 @@ import UserInfo from '../myPage/components/UserInfo';
 
 export default function myPage() {
   const [userInfos, setUserInfos] = useState<UserInfoType | null>(null)
+  const [userInfoId, setUserInfoId] = useState<string>('')
+  const userId = auth.currentUser?.uid
 
   useEffect(() => {
     // ユーザー情報取得
-    const userId = auth.currentUser?.uid
     if (userId === null) return;
       const ref = collection(db, `users/${userId}/userInfo`)
       const q = query(ref) // ユーザー情報の参照を取得。
@@ -22,6 +23,7 @@ export default function myPage() {
         snapshot.docs.forEach((doc) => {
           const { accountId, userName } = doc.data();
           setUserInfos({ accountId, userName })
+          setUserInfoId(doc.id) // userInfoのIDを保存
         })
       })
     return unsubscribe;
@@ -32,7 +34,7 @@ export default function myPage() {
       <Header />
       <ScrollView style={styles.bodyContainer}>
         {/* ログインユーザー情報 */}
-        <UserInfo userInfos={userInfos} />
+        <UserInfo userInfos={userInfos} userId={userId} userInfoId={userInfoId} />
         <View style={styles.diaryShareContainer}>
           <Text style={styles.diaryShareTitle}>日記共通相手</Text>
           <View style={styles.diaryShareInfoContainer}>
