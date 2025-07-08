@@ -35,6 +35,7 @@ export default function DiaryCreation() {
             selectedFeeling={selectedFeeling}
             setDiaryText={setDiaryText}
             setSelectedFeeling={setSelectedFeeling}
+            setSelectedImage={setSelectedImage}
             isShowBackButton={isShowBackButton === 'true'}
             selectedImage={selectedImage}
           />
