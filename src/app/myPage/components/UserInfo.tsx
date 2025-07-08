@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Image } from 'expo-image'
 import EditIcon from '../../components/Icon/EditIcon';
 import { UserInfoType } from '../../../../type/userInfo';
 import UserLogout from '../../actions/handleLogout';
+import UserEditContents from './UserEditButtons';
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
@@ -13,9 +14,21 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const userImage = require('../../../../assets/images/user.png')
 
+  const [isUserIdEdit, setIsUserIdEdit] = useState(false);
+  const [accountId, setAccountId] = useState(userInfos?.accountId);
+
+  useEffect(() => {
+    setIsUserIdEdit(false)
+  }, [userInfos]);
+
   // ログアウト
   const handleLogout = () => {
     UserLogout();
+  }
+
+  const handleUserInfoUpdate = (accountId: string | undefined) => {
+    if (!accountId) return;
+    console.log("accountId", accountId);
   }
 
   return (
@@ -23,24 +36,38 @@ export default function UserInfo({ userInfos }: UserInfoProps) {
       <View style={styles.userInfoWrapper}>
         {/* ユーザー画像 */}
         <View style={styles.userImageContainer}>
-          <Image source={userImage} style={styles.userImage} />
+          <Image
+            source={userImage}
+            style={styles.userImage}
+            contentFit="contain"
+            cachePolicy="memory-disk"
+          />
           <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
             <EditIcon size={24} color="#FFA500" />
           </TouchableOpacity>
         </View>
         {/* ユーザーID */}
-        <View style={styles.userIdContainer}>
-          <View style={styles.userIdTitle}>
+        <View style={styles.userContentsContainer}>
+          <View style={styles.userContentsTitle}>
             <Text style={styles.userTitle}>ユーザーID</Text>
-            <TouchableOpacity onPress={() => {}}>
-              <EditIcon size={24} color="#FFA500" />
-            </TouchableOpacity>
+            {!isUserIdEdit && (
+              <TouchableOpacity onPress={() => {setIsUserIdEdit(true)}}>
+                <EditIcon size={24} color="#FFA500" />
+              </TouchableOpacity>
+            )}
           </View>
-          <Text style={styles.userText}>{userInfos?.accountId}</Text>
+          <UserEditContents
+            userInfos={userInfos}
+            isUserIdEdit={isUserIdEdit}
+            setIsUserIdEdit={setIsUserIdEdit}
+            accountId={accountId}
+            setAccountId={setAccountId}
+            handleUserInfoUpdate={handleUserInfoUpdate}
+          />
         </View>
         {/* ユーザー名 */}
-        <View style={styles.userNameContainer}>
-          <View style={styles.userNameTitle}>
+        <View style={styles.userContentsContainer}>
+          <View style={styles.userContentsTitle}>
             <Text style={styles.userTitle}>ユーザー名</Text>
             <TouchableOpacity onPress={() => {}}>
               <EditIcon size={24} color="#FFA500" />
@@ -96,25 +123,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     padding: 3,
   },
-  userIdContainer: {
+  userContentsContainer: {
     marginBottom: 16,
     alignSelf: 'flex-start',
-    marginLeft: 16,
+    width: '100%',
   },
-  userIdTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userTextWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userNameContainer: {
-    marginBottom: 8,
-    alignSelf: 'flex-start',
-    marginLeft: 16,
-  },
-  userNameTitle: {
+  userContentsTitle: {
     flexDirection: 'row',
     alignItems: 'center',
   },
