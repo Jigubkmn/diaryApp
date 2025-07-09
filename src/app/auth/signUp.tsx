@@ -24,6 +24,11 @@ export default function SignUp() {
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
 
+  // 必須項目が全て入力されているかチェック
+  const isFormValid = () => {
+    return email && password && userName && confirmPassword;
+  };
+
   // ユーザー新規登録、ユーザー情報登録
   const handleSignUp = (email: string, password: string, userName: string, confirmPassword: string) => {
     if (password !== confirmPassword) {
@@ -90,10 +95,10 @@ export default function SignUp() {
           </Text>
           <TextInput
             style={styles.input}
-            placeholder="半角英数字4文字以上で入力してください"
+            placeholder="半角英数字6文字以上で入力してください"
             value={password}
             onChangeText={(text) => setPassword(text)}
-            autoCapitalize="none" // 先頭を大文字にしない。
+            autoCapitalize="none"
             secureTextEntry={true}
           />
         </View>
@@ -112,11 +117,14 @@ export default function SignUp() {
           />
         </View>
         {/* 登録ボタン */}
-        <TouchableOpacity onPress={() => {handleSignUp(email, password, userName, confirmPassword)}} style={styles.button}>
+        <TouchableOpacity
+          onPress={() => {handleSignUp(email, password, userName, confirmPassword)}}
+          style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
+          disabled={!isFormValid()}>
           <Text style={styles.buttonText}>登録する</Text>
         </TouchableOpacity>
 
-        <Link href="/auth/login" style={styles.loginLinkText} asChild>
+      <Link href="/auth/login" style={styles.loginLinkText} asChild>
           <TouchableOpacity>
             <Text style={styles.loginLinkText}>ログインはこちら</Text>
           </TouchableOpacity>
@@ -168,7 +176,18 @@ const styles = StyleSheet.create({
   required: {
     color: 'red',
   },
-  button: {
+  disabledButton: {
+    width: '100%',
+    height: 30,
+    backgroundColor: '#27CBFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 10,
+    marginTop: 24,
+    marginBottom: 16,
+    opacity: 0.5,
+  },
+  headerSaveButton: {
     width: '100%',
     height: 30,
     backgroundColor: '#27CBFF',
