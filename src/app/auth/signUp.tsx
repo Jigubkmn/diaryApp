@@ -23,6 +23,8 @@ export default function SignUp() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  // 各フォームのエラーメッセージを保持するstate
+  const [errors, setErrors] = useState({ userName: '', email: '', password: '', confirmPassword: '' })
 
   // 必須項目が全て入力されているかチェック
   const isFormValid = () => {
@@ -31,6 +33,7 @@ export default function SignUp() {
 
   // ユーザー新規登録、ユーザー情報登録
   const handleSignUp = (email: string, password: string, userName: string, confirmPassword: string) => {
+    setErrors({ userName: '', email: '', password: '', confirmPassword: '' })
     if (password !== confirmPassword) {
       Alert.alert("パスワードが一致しません");
       return;
@@ -51,7 +54,26 @@ export default function SignUp() {
     })
     .catch((error) => {
       console.log("error", error)
-      Alert.alert("会員登録に失敗しました");
+      let emailError = ''
+      let passwordError = ''
+      switch (error.code) {
+        case 'auth/invalid-email': {
+          emailError = 'メールアドレスの形式が正しくありません。'
+          break
+        }
+        case 'auth/email-already-in-use': {
+          emailError = 'このメールアドレスは既に使用されています。'
+          break
+        }
+        case 'auth/weak-password': {
+          passwordError = 'パスワードは6文字以上で入力してください。'
+          break
+        }
+        default:
+          Alert.alert('登録エラー', '予期せぬエラーが発生しました。時間をおいて再試行してください。')
+          break
+      }
+      setErrors({ ...errors, email: emailError, password: passwordError })
     })
   }
   return (
@@ -86,6 +108,7 @@ export default function SignUp() {
             autoCapitalize="none"
             keyboardType="email-address"
           />
+          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
         </View>
         {/* パスワード */}
         <View style={styles.inputContainer}>
@@ -101,6 +124,7 @@ export default function SignUp() {
             autoCapitalize="none"
             secureTextEntry={true}
           />
+          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
         </View>
         {/* パスワード確認 */}
         <View style={styles.inputContainer}>
@@ -155,6 +179,11 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     fontWeight: 'bold',
     color: '#000000',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
+    marginTop: 4,
   },
   inputContainer: {
     width: '100%',
