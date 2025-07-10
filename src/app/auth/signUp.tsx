@@ -1,12 +1,12 @@
 import React, { useState } from 'react'
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native'
-import { Link } from 'expo-router'
 import { router } from 'expo-router'
 import { auth, db } from '../../config'
 import { AuthError } from 'firebase/auth'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 import getRandomAccountId from '../actions/getRandomAccountId'
+import AuthNavigationLink from '../components/auth/Link'
 
 export default function SignUp() {
   const [userName, setUserName] = useState('')
@@ -174,11 +174,10 @@ export default function SignUp() {
               <Text style={styles.buttonText}>登録する</Text>
             </TouchableOpacity>
 
-            <Link href="/auth/login" style={styles.loginLinkText} asChild>
-              <TouchableOpacity>
-                <Text style={styles.loginLinkText}>ログインはこちら</Text>
-              </TouchableOpacity>
-              </Link>
+            <AuthNavigationLink
+              text="ログインはこちら"
+              href="/auth/login"
+            />
             </ScrollView>
         </View>
       </TouchableWithoutFeedback>
