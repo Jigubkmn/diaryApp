@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native'
+import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, Alert, TouchableWithoutFeedback } from 'react-native'
 import { router } from 'expo-router'
 import { auth, db } from '../../config'
 import { AuthError } from 'firebase/auth'
@@ -7,6 +7,7 @@ import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 import getRandomAccountId from '../actions/getRandomAccountId'
 import AuthNavigationLink from '../components/auth/Link'
+import AuthButton from '../components/auth/AuthButton'
 
 export default function SignUp() {
   const [userName, setUserName] = useState('')
@@ -167,13 +168,15 @@ export default function SignUp() {
               {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
             </View>
             {/* 登録ボタン */}
-            <TouchableOpacity
-              onPress={() => {handleSignUp(email, password, userName)}}
-              style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
-              disabled={!isFormValid()}>
-              <Text style={styles.buttonText}>登録する</Text>
-            </TouchableOpacity>
-
+            <AuthButton
+              buttonText="登録する"
+              email={email}
+              password={password}
+              userName={userName}
+              handleAuthButton={handleSignUp}
+              isFormValid={isFormValid}
+            />
+            {/* リンク */}
             <AuthNavigationLink
               text="ログインはこちら"
               href="/auth/login"
@@ -236,32 +239,5 @@ const styles = StyleSheet.create({
   },
   required: {
     color: 'red',
-  },
-  disabledButton: {
-    width: '100%',
-    height: 48,
-    backgroundColor: '#27CBFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    marginTop: 24,
-    marginBottom: 16,
-    opacity: 0.5,
-  },
-  headerSaveButton: {
-    width: '100%',
-    height: 48,
-    backgroundColor: '#27CBFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 10,
-    marginTop: 24,
-    marginBottom: 16,
-  },
-  buttonText: {
-    fontSize: 16,
-    lineHeight: 30,
-    color: '#FFFFFF',
-    fontWeight: 'bold',
   },
 })
