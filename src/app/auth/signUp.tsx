@@ -3,10 +3,9 @@ import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Aler
 import { Link } from 'expo-router'
 import { router } from 'expo-router'
 import { auth, db } from '../../config'
-// doc：ドキュメント参照を作成する関数
-// setDoc：ドキュメントを作成する関数
-import { collection, addDoc } from 'firebase/firestore'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { AuthError } from 'firebase/auth'
+import { collection, addDoc, Timestamp } from 'firebase/firestore'
+import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 
 // ランダムなアカウントIDを生成する関数
 const generateAccountId = (): string => {
@@ -31,50 +30,67 @@ export default function SignUp() {
     return email && password && userName && confirmPassword;
   };
 
-  // ユーザー新規登録、ユーザー情報登録
-  const handleSignUp = (email: string, password: string, userName: string, confirmPassword: string) => {
-    setErrors({ userName: '', email: '', password: '', confirmPassword: '' })
-    if (password !== confirmPassword) {
-      Alert.alert("パスワードが一致しません");
-      return;
+  const validateForm = () => {
+    const newErrors = { userName: '', email: '', password: '', confirmPassword: '' }
+    let isValid = true
+
+    if (userName.length < 2 || userName.length > 10) {
+      newErrors.userName = 'ユーザー名は2文字以上10文字以内で入力してください'
+      isValid = false
     }
-    createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+
+    if (password !== confirmPassword) {
+      newErrors.confirmPassword = 'パスワードが一致しません'
+      isValid = false
+    }
+
+    setErrors(newErrors)
+    return isValid
+  }
+
+  // ユーザー新規登録、ユーザー情報登録
+  const handleSignUp = async (email: string, password: string, userName: string) => {
+    // 1. クライアントサイドバリデーションを実行
+    if (!validateForm()) {
+      return
+    }
+
+    let userCredential: UserCredential | null = null
+    try {
+      userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const userId = userCredential.user.uid
-      console.log("userCredential", userId);
       const ref = collection(db, `users/${userId}/userInfo`)
-      const accountId = generateAccountId()
-      addDoc(ref, {
-        userName: userName,
-        accountId: accountId,
-        createdAt: new Date(),
+      await addDoc(ref, {
+        userName,
+        accountId: generateAccountId(),
+        createdAt: Timestamp.fromDate(new Date())
       })
-      Alert.alert("会員登録に成功しました");
-      router.push("/(tabs)")
-    })
-    .catch((error) => {
+      // 全て成功した場合
+      Alert.alert('会員登録に成功しました')
+      router.replace('/(tabs)')
+    } catch (error: unknown) {
       console.log("error", error)
-      let emailError = ''
-      let passwordError = ''
-      switch (error.code) {
+      const newErrors = { userName: '', email: '', password: '', confirmPassword: '' }
+      switch ((error as AuthError).code) {
         case 'auth/invalid-email': {
-          emailError = 'メールアドレスの形式が正しくありません。'
+          newErrors.email = 'メールアドレスの形式が正しくありません。'
           break
         }
         case 'auth/email-already-in-use': {
-          emailError = 'このメールアドレスは既に使用されています。'
+          newErrors.email = 'このメールアドレスは既に使用されています。'
           break
         }
         case 'auth/weak-password': {
-          passwordError = 'パスワードは6文字以上で入力してください。'
+          newErrors.password = 'パスワードは6文字以上で入力してください。'
           break
         }
         default:
           Alert.alert('登録エラー', '予期せぬエラーが発生しました。時間をおいて再試行してください。')
           break
       }
-      setErrors({ ...errors, email: emailError, password: passwordError })
-    })
+      setErrors(newErrors)
+    }
+
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -93,6 +109,7 @@ export default function SignUp() {
             onChangeText={(text) => setUserName(text)}
             autoCapitalize="none"
           />
+          {errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null}
         </View>
         {/* メールアドレス */}
         <View style={styles.inputContainer}>
@@ -125,6 +142,7 @@ export default function SignUp() {
             secureTextEntry={true}
           />
           {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+          {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
         </View>
         {/* パスワード確認 */}
         <View style={styles.inputContainer}>
@@ -139,10 +157,11 @@ export default function SignUp() {
             autoCapitalize="none"
             secureTextEntry={true} // パスワードを非表示にする。
           />
+          {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
         </View>
         {/* 登録ボタン */}
         <TouchableOpacity
-          onPress={() => {handleSignUp(email, password, userName, confirmPassword)}}
+          onPress={() => {handleSignUp(email, password, userName)}}
           style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
           disabled={!isFormValid()}>
           <Text style={styles.buttonText}>登録する</Text>
