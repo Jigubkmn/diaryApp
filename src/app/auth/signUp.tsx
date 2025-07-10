@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#FFFFFF',
     marginHorizontal: 24,
-    marginTop: 48,
+    marginTop: 16,
     paddingVertical: 16,
     paddingHorizontal: 16,
     alignItems: 'center',
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     lineHeight: 34,
-    marginBottom: 24,
+    marginBottom: 16,
     fontWeight: 'bold',
     color: '#000000',
   },
