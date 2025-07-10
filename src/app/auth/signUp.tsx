@@ -6,16 +6,7 @@ import { auth, db } from '../../config'
 import { AuthError } from 'firebase/auth'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
-
-// ランダムなアカウントIDを生成する関数
-const generateAccountId = (): string => {
-  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = '';
-  for (let i = 0; i < 8; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return result;
-};
+import getRandomAccountId from '../actions/getRandomAccountId'
 
 export default function SignUp() {
   const [userName, setUserName] = useState('')
@@ -36,6 +27,16 @@ export default function SignUp() {
 
     if (userName.length < 2 || userName.length > 10) {
       newErrors.userName = 'ユーザー名は2文字以上10文字以内で入力してください'
+      isValid = false
+    }
+
+    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
+      newErrors.email = 'メールアドレスの形式が正しくありません'
+      isValid = false
+    }
+
+    if (password.length < 2 || password.length > 20) {
+      newErrors.userName = 'パスワードは6文字以上20文字以内で入力してください。'
       isValid = false
     }
 
@@ -62,7 +63,7 @@ export default function SignUp() {
       const ref = collection(db, `users/${userId}/userInfo`)
       await addDoc(ref, {
         userName,
-        accountId: generateAccountId(),
+        accountId: getRandomAccountId(),  // ランダムなアカウントIDを生成する関数
         createdAt: Timestamp.fromDate(new Date())
       })
       // 全て成功した場合
