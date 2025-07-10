@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { SafeAreaView, View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native'
+import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, TouchableOpacity, Alert, TouchableWithoutFeedback } from 'react-native'
 import { Link } from 'expo-router'
 import { router } from 'expo-router'
 import { auth, db } from '../../config'
@@ -95,91 +95,94 @@ export default function SignUp() {
   }
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.bodyContainer}>
-        <Text style={styles.title}>ユーザー新規登録</Text>
-        {/* ユーザー名 */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>
-            <Text>ユーザー名</Text>
-            <Text style={styles.required}> ＊</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="ユーザー名を入力してください"
-            value={userName}
-            onChangeText={(text) => setUserName(text)}
-            autoCapitalize="none"
-            onEndEditing={() => validateForm()}
-          />
-          {errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null}
-        </View>
-        {/* メールアドレス */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>
-            <Text>メールアドレス</Text>
-            <Text style={styles.required}> ＊</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="メールアドレスを入力してください"
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            onEndEditing={() => validateForm()}
-          />
-          {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
-        </View>
-        {/* パスワード */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>
-            <Text>パスワード</Text>
-            <Text style={styles.required}> ＊</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="半角英数字6文字以上で入力してください"
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-            autoCapitalize="none"
-            secureTextEntry={true}
-            onEndEditing={() => validateForm()}
-          />
-          {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
-          {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
-        </View>
-        {/* パスワード確認 */}
-        <View style={styles.inputContainer}>
-          <Text style={styles.inputLabel}>
-            <Text>パスワード確認</Text>
-            <Text style={styles.required}> ＊</Text>
-          </Text>
-          <TextInput
-            style={styles.input}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            autoCapitalize="none"
-            secureTextEntry={true} // パスワードを非表示にする。
-            onEndEditing={() => validateForm()}
-          />
-          {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
-        </View>
-        {/* 登録ボタン */}
-        <TouchableOpacity
-          onPress={() => {handleSignUp(email, password, userName)}}
-          style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
-          disabled={!isFormValid()}>
-          <Text style={styles.buttonText}>登録する</Text>
-        </TouchableOpacity>
+      <TouchableWithoutFeedback>
+        <View style={styles.wrapper}>
+          <Text style={styles.title}>ユーザー新規登録</Text>
+          <ScrollView style={styles.bodyContainer}>
+            {/* ユーザー名 */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>
+                <Text>ユーザー名</Text>
+                <Text style={styles.required}> ＊</Text>
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="ユーザー名を入力してください"
+                value={userName}
+                onChangeText={(text) => setUserName(text)}
+                autoCapitalize="none"
+                onBlur={() => validateForm()}
+              />
+              {errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null}
+            </View>
+            {/* メールアドレス */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>
+                <Text>メールアドレス</Text>
+                <Text style={styles.required}> ＊</Text>
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="メールアドレスを入力してください"
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                autoCapitalize="none"
+                keyboardType="email-address"
+                onBlur={() => validateForm()}
+              />
+              {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
+            </View>
+            {/* パスワード */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>
+                <Text>パスワード</Text>
+                <Text style={styles.required}> ＊</Text>
+              </Text>
+              <TextInput
+                style={styles.input}
+                placeholder="半角英数字6文字以上で入力してください"
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+                autoCapitalize="none"
+                secureTextEntry={true}
+                onBlur={() => validateForm()}
+              />
+              {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
+              {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
+            </View>
+            {/* パスワード確認 */}
+            <View style={styles.inputContainer}>
+              <Text style={styles.inputLabel}>
+                <Text>パスワード確認</Text>
+                <Text style={styles.required}> ＊</Text>
+              </Text>
+              <TextInput
+                style={styles.input}
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                autoCapitalize="none"
+                secureTextEntry={true} // パスワードを非表示にする。
+                onBlur={() => validateForm()}
+              />
+              {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
+            </View>
+            {/* 登録ボタン */}
+            <TouchableOpacity
+              onPress={() => {handleSignUp(email, password, userName)}}
+              style={[!isFormValid() ? styles.disabledButton : styles.headerSaveButton]}
+              disabled={!isFormValid()}>
+              <Text style={styles.buttonText}>登録する</Text>
+            </TouchableOpacity>
 
-      <Link href="/auth/login" style={styles.loginLinkText} asChild>
-          <TouchableOpacity>
-            <Text style={styles.loginLinkText}>ログインはこちら</Text>
-          </TouchableOpacity>
-        </Link>
-      </View>
+            <Link href="/auth/login" style={styles.loginLinkText} asChild>
+              <TouchableOpacity>
+                <Text style={styles.loginLinkText}>ログインはこちら</Text>
+              </TouchableOpacity>
+              </Link>
+            </ScrollView>
+        </View>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
-
   )
 }
 
@@ -188,14 +191,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F0F0F0',
   },
-  bodyContainer: {
+  wrapper: {
+    flex: 1,
     backgroundColor: '#FFFFFF',
     marginHorizontal: 24,
-    marginTop: 124,
+    marginTop: 48,
     paddingVertical: 16,
-    paddingHorizontal: 48,
+    paddingHorizontal: 16,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  bodyContainer: {
+    padding: 0,
+    margin: 0,
+    width: '100%',
   },
   title: {
     fontSize: 18,
@@ -231,7 +240,7 @@ const styles = StyleSheet.create({
   },
   disabledButton: {
     width: '100%',
-    height: 30,
+    height: 48,
     backgroundColor: '#27CBFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -242,7 +251,7 @@ const styles = StyleSheet.create({
   },
   headerSaveButton: {
     width: '100%',
-    height: 30,
+    height: 48,
     backgroundColor: '#27CBFF',
     alignItems: 'center',
     justifyContent: 'center',
@@ -251,8 +260,8 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   buttonText: {
-    fontSize: 14,
-    lineHeight: 24,
+    fontSize: 16,
+    lineHeight: 30,
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
@@ -261,5 +270,6 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#26B441',
     textDecorationLine: 'underline',
+    alignSelf: 'center',
   },
 })
