@@ -35,8 +35,8 @@ export default function SignUp() {
       isValid = false
     }
 
-    if (password.length < 2 || password.length > 20) {
-      newErrors.userName = 'パスワードは6文字以上20文字以内で入力してください。'
+    if (password.length < 6 || password.length > 20) {
+      newErrors.password = 'パスワードは6文字以上20文字以内で入力してください。'
       isValid = false
     }
 
@@ -109,6 +109,7 @@ export default function SignUp() {
             value={userName}
             onChangeText={(text) => setUserName(text)}
             autoCapitalize="none"
+            onEndEditing={() => validateForm()}
           />
           {errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null}
         </View>
@@ -125,6 +126,7 @@ export default function SignUp() {
             onChangeText={(text) => setEmail(text)}
             autoCapitalize="none"
             keyboardType="email-address"
+            onEndEditing={() => validateForm()}
           />
           {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
         </View>
@@ -141,6 +143,7 @@ export default function SignUp() {
             onChangeText={(text) => setPassword(text)}
             autoCapitalize="none"
             secureTextEntry={true}
+            onEndEditing={() => validateForm()}
           />
           {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
           {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
@@ -157,6 +160,7 @@ export default function SignUp() {
             onChangeText={setConfirmPassword}
             autoCapitalize="none"
             secureTextEntry={true} // パスワードを非表示にする。
+            onEndEditing={() => validateForm()}
           />
           {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
         </View>
