@@ -264,11 +264,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontWeight: 'bold',
   },
-  loginLinkText: {
-    fontSize: 14,
-    lineHeight: 24,
-    color: '#26B441',
-    textDecorationLine: 'underline',
-    alignSelf: 'center',
-  },
 })
