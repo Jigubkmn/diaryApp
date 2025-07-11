@@ -6,7 +6,12 @@ import { AuthError } from 'firebase/auth'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 import getRandomAccountId from '../actions/getRandomAccountId'
-import checkUserName from '../actions/checkUserName'
+import {
+  validateUserName,
+  validateEmail,
+  validatePassword,
+  validateConfirmPassword
+} from '../../../utils/validation'
 import AuthNavigationLink from '../components/auth/Link'
 import AuthButton from '../components/auth/AuthButton'
 
@@ -23,48 +28,39 @@ export default function SignUp() {
     return email && password && userName && confirmPassword;
   };
 
-  const validateForm = async () => {
-    const newErrors = { userName: '', email: '', password: '', confirmPassword: '' }
-    let isValid = true
+  // ユーザー名のバリデーション
+  const handleValidateUserName = async () => {
+    const errorMessage = await validateUserName(userName)
+    setErrors({ ...errors, userName: errorMessage })
+  }
 
-    if (userName.length < 2 || userName.length > 10) {
-      newErrors.userName = 'ユーザー名は2文字以上10文字以内で入力してください'
-      isValid = false
-    } else {
-      // ユーザー名の重複チェック
-      try {
-        await checkUserName(userName)
-      } catch {
-        newErrors.userName = 'このユーザー名は既に使用されています'
-        isValid = false
-      }
-    }
+  // メールアドレスのバリデーション
+  const handleValidateEmail = async () => {
+    const errorMessage = validateEmail(email)
+    setErrors({ ...errors, email: errorMessage })
+  }
 
-    if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
-      newErrors.email = 'メールアドレスの形式が正しくありません'
-      isValid = false
-    }
+  // パスワードのバリデーション
+  const handleValidatePassword = async () => {
+    const errorMessage = validatePassword(password)
+    const newErrors = { ...errors, password: errorMessage }
 
-    if (password.length < 6 || password.length > 20) {
-      newErrors.password = 'パスワードは6文字以上20文字以内で入力してください。'
-      isValid = false
-    }
-
-    if (password !== confirmPassword) {
-      newErrors.confirmPassword = 'パスワードが一致しません'
-      isValid = false
+    // パスワード確認欄もチェック
+    if (confirmPassword) {
+      newErrors.confirmPassword = validateConfirmPassword(password, confirmPassword)
     }
 
     setErrors(newErrors)
-    return isValid
+  }
+
+  // パスワード確認のバリデーション
+  const handleValidateConfirmPassword = async () => {
+    const errorMessage = validateConfirmPassword(password, confirmPassword)
+    setErrors({ ...errors, confirmPassword: errorMessage })
   }
 
   // ユーザー新規登録、ユーザー情報登録
   const handleSignUp = async (email: string, password: string, userName: string) => {
-    // 1. クライアントサイドバリデーションを実行
-    if (!(await validateForm())) {
-      return
-    }
 
     let userCredential: UserCredential | null = null
     try {
@@ -124,7 +120,7 @@ export default function SignUp() {
                 value={userName}
                 onChangeText={(text) => setUserName(text)}
                 autoCapitalize="none"
-                onBlur={() => validateForm()}
+                onBlur={() => handleValidateUserName()}
               />
               {errors.userName ? <Text style={styles.errorText}>{errors.userName}</Text> : null}
             </View>
@@ -141,7 +137,7 @@ export default function SignUp() {
                 onChangeText={(text) => setEmail(text)}
                 autoCapitalize="none"
                 keyboardType="email-address"
-                onBlur={() => validateForm()}
+                onBlur={() => handleValidateEmail()}
               />
               {errors.email ? <Text style={styles.errorText}>{errors.email}</Text> : null}
             </View>
@@ -159,7 +155,7 @@ export default function SignUp() {
                 autoCapitalize="none"
                 secureTextEntry={true}
                 textContentType="newPassword"
-                onBlur={() => validateForm()}
+                onBlur={() => handleValidatePassword()}
               />
               {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
               {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
@@ -177,7 +173,7 @@ export default function SignUp() {
                 autoCapitalize="none"
                 secureTextEntry={true} // パスワードを非表示にする。
                 textContentType="newPassword"
-                onBlur={() => validateForm()}
+                onBlur={() => handleValidateConfirmPassword()}
               />
               {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
             </View>
