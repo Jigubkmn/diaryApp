@@ -158,6 +158,7 @@ export default function SignUp() {
                 onChangeText={(text) => setPassword(text)}
                 autoCapitalize="none"
                 secureTextEntry={true}
+                textContentType="newPassword"
                 onBlur={() => validateForm()}
               />
               {errors.password ? <Text style={styles.errorText}>{errors.password}</Text> : null}
@@ -175,6 +176,7 @@ export default function SignUp() {
                 onChangeText={setConfirmPassword}
                 autoCapitalize="none"
                 secureTextEntry={true} // パスワードを非表示にする。
+                textContentType="newPassword"
                 onBlur={() => validateForm()}
               />
               {errors.confirmPassword ? <Text style={styles.errorText}>{errors.confirmPassword}</Text> : null}
