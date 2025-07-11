@@ -62,9 +62,12 @@ export default function SignUp() {
       userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const userId = userCredential.user.uid
       const ref = collection(db, `users/${userId}/userInfo`)
+
+      // 重複しないアカウントIDを生成
+      const accountId = await getRandomAccountId()
       await addDoc(ref, {
         userName,
-        accountId: getRandomAccountId(),  // ランダムなアカウントIDを生成する関数
+        accountId: accountId,
         createdAt: Timestamp.fromDate(new Date())
       })
       // 全て成功した場合
