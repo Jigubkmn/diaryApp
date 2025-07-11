@@ -1,3 +1,4 @@
+import checkAccountId from '../src/app/actions/checkAccountId'
 import checkUserName from '../src/app/actions/checkUserName'
 
 // ユーザー名のバリデーション
@@ -37,5 +38,21 @@ export const validateConfirmPassword = (password: string, confirmPassword: strin
   if (password !== confirmPassword) {
     return 'パスワードが一致しません'
   }
+  return ''
+}
+
+// ユーザーIDのバリデーション
+export const validateAccountId = async (accountId: string): Promise<string> => {
+  // まず長さチェック
+  if (accountId.length < 8 || accountId.length > 15) {
+    return 'ユーザーIDは8文字以上15文字以内で入力してください'
+  }
+
+  // 次に重複チェック
+  const isDuplicate = await checkAccountId(accountId)
+  if (isDuplicate) {
+    return 'このユーザーIDは既に使用されています'
+  }
+
   return ''
 }

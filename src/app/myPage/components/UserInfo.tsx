@@ -4,9 +4,10 @@ import { Image } from 'expo-image'
 import EditIcon from '../../components/Icon/EditIcon';
 import { UserInfoType } from '../../../../type/userInfo';
 import UserLogout from '../../actions/handleLogout';
-import UserEditContents from './UserEditButtons';
+import UserEditContents from './UserEditContents';
 import { db } from '../../../config';
 import { doc, updateDoc } from 'firebase/firestore'
+import { validateAccountId, validateUserName } from '../../../../utils/validation';
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
@@ -22,6 +23,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   const [accountId, setAccountId] = useState('');
   const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [userName, setUserName] = useState('');
+  const [errors, setErrors] = useState({ accountId: '', userName: '' })
 
   useEffect(() => {
     setAccountId(userInfos?.accountId || '')
@@ -43,6 +45,8 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
 
   const handleAccountIdUpdate = async (userUpdateInfo: string | undefined) => {
     if (!userUpdateInfo || !userId || !userInfoId) return;
+    handleValidateAccountId()
+    if (errors.accountId) return;
     try {
       const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
       await updateDoc(userRef, {
@@ -56,8 +60,16 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
     }
   }
 
+  // ユーザーIDのバリデーション
+  const handleValidateAccountId = async () => {
+    const errorMessage = await validateAccountId(accountId)
+    setErrors({ ...errors, accountId: errorMessage })
+  }
+
   const handleUserNameUpdate = async (userUpdateInfo: string | undefined) => {
     if (!userUpdateInfo || !userId || !userInfoId) return;
+    handleValidateUserName()
+    if (errors.userName) return;
     try {
       const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
       await updateDoc(userRef, {
@@ -69,6 +81,13 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
       console.log("error", error);
       Alert.alert("ユーザー名の更新に失敗しました");
     }
+  }
+
+  // ユーザー名のバリデーション
+  const handleValidateUserName = async () => {
+    if (!userName) return;
+    const errorMessage = await validateUserName(userName)
+    setErrors({ ...errors, userName: errorMessage })
   }
 
   return (
@@ -95,6 +114,8 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
           userUpdateContent={accountId}
           setUserUpdateContent={setAccountId}
           handleUserInfoUpdate={handleAccountIdUpdate}
+          errorText={errors.accountId}
+          handleValidateUserContent={handleValidateAccountId}
         />
         {/* ユーザー名 */}
         <UserEditContents
@@ -105,6 +126,8 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
           userUpdateContent={userName}
           setUserUpdateContent={setUserName}
           handleUserInfoUpdate={handleUserNameUpdate}
+          errorText={errors.userName}
+          handleValidateUserContent={handleValidateUserName}
         />
       </View>
       {/* 区切り線 */}
