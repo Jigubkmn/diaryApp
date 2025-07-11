@@ -6,6 +6,7 @@ import { AuthError } from 'firebase/auth'
 import { collection, addDoc, Timestamp } from 'firebase/firestore'
 import { createUserWithEmailAndPassword, UserCredential } from 'firebase/auth'
 import getRandomAccountId from '../actions/getRandomAccountId'
+import checkUserName from '../actions/checkUserName'
 import AuthNavigationLink from '../components/auth/Link'
 import AuthButton from '../components/auth/AuthButton'
 
@@ -22,13 +23,21 @@ export default function SignUp() {
     return email && password && userName && confirmPassword;
   };
 
-  const validateForm = () => {
+  const validateForm = async () => {
     const newErrors = { userName: '', email: '', password: '', confirmPassword: '' }
     let isValid = true
 
     if (userName.length < 2 || userName.length > 10) {
       newErrors.userName = 'ユーザー名は2文字以上10文字以内で入力してください'
       isValid = false
+    } else {
+      // ユーザー名の重複チェック
+      try {
+        await checkUserName(userName)
+      } catch {
+        newErrors.userName = 'このユーザー名は既に使用されています'
+        isValid = false
+      }
     }
 
     if (!email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)) {
@@ -53,7 +62,7 @@ export default function SignUp() {
   // ユーザー新規登録、ユーザー情報登録
   const handleSignUp = async (email: string, password: string, userName: string) => {
     // 1. クライアントサイドバリデーションを実行
-    if (!validateForm()) {
+    if (!(await validateForm())) {
       return
     }
 
