@@ -5,15 +5,15 @@ type Props = {
   buttonText: string
   email: string
   password: string
-  userName: string
-  handleAuthButton: (email: string, password: string, userName: string) => void
-  isFormValid: () => string
+  userName?: string
+  handleAuthButton: (email: string, password: string, userName?: string) => void
+  isFormValid: () => boolean
 }
 
 export default function AuthButton({ buttonText, email, password, userName, handleAuthButton, isFormValid }: Props) {
   return (
     <TouchableOpacity
-      onPress={() => {handleAuthButton(email, password, userName)}}
+      onPress={() => {handleAuthButton(email, password, userName || undefined)}}
       style={[isFormValid() ? styles.authButton : styles.disabledButton]}
       disabled={!isFormValid()}>
       <Text style={styles.buttonText}>{buttonText}</Text>

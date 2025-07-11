@@ -24,8 +24,8 @@ export default function SignUp() {
   const [errors, setErrors] = useState({ userName: '', email: '', password: '', confirmPassword: '' })
 
   // 必須項目が全て入力されているかチェック
-  const isFormValid = () => {
-    return email && password && userName && confirmPassword;
+  const isFormValid = (): boolean => {
+    return !!(email && password && userName && confirmPassword);
   };
 
   // ユーザー名のバリデーション
@@ -60,7 +60,7 @@ export default function SignUp() {
   }
 
   // ユーザー新規登録、ユーザー情報登録
-  const handleSignUp = async (email: string, password: string, userName: string) => {
+  const handleSignUp = async (email: string, password: string, userName?: string) => {
 
     let userCredential: UserCredential | null = null
     try {
@@ -191,7 +191,7 @@ export default function SignUp() {
               text="ログインはこちら"
               href="/auth/login"
             />
-            </ScrollView>
+          </ScrollView>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
