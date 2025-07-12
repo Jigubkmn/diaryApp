@@ -3,7 +3,7 @@ import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, Alert, Tou
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { router } from 'expo-router'
 import AuthNavigationLink from '../components/auth/Link'
-import AuthButton from '../components/auth/AuthButton'
+import AuthButton from './components/AuthButton'
 
 export default function PasswordRest() {
   const [email, setEmail] = useState('')
@@ -15,17 +15,20 @@ export default function PasswordRest() {
   };
 
   // パスワードリセット
-  const handlePasswordRest = async (email: string) => {
-    const auth = getAuth();
-    sendPasswordResetEmail(auth, email)
-    .then(() => {
-      Alert.alert("パスワード再度設定メールを送信しました");
-      setEmail('');
-      router.push("/auth/login");
-    })
-    .catch((error) => {
-      console.log("error", error);
-    })
+  const handlePasswordRest = () => {
+    const passwordRest = async (email: string) => {
+      const auth = getAuth();
+      sendPasswordResetEmail(auth, email)
+      .then(() => {
+        Alert.alert("パスワード再度設定メールを送信しました");
+        setEmail('');
+        router.push("/auth/login");
+      })
+      .catch((error) => {
+        console.log("error", error);
+      })
+    }
+    passwordRest(email)
   }
 
   return (
@@ -52,7 +55,6 @@ export default function PasswordRest() {
             {/* 登録ボタン */}
             <AuthButton
               buttonText="送信する"
-              email={email}
               handleAuthButton={handlePasswordRest}
               isFormValid={isFormValid}
             />

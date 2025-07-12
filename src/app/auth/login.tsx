@@ -4,7 +4,7 @@ import { auth } from '../../config'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { router } from 'expo-router'
 import AuthNavigationLink from '../components/auth/Link'
-import AuthButton from '../components/auth/AuthButton'
+import AuthButton from './components/AuthButton'
 
 export default function Login() {
   const [email, setEmail] = useState('')
@@ -15,16 +15,19 @@ export default function Login() {
     return !!(email && password);
   };
 
-  const handleLogin = (email: string, password?: string) => {
-    signInWithEmailAndPassword(auth, email, password || '')
-    .then((userCredential) => {
-      console.log("userCredential", userCredential.user.uid);
-      router.push("/(tabs)")
-    })
-    .catch((error) => {
-      console.log("error", error)
-      Alert.alert("ログイン処理を失敗しました");
-    })
+  const handleLogin = () => {
+    const login = (email: string, password: string) => {
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log("userCredential", userCredential.user.uid);
+        router.push("/(tabs)")
+      })
+      .catch((error) => {
+        console.log("error", error)
+        Alert.alert("ログイン処理を失敗しました");
+      })
+    }
+    login(email, password)
   }
 
   return (
@@ -65,8 +68,6 @@ export default function Login() {
           {/* ログインボタン */}
           <AuthButton
             buttonText="ログインする"
-            email={email}
-            password={password}
             handleAuthButton={handleLogin}
             isFormValid={isFormValid}
           />
