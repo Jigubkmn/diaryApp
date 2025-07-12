@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { Image } from 'expo-image'
+import { noUserImage } from '../../constants/userImage';
 import EditIcon from '../../components/Icon/EditIcon';
 import { UserInfoType } from '../../../../type/userInfo';
 import UserLogout from '../../actions/handleLogout';
+import handleImageSelect from '../../actions/handleImageSelect';
 import UserEditContents from './UserEditContents';
 import { db } from '../../../config';
 import { doc, updateDoc } from 'firebase/firestore'
 import { validateAccountId, validateUserName } from '../../../../utils/validation';
-import handleImageSelect from '../../actions/handleImageSelect';
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
@@ -17,8 +18,6 @@ type UserInfoProps = {
 }
 
 export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProps) {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const noUserImage = require('../../../../assets/images/user.png')
   const [isAccountIdEdit, setIsAccountIdEdit] = useState(false);
   const [accountId, setAccountId] = useState('');
   const [isUserNameEdit, setIsUserNameEdit] = useState(false);
@@ -183,12 +182,11 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 16,
     alignSelf: 'center',
-    // borderRadius: 50, // コンテナも円形にする
   },
   userImage: {
     width: 100,
     height: 100,
-    borderRadius: 50, // 円形にする
+    borderRadius: 50,
   },
   editIconOverlay: {
     position: 'absolute',
