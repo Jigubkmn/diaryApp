@@ -9,7 +9,6 @@ type Props = {
   setSelectedDiaryInfo: (diary: DiaryType) => void;
 }
 
-
 export default async function fetchSelectedDiary({ userId, diaryId, setSelectedDiaryInfo }: Props) {
   if (userId === null || diaryId === null) return;
     try {
