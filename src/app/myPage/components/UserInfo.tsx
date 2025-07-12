@@ -18,13 +18,12 @@ type UserInfoProps = {
 
 export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProps) {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const userImage = require('../../../../assets/images/user.png')
-
+  const noUserImage = require('../../../../assets/images/user.png')
   const [isAccountIdEdit, setIsAccountIdEdit] = useState(false);
   const [accountId, setAccountId] = useState('');
   const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [userName, setUserName] = useState('');
-  const [selectedImage, setSelectedImage] = useState<string | null>(userImage);
+  const [userImage, setUserImage] = useState<string | null>(noUserImage);
   const [errors, setErrors] = useState({ accountId: '', userName: '' })
 
   useEffect(() => {
@@ -36,13 +35,13 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   }, [userInfos?.userName]);
 
   useEffect(() => {
-    setSelectedImage(userInfos?.userImage || '')
+    setUserImage(userInfos?.userImage || '')
   }, [userInfos?.userImage]);
 
   useEffect(() => {
     setIsAccountIdEdit(false)
     setIsUserNameEdit(false)
-    setSelectedImage(userImage)
+    setUserImage(noUserImage)
   }, []);
 
   // ログアウト
@@ -98,12 +97,12 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   }
 
   const ImageSelect = async () => {
-    await handleImageSelect(setSelectedImage);
+    await handleImageSelect(setUserImage);
     // ユーザー画像を更新
     try {
       const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
       await updateDoc(userRef, {
-        userImage: selectedImage,
+        userImage: userImage,
       });
       Alert.alert("ユーザー画像を更新しました");
     } catch (error) {
@@ -118,7 +117,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
         {/* ユーザー画像 */}
         <View style={styles.userImageContainer}>
           <Image
-            source={selectedImage}
+            source={userImage}
             style={styles.userImage}
             contentFit="cover"
             cachePolicy="memory-disk"
