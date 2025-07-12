@@ -14,7 +14,7 @@ import { validateAccountId, validateUserName } from '../../../../utils/validatio
 type UserInfoProps = {
   userInfos: UserInfoType | null
   userId?: string
-  userInfoId?: string
+  userInfoId: string
 }
 
 export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProps) {
@@ -22,7 +22,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   const [accountId, setAccountId] = useState('');
   const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [userName, setUserName] = useState('');
-  const [userImage, setUserImage] = useState<string | null>(noUserImage);
+  const [userImage, setUserImage] = useState<string | null>('');
   const [errors, setErrors] = useState({ accountId: '', userName: '' })
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   useEffect(() => {
     setIsAccountIdEdit(false)
     setIsUserNameEdit(false)
-    setUserImage(noUserImage)
+    setUserImage('')
   }, []);
 
   // ログアウト
@@ -116,7 +116,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
         {/* ユーザー画像 */}
         <View style={styles.userImageContainer}>
           <Image
-            source={userImage}
+            source={userInfos?.userImage || noUserImage}
             style={styles.userImage}
             contentFit="cover"
             cachePolicy="memory-disk"
