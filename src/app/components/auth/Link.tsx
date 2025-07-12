@@ -5,13 +5,14 @@ import { Link } from 'expo-router'
 type Props = {
   text: string
   href: string
+  color?: string
 }
 
-export default function AuthNavigationLink({ text, href }: Props) {
+export default function AuthNavigationLink({ text, href, color = '#26B441' }: Props) {
   return (
     <Link href={href} asChild>
       <TouchableOpacity>
-        <Text style={styles.loginLinkText}>{text}</Text>
+        <Text style={[styles.loginLinkText, { color }]}>{text}</Text>
       </TouchableOpacity>
     </Link>
   )
@@ -20,8 +21,7 @@ export default function AuthNavigationLink({ text, href }: Props) {
 const styles = StyleSheet.create({
   loginLinkText: {
     fontSize: 14,
-    lineHeight: 24,
-    color: '#26B441',
+    lineHeight : 24,
     textDecorationLine: 'underline',
     alignSelf: 'center',
   },

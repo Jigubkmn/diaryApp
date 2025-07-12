@@ -15,8 +15,8 @@ export default function Login() {
     return !!(email && password);
   };
 
-  const handleLogin = (email: string, password: string) => {
-    signInWithEmailAndPassword(auth, email, password)
+  const handleLogin = (email: string, password?: string) => {
+    signInWithEmailAndPassword(auth, email, password || '')
     .then((userCredential) => {
       console.log("userCredential", userCredential.user.uid);
       router.push("/(tabs)")
@@ -69,6 +69,12 @@ export default function Login() {
             password={password}
             handleAuthButton={handleLogin}
             isFormValid={isFormValid}
+          />
+          {/* リンク */}
+          <AuthNavigationLink
+            text="パスワードを忘れた方はこちら"
+            href="/auth/passwordRest"
+            color="#000000"
           />
           {/* リンク */}
           <AuthNavigationLink
