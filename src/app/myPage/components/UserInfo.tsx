@@ -8,6 +8,7 @@ import UserEditContents from './UserEditContents';
 import { db } from '../../../config';
 import { doc, updateDoc } from 'firebase/firestore'
 import { validateAccountId, validateUserName } from '../../../../utils/validation';
+import handleImageSelect from '../../actions/handleImageSelect';
 
 type UserInfoProps = {
   userInfos: UserInfoType | null
@@ -23,6 +24,7 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   const [accountId, setAccountId] = useState('');
   const [isUserNameEdit, setIsUserNameEdit] = useState(false);
   const [userName, setUserName] = useState('');
+  const [selectedImage, setSelectedImage] = useState<string | null>(userImage);
   const [errors, setErrors] = useState({ accountId: '', userName: '' })
 
   useEffect(() => {
@@ -34,8 +36,13 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
   }, [userInfos?.userName]);
 
   useEffect(() => {
+    setSelectedImage(userInfos?.userImage || '')
+  }, [userInfos?.userImage]);
+
+  useEffect(() => {
     setIsAccountIdEdit(false)
     setIsUserNameEdit(false)
+    setSelectedImage(userImage)
   }, []);
 
   // ログアウト
@@ -90,18 +97,33 @@ export default function UserInfo({ userInfos, userId, userInfoId }: UserInfoProp
     setErrors({ ...errors, userName: errorMessage })
   }
 
+  const ImageSelect = async () => {
+    await handleImageSelect(setSelectedImage);
+    // ユーザー画像を更新
+    try {
+      const userRef = doc(db, `users/${userId}/userInfo/${userInfoId}`);
+      await updateDoc(userRef, {
+        userImage: selectedImage,
+      });
+      Alert.alert("ユーザー画像を更新しました");
+    } catch (error) {
+      console.log("error", error);
+      Alert.alert("ユーザー画像の更新に失敗しました");
+    }
+  };
+
   return (
     <View style={styles.userInfoContainer}>
       <View style={styles.userInfoWrapper}>
         {/* ユーザー画像 */}
         <View style={styles.userImageContainer}>
           <Image
-            source={userImage}
+            source={selectedImage}
             style={styles.userImage}
-            contentFit="contain"
+            contentFit="cover"
             cachePolicy="memory-disk"
           />
-          <TouchableOpacity style={styles.editIconOverlay} onPress={() => {}}>
+          <TouchableOpacity style={styles.editIconOverlay} onPress={() => ImageSelect()}>
             <EditIcon size={24} color="#FFA500" />
           </TouchableOpacity>
         </View>
@@ -162,10 +184,12 @@ const styles = StyleSheet.create({
     position: 'relative',
     marginBottom: 16,
     alignSelf: 'center',
+    // borderRadius: 50, // コンテナも円形にする
   },
   userImage: {
     width: 100,
     height: 100,
+    borderRadius: 50, // 円形にする
   },
   editIconOverlay: {
     position: 'absolute',

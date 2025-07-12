@@ -15,7 +15,7 @@ export default async function handleImageSelect(setSelectedImage: (image: string
     // 画像選択を実行
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 0.8,
     });
 
