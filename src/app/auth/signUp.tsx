@@ -60,11 +60,11 @@ export default function SignUp() {
   }
 
   // ユーザー新規登録、ユーザー情報登録
-  const handleSignUp = async (email: string, password: string, userName?: string) => {
+  const handleSignUp = async (email: string, password?: string, userName?: string) => {
 
     let userCredential: UserCredential | null = null
     try {
-      userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      userCredential = await createUserWithEmailAndPassword(auth, email, password || '')
       const userId = userCredential.user.uid
       const ref = collection(db, `users/${userId}/userInfo`)
 
@@ -187,6 +187,11 @@ export default function SignUp() {
               isFormValid={isFormValid}
             />
             {/* リンク */}
+            <AuthNavigationLink
+              text="パスワードを忘れた方はこちら"
+              href="/auth/passwordRest"
+              color="#000000"
+            />
             <AuthNavigationLink
               text="ログインはこちら"
               href="/auth/login"
