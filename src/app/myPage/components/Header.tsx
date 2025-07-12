@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { router } from 'expo-router';
 import UserAddIcon from '../../components/Icon/UserAddIcon';
 import SettingIcon from '../../components/Icon/SettingIcon';
 
@@ -15,7 +16,7 @@ export default function Header() {
         <Text style={styles.headerTitle}>マイページ</Text>
       </View>
       <View style={styles.headerRight}>
-        <TouchableOpacity onPress={() => {}} style={styles.userAddIcon}>
+        <TouchableOpacity onPress={() => {router.push('/searchFriend/searchFriend')}} style={styles.userAddIcon}>
           <UserAddIcon size={24} color="#FFA500" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {}}>
