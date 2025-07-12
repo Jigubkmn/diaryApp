@@ -12,7 +12,7 @@ import {
   validatePassword,
   validateConfirmPassword
 } from '../../../utils/validation'
-import AuthNavigationLink from '../components/auth/Link'
+import AuthNavigationLink from './components/Link'
 import AuthButton from './components/AuthButton'
 
 export default function SignUp() {

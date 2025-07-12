@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, Alert, TouchableWithoutFeedback } from 'react-native'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
 import { router } from 'expo-router'
-import AuthNavigationLink from '../components/auth/Link'
+import AuthNavigationLink from './components/Link'
 import AuthButton from './components/AuthButton'
 
 export default function PasswordRest() {

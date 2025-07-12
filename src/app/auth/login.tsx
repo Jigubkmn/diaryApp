@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text, StyleSheet, TextInput, Alert, TouchableWithou
 import { auth } from '../../config'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { router } from 'expo-router'
-import AuthNavigationLink from '../components/auth/Link'
+import AuthNavigationLink from './components/Link'
 import AuthButton from './components/AuthButton'
 
 export default function Login() {
