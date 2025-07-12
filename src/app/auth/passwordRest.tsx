@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { SafeAreaView, View, ScrollView, Text, StyleSheet, TextInput, Alert, TouchableWithoutFeedback } from 'react-native'
 import { getAuth, sendPasswordResetEmail } from 'firebase/auth'
+import { router } from 'expo-router'
 import AuthNavigationLink from '../components/auth/Link'
 import AuthButton from '../components/auth/AuthButton'
 
@@ -18,8 +19,9 @@ export default function PasswordRest() {
     const auth = getAuth();
     sendPasswordResetEmail(auth, email)
     .then(() => {
-      Alert.alert("パスワードリセットメールを送信しました");
+      Alert.alert("パスワード再度設定メールを送信しました");
       setEmail('');
+      router.push("/auth/login");
     })
     .catch((error) => {
       console.log("error", error);
@@ -30,7 +32,7 @@ export default function PasswordRest() {
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback>
         <View style={styles.wrapper}>
-          <Text style={styles.title}>パスワードリセット</Text>
+          <Text style={styles.title}>パスワード再度設定</Text>
           <ScrollView style={styles.bodyContainer}>
             {/* メールアドレス */}
             <View style={styles.inputContainer}>
