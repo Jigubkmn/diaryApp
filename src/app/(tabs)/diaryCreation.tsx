@@ -13,7 +13,6 @@ export default function DiaryCreation() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const { isTouchFeelingButton } = useLocalSearchParams<{ isTouchFeelingButton?: string }>();
 
-  // 画面がフォーカスされた時に状態をリセット
   useFocusEffect(
     React.useCallback(() => {
       setDiaryText('');

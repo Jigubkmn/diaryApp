@@ -13,13 +13,13 @@ export default function home() {
   const [diaryLists, setDiaryLists] = useState<DiaryType[]>([]);
   const router = useRouter();
 
-  // モーダルの表示状態を管理するstate
+  // モーダルの表示状態を管理
   const [isModalVisible, setModalVisible] = useState(false);
 
-  // 表示用の年月を管理するstate
+  // 表示用の年月を管理する
   const [displayDate, setDisplayDate] = useState(dayjs());
 
-  // 選択された年月を'YYYY-M'形式の文字列で保持するstate
+  // 選択された年月を'YYYY-M'形式の文字列で保持する
   const [selectedYearMonth, setSelectedYearMonth] = useState(displayDate.format('YYYY-M'));
 
 

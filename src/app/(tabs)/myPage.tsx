@@ -21,8 +21,8 @@ export default function myPage() {
       const unsubscribe = onSnapshot(q, (snapshot) => {
         // データ1つずつの処理
         snapshot.docs.forEach((doc) => {
-          const { accountId, userName } = doc.data();
-          setUserInfos({ accountId, userName })
+          const { accountId, userName, userImage } = doc.data();
+          setUserInfos({ accountId, userName, userImage })
           setUserInfoId(doc.id) // userInfoのIDを保存
         })
       })
